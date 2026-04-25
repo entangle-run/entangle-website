@@ -1,0 +1,55 @@
+---
+interface Props {
+	type?: 'home' | 'article';
+	site: URL;
+	title?: string;
+	description?: string;
+	url?: string;
+	datePublished?: Date;
+	dateModified?: Date;
+	author?: string;
+}
+
+const { type = 'home', site, title, description, url, datePublished, dateModified, author } = Astro.props;
+
+const org = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: 'Entangle',
+	url: site.href,
+	logo: new URL('/og.png', site).href,
+	description: 'Graph-native runtime for AI organizations.',
+	sameAs: ['https://github.com/entangle-run/entangle'],
+};
+
+const website = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: 'Entangle',
+	url: site.href,
+	inLanguage: 'en',
+};
+
+const article = type === 'article' && title && description && url && datePublished
+	? {
+			'@context': 'https://schema.org',
+			'@type': 'Article',
+			headline: title,
+			description,
+			url,
+			datePublished: datePublished.toISOString(),
+			dateModified: (dateModified ?? datePublished).toISOString(),
+			author: { '@type': 'Organization', name: author ?? 'Entangle' },
+			publisher: org,
+			image: new URL('/og.png', site).href,
+		}
+	: null;
+---
+
+{type === 'home' && (
+	<>
+		<script type="application/ld+json" set:html={JSON.stringify(org)} />
+		<script type="application/ld+json" set:html={JSON.stringify(website)} />
+	</>
+)}
+{article && <script type="application/ld+json" set:html={JSON.stringify(article)} />}

@@ -1,0 +1,209 @@
+---
+interface Props {
+	variant?: 'hero' | 'panel' | 'inline';
+	animated?: boolean;
+	class?: string;
+}
+
+const { variant = 'hero', animated = true, class: className = '' } = Astro.props;
+
+// Canonical Entangle topology. Coordinates are computed once and reused
+// everywhere so the brand motif is geometrically stable.
+const nodes = [
+	{ id: 'user', label: 'User', sub: 'operator', x: 130, y: 380, r: 38, accent: 'teal' },
+	{ id: 'host', label: 'Host', sub: 'control plane', x: 320, y: 130, r: 44, accent: 'cyan' },
+	{ id: 'runner', label: 'Runner', sub: 'per node', x: 560, y: 215, r: 42, accent: 'lime' },
+	{ id: 'relay', label: 'Relay', sub: 'signed Nostr', x: 690, y: 400, r: 38, accent: 'slate' },
+	{ id: 'artifact', label: 'Artifact', sub: 'git handoff', x: 380, y: 460, r: 40, accent: 'amber' },
+] as const;
+
+const edges = [
+	{ from: 'user', to: 'host', label: 'operates', kind: 'ctrl' },
+	{ from: 'host', to: 'runner', label: 'lifecycle', kind: 'ctrl' },
+	{ from: 'runner', to: 'relay', label: 'A2A messages', kind: 'msg' },
+	{ from: 'runner', to: 'artifact', label: 'publishes', kind: 'art' },
+	{ from: 'artifact', to: 'user', label: 'inspectable', kind: 'view' },
+] as const;
+
+const accentMap = {
+	teal: '#2dd4bf',
+	cyan: '#22d3ee',
+	lime: '#a3e635',
+	slate: '#94a3b8',
+	amber: '#f59e0b',
+} as const;
+
+const kindStroke = {
+	ctrl: '#2dd4bf',
+	msg: '#22d3ee',
+	art: '#f59e0b',
+	view: '#94a3b8',
+} as const;
+
+const nodeById = Object.fromEntries(nodes.map((n) => [n.id, n]));
+
+function trim(p: { x: number; y: number }, q: { x: number; y: number }, by: number) {
+	const dx = q.x - p.x;
+	const dy = q.y - p.y;
+	const d = Math.sqrt(dx * dx + dy * dy);
+	const k = (d - by) / d;
+	return { x: p.x + dx * k, y: p.y + dy * k };
+}
+
+const sizeClass = variant === 'inline' ? 'h-auto w-full max-w-[420px]' : 'h-auto w-full';
+---
+
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 820 560"
+	role="img"
+	aria-labelledby="entangle-graph-title entangle-graph-desc"
+	class={`entangle-graph ${sizeClass} ${animated ? 'is-animated' : ''} ${className}`}
+>
+	<title id="entangle-graph-title">Entangle runtime graph</title>
+	<desc id="entangle-graph-desc">User, Host, Runner, Relay, and Artifact nodes connected by typed edges showing how Entangle operates AI organizations as a graph.</desc>
+
+	<defs>
+		{Object.entries(kindStroke).map(([kind, color]) => (
+			<marker id={`arrow-${kind}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+				<path d="M0 0 L10 5 L0 10 Z" fill={color} opacity="0.95" />
+			</marker>
+		))}
+		<radialGradient id="node-glow" cx="50%" cy="50%" r="50%">
+			<stop offset="0%" stop-color="rgba(255,255,255,0.10)" />
+			<stop offset="100%" stop-color="rgba(255,255,255,0)" />
+		</radialGradient>
+	</defs>
+
+	{/* Subtle background grid */}
+	<g aria-hidden="true">
+		{Array.from({ length: 17 }).map((_, i) => (
+			<line x1={i * 50} y1="0" x2={i * 50} y2="560" stroke="rgba(148,163,184,0.06)" stroke-width="1" />
+		))}
+		{Array.from({ length: 12 }).map((_, i) => (
+			<line x1="0" y1={i * 50} x2="820" y2={i * 50} stroke="rgba(148,163,184,0.06)" stroke-width="1" />
+		))}
+	</g>
+
+	{/* Edges */}
+	<g class="edges">
+		{edges.map((e, i) => {
+			const a = nodeById[e.from];
+			const b = nodeById[e.to];
+			const start = trim(a, b, a.r + 2);
+			const end = trim(b, a, b.r + 8);
+			const stroke = kindStroke[e.kind];
+			const mx = (start.x + end.x) / 2;
+			const my = (start.y + end.y) / 2 - 6;
+			return (
+				<g class={`edge edge-${e.kind}`}>
+					<path
+						d={`M ${start.x} ${start.y} L ${end.x} ${end.y}`}
+						stroke={stroke}
+						stroke-width="2"
+						stroke-linecap="round"
+						fill="none"
+						opacity="0.85"
+						marker-end={`url(#arrow-${e.kind})`}
+						style={`--edge-delay: ${i * 0.18}s`}
+					/>
+					<text
+						x={mx}
+						y={my}
+						text-anchor="middle"
+						font-family="JetBrains Mono, ui-monospace, monospace"
+						font-size="10"
+						font-weight="600"
+						fill="rgba(226,232,240,0.62)"
+						class="edge-label"
+					>{e.label}</text>
+				</g>
+			);
+		})}
+	</g>
+
+	{/* Nodes */}
+	<g class="nodes">
+		{nodes.map((n, i) => (
+			<g class="node" transform={`translate(${n.x} ${n.y})`} style={`--node-delay: ${0.2 + i * 0.12}s`}>
+				<circle r={n.r + 6} fill="url(#node-glow)" />
+				<circle r={n.r} fill="#0b1020" stroke={accentMap[n.accent]} stroke-width="2" />
+				<text
+					y="-3"
+					text-anchor="middle"
+					font-family="Inter, ui-sans-serif, system-ui, sans-serif"
+					font-size="14"
+					font-weight="800"
+					fill="#f1f5f9"
+				>{n.label}</text>
+				<text
+					y="14"
+					text-anchor="middle"
+					font-family="JetBrains Mono, ui-monospace, monospace"
+					font-size="10"
+					font-weight="600"
+					fill={accentMap[n.accent]}
+					opacity="0.85"
+				>{n.sub}</text>
+			</g>
+		))}
+	</g>
+</svg>
+
+<style>
+	.entangle-graph .edge path {
+		stroke-dasharray: 320;
+		stroke-dashoffset: 320;
+		animation: edge-draw 1.4s ease-out forwards;
+		animation-delay: var(--edge-delay, 0s);
+	}
+	.entangle-graph .edge-label {
+		opacity: 0;
+		animation: fade-in 0.6s ease-out forwards;
+		animation-delay: calc(var(--edge-delay, 0s) + 0.9s);
+	}
+	.entangle-graph .node {
+		opacity: 0;
+		transform-origin: center;
+		animation: pop-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+		animation-delay: var(--node-delay, 0s);
+	}
+	.entangle-graph:not(.is-animated) .edge path,
+	.entangle-graph:not(.is-animated) .edge-label,
+	.entangle-graph:not(.is-animated) .node {
+		animation: none;
+		opacity: 1;
+		stroke-dashoffset: 0;
+	}
+
+	@keyframes edge-draw {
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+	@keyframes fade-in {
+		to {
+			opacity: 1;
+		}
+	}
+	@keyframes pop-in {
+		from {
+			opacity: 0;
+			transform: translateY(4px) scale(0.96);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.entangle-graph .edge path,
+		.entangle-graph .edge-label,
+		.entangle-graph .node {
+			animation: none !important;
+			opacity: 1 !important;
+			stroke-dashoffset: 0 !important;
+		}
+	}
+</style>

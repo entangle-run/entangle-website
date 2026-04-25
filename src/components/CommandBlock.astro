@@ -1,0 +1,24 @@
+---
+interface Props {
+	commands: string[];
+	caption?: string;
+	prompt?: string;
+	class?: string;
+}
+
+const { commands, caption, prompt = '$', class: className = '' } = Astro.props;
+---
+
+<div class={`overflow-hidden rounded-[8px] border border-white/10 bg-slate-950/80 shadow-[0_24px_80px_rgba(0,0,0,0.32)] ${className}`}>
+	<div class="flex items-center justify-between border-b border-white/[0.08] bg-white/[0.04] px-3.5 py-2.5">
+		<div class="flex items-center gap-1.5" aria-hidden="true">
+			<span class="size-2.5 rounded-full bg-[#f97362]"></span>
+			<span class="size-2.5 rounded-full bg-[#f59e0b]"></span>
+			<span class="size-2.5 rounded-full bg-[#2dd4bf]"></span>
+		</div>
+		{caption && <span class="font-mono text-[11px] font-semibold text-slate-400">{caption}</span>}
+	</div>
+	<pre class="m-0 overflow-x-auto bg-transparent px-4 py-4 text-[13px] leading-6 text-slate-100"><code>{commands.map((cmd, i) => (
+<><span class="text-teal-300 select-none">{prompt} </span>{cmd}{i < commands.length - 1 ? '\n' : ''}</>
+))}</code></pre>
+</div>

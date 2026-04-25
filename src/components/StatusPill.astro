@@ -1,0 +1,42 @@
+---
+type Status = 'released' | 'in-progress' | 'coming-soon' | 'planned';
+
+interface Props {
+	status: Status;
+	label?: string;
+	class?: string;
+}
+
+const { status, label, class: className = '' } = Astro.props;
+
+const config: Record<Status, { text: string; styles: string; dot: string }> = {
+	released: {
+		text: 'Released',
+		styles: 'border-teal-300/60 bg-teal-300/10 text-teal-100',
+		dot: 'bg-teal-300',
+	},
+	'in-progress': {
+		text: 'In progress',
+		styles: 'border-lime-300/60 bg-lime-300/10 text-lime-100',
+		dot: 'bg-lime-300',
+	},
+	'coming-soon': {
+		text: 'Coming soon',
+		styles: 'border-amber-300/60 bg-amber-300/10 text-amber-100',
+		dot: 'bg-amber-300',
+	},
+	planned: {
+		text: 'Planned',
+		styles: 'border-slate-300/40 bg-slate-300/10 text-slate-200',
+		dot: 'bg-slate-300',
+	},
+};
+
+const c = config[status];
+const text = label ?? c.text;
+---
+
+<span class={`inline-flex items-center gap-2 rounded-full border px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-[0.12em] ${c.styles} ${className}`}>
+	<span class={`size-1.5 rounded-full ${c.dot}`} aria-hidden="true"></span>
+	{text}
+</span>

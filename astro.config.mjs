@@ -14,6 +14,7 @@ export default defineConfig({
 			title: 'Entangle',
 			description: 'Graph-native runtime for AI organizations.',
 			customCss: ['./src/styles/global.css'],
+			disable404Route: true,
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/entangle-run/entangle' }],
 			sidebar: [
 				{

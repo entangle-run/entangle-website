@@ -1,0 +1,34 @@
+---
+import { ArrowLeft, BookOpen, GitBranch } from '@lucide/astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+	title="Not found — Entangle"
+	description="That page does not exist. Try the docs, the architecture page, or the homepage."
+	noindex
+>
+	<main>
+		<section class="container-wide grid gap-8 py-24 text-white md:py-36">
+			<p class="font-mono text-sm font-black uppercase tracking-[0.18em] text-teal-300">404 · not found</p>
+			<h1 class="text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">No node at this edge.</h1>
+			<p class="max-w-2xl text-lg leading-8 text-slate-300">
+				The page you requested does not exist. Try the homepage, the architecture page, or the docs.
+			</p>
+			<div class="flex flex-col gap-3 sm:flex-row">
+				<a href="/" class="button-primary">
+					<ArrowLeft size={18} stroke-width={2.4} />
+					Back to home
+				</a>
+				<a href="/docs/" class="button-secondary">
+					<BookOpen size={18} stroke-width={2.4} />
+					Read the docs
+				</a>
+				<a href="https://github.com/entangle-run/entangle" class="button-secondary" rel="noreferrer">
+					<GitBranch size={18} stroke-width={2.4} />
+					View on GitHub
+				</a>
+			</div>
+		</section>
+	</main>
+</SiteLayout>

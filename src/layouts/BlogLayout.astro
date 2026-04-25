@@ -1,4 +1,5 @@
 ---
+import JsonLd from '../components/JsonLd.astro';
 import SiteLayout from './SiteLayout.astro';
 
 interface Props {
@@ -16,13 +17,26 @@ const dateFormatter = new Intl.DateTimeFormat('en', {
 	month: 'short',
 	year: 'numeric',
 });
+
+const site = Astro.site ?? new URL('https://entangle.run');
+const url = new URL(Astro.url.pathname, site).href;
 ---
 
-<SiteLayout title={`${title} - Entangle`} description={description}>
-	<main class="bg-[#f7f9fc] pt-16">
+<SiteLayout title={`${title} — Entangle`} description={description} ogType="article">
+	<JsonLd
+		type="article"
+		site={site}
+		title={title}
+		description={description}
+		url={url}
+		datePublished={date}
+		dateModified={updated}
+		author={author}
+	/>
+	<main class="bg-[#f7f9fc] pt-12 md:pt-16">
 		<article class="container-wide max-w-[840px] pb-24">
 			<header class="border-b border-slate-200 pb-10">
-				<a href="/blog/" class="text-sm font-bold text-teal-700 no-underline hover:underline">Newsroom</a>
+				<a href="/blog/" class="text-sm font-bold text-teal-700 no-underline hover:underline">← Newsroom</a>
 				<h1 class="mt-5 text-balance text-4xl font-[820] leading-[1.04] text-slate-950 md:text-6xl">{title}</h1>
 				<p class="mt-5 max-w-2xl text-lg leading-8 text-slate-600">{description}</p>
 				<div class="mt-7 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold text-slate-500">
@@ -32,7 +46,9 @@ const dateFormatter = new Intl.DateTimeFormat('en', {
 				</div>
 				{tags.length > 0 && (
 					<div class="mt-6 flex flex-wrap gap-2">
-						{tags.map((tag) => <span class="rounded-[4px] border border-slate-200 bg-white px-2.5 py-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">{tag}</span>)}
+						{tags.map((tag) => (
+							<span class="rounded-[4px] border border-slate-200 bg-white px-2.5 py-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">{tag}</span>
+						))}
 					</div>
 				)}
 			</header>

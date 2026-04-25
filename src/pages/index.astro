@@ -1,183 +1,258 @@
 ---
 import { getCollection } from 'astro:content';
-import { ArrowRight, BookOpen, GitBranch, GitPullRequest, Network, ShieldCheck, Terminal, Workflow } from '@lucide/astro';
-import FeatureCard from '../components/FeatureCard.astro';
+import {
+	ArrowRight,
+	Boxes,
+	Building2,
+	Cloud,
+	Eye,
+	GitBranch,
+	GitPullRequest,
+	Network,
+	Radio,
+	ShieldCheck,
+	Terminal,
+	Workflow,
+} from '@lucide/astro';
+import CommandBlock from '../components/CommandBlock.astro';
+import CtaStrip from '../components/CtaStrip.astro';
 import LatestPosts from '../components/LatestPosts.astro';
 import RuntimeVisual from '../components/RuntimeVisual.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
+import StatusPill from '../components/StatusPill.astro';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
 	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-	.slice(0, 2);
+	.slice(0, 3);
+
+const l1Capabilities = [
+	{ Icon: Workflow, label: 'Host control plane', body: 'entangle-host owns graph state, package admission, runtime materialization, reconciliation, and inspection over a typed REST + WebSocket surface.' },
+	{ Icon: Terminal, label: 'Per-node runners', body: 'One entangle-runner per active node, with effective runtime context, lifecycle, restart generations, and bounded recovery policies.' },
+	{ Icon: Radio, label: 'NIP-59 transport', body: 'Real Nostr coordination over a local strfry relay using gift-wrapped Entangle rumors with relay-readiness preconnect.' },
+	{ Icon: GitBranch, label: 'Git-backed artifacts', body: 'Materialize, publish, and retrieve work products through local Gitea, with locator-specific repository targets and per-service principals.' },
+	{ Icon: Eye, label: 'Studio + CLI', body: 'Two surfaces over the same host truth. Operate visually, audit headlessly. No client owns control-plane state.' },
+	{ Icon: ShieldCheck, label: 'Approval & audit loops', body: 'Approval request/response lifecycle, runner-owned reconciliation, runtime trace events, and a host event surface for audit workflows.' },
+];
+
+const personas = [
+	{
+		title: 'Package authors',
+		body: 'Ship reusable AgentPackages with declared tool catalogs, runtime intents, and provider adapters. Validate manifests with semantic checks, not vibes.',
+	},
+	{
+		title: 'Graph designers',
+		body: 'Compose users, agents, and services as nodes with typed edges. Make delegation, review, and handoff first-class topology, not hidden orchestration.',
+	},
+	{
+		title: 'Technical founders',
+		body: 'Run a credible local control plane today. Inherit the same boundary on managed Cloud and customer-operated Enterprise as those products land.',
+	},
+];
 ---
 
 <SiteLayout>
 	<main>
-		<section class="relative overflow-hidden pb-14 pt-10 text-white md:pb-24 md:pt-16">
-			<div class="container-wide grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
+		<section class="relative overflow-hidden pb-16 pt-10 text-white md:pb-24 md:pt-16">
+			<div class="container-wide grid items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
 				<div>
-					<p class="eyebrow text-teal-200">Entangle Local is first</p>
-					<h1 class="mt-5 max-w-4xl text-balance text-5xl font-[880] leading-[0.98] text-white md:text-7xl">
-						Graph-native runtime for AI organizations.
+					<div class="flex flex-wrap items-center gap-2">
+						<StatusPill status="released" label="L1 baseline · open source" />
+					</div>
+					<h1 class="mt-6 max-w-4xl text-balance text-5xl font-[880] leading-[0.98] text-white md:text-7xl">
+						The runtime layer for AI&nbsp;organizations.
 					</h1>
 					<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
-						Build, run, inspect, and govern multi-agent operating topologies on your machine. Entangle turns users, agents, runners, approvals, messages, and artifacts into first-class runtime state.
+						Compose multi-agent systems as a graph you can see, govern, and replay. Run the full control plane locally today; inherit the same model on managed Cloud and customer-operated Enterprise.
 					</p>
 					<div class="mt-8 flex flex-col gap-3 sm:flex-row">
-						<a href="https://github.com/entangle-run/entangle" class="button-primary">
-							<GitBranch size={18} strokeWidth={2.4} />
-							View GitHub
+						<a href="/docs/getting-started/" class="button-primary">
+							<Terminal size={18} stroke-width={2.4} />
+							Run it locally
+							<ArrowRight size={16} stroke-width={2.4} />
 						</a>
-						<a href="/docs/" class="button-secondary">
-							<BookOpen size={18} strokeWidth={2.4} />
-							Read Docs
+						<a href="/architecture/" class="button-secondary">
+							<Network size={18} stroke-width={2.4} />
+							Read the architecture
 						</a>
 					</div>
-					<div class="mt-10 grid gap-3 sm:grid-cols-3">
-						<div class="border-l border-teal-300/40 pl-4">
-							<p class="text-2xl font-[850] text-white">Local</p>
-							<p class="mt-1 text-sm leading-6 text-slate-400">first product line</p>
-						</div>
-						<div class="border-l border-lime-300/40 pl-4">
-							<p class="text-2xl font-[850] text-white">Graph</p>
-							<p class="mt-1 text-sm leading-6 text-slate-400">explicit topology</p>
-						</div>
-						<div class="border-l border-amber-300/40 pl-4">
-							<p class="text-2xl font-[850] text-white">Artifact</p>
-							<p class="mt-1 text-sm leading-6 text-slate-400">git-backed handoff</p>
-						</div>
+					<div class="mt-8 max-w-md">
+						<CommandBlock
+							caption="get started"
+							commands={[
+								'git clone https://github.com/entangle-run/entangle.git',
+								'cd entangle && pnpm install',
+								'pnpm ops:check-local:strict',
+							]}
+						/>
 					</div>
 				</div>
 				<RuntimeVisual />
 			</div>
 		</section>
 
-		<section class="border-y border-slate-200 bg-white py-5">
-			<div class="container-wide grid gap-3 text-sm font-bold text-slate-600 md:grid-cols-4">
+		<section class="border-y border-white/10 bg-slate-950/60 py-5 text-slate-300">
+			<div class="container-wide grid gap-3 text-sm font-bold md:grid-cols-4">
 				<div class="flex items-center gap-2">
-					<Network size={17} class="text-teal-700" strokeWidth={2.3} />
+					<Network size={17} class="text-teal-300" stroke-width={2.3} />
 					Graph-native control plane
 				</div>
 				<div class="flex items-center gap-2">
-					<Terminal size={17} class="text-slate-700" strokeWidth={2.3} />
-					CLI and Studio surfaces
+					<Terminal size={17} class="text-lime-300" stroke-width={2.3} />
+					Studio + CLI on the same host boundary
 				</div>
 				<div class="flex items-center gap-2">
-					<GitPullRequest size={17} class="text-amber-600" strokeWidth={2.3} />
-					Git-backed artifacts
+					<GitPullRequest size={17} class="text-amber-300" stroke-width={2.3} />
+					Git-backed artifact handoff
 				</div>
 				<div class="flex items-center gap-2">
-					<ShieldCheck size={17} class="text-orange-500" strokeWidth={2.3} />
-					Designed for audit loops
+					<ShieldCheck size={17} class="text-cyan-300" stroke-width={2.3} />
+					Audit-loop discipline
 				</div>
 			</div>
 		</section>
 
 		<section class="section-pad bg-[#f7f9fc]">
 			<div class="container-wide">
-				<div class="max-w-3xl">
-					<p class="eyebrow text-teal-700">Why it exists</p>
-					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.08] text-slate-950 md:text-5xl">
-						AI work should be operated as a system, not buried inside one chat window.
-					</h2>
-					<p class="mt-5 text-lg leading-8 text-slate-600">
-						Entangle starts with the local runtime because the core model has to be inspectable before it is scaled. The product line is built around explicit topology, controlled execution, and artifact handoff.
+				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+					<div>
+						<p class="eyebrow text-teal-700">Why it exists</p>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">
+							AI work should be operated as a system, not buried inside one chat window.
+						</h2>
+					</div>
+					<p class="text-lg leading-8 text-slate-600">
+						Most tools start from the shape of a chat product. Entangle starts from the shape of an organization: explicit topology, explicit ownership, signed coordination, durable artifacts, and approval loops as first-class runtime concerns.
 					</p>
 				</div>
 				<div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-					<FeatureCard
-						kicker="Topology"
-						title="Users and agents are nodes"
-						description="The operating graph is visible, versionable, and inspectable instead of implied by a hidden prompt chain."
-					/>
-					<FeatureCard
-						kicker="Execution"
-						title="One runner per active node"
-						description="Runtime ownership stays explicit so node lifecycle, logs, and repair paths can be reasoned about."
-					/>
-					<FeatureCard
-						kicker="Handoff"
-						title="Artifacts carry work"
-						description="Messages coordinate. Work products move through artifact materialization and git-backed handoff."
-					/>
-					<FeatureCard
-						kicker="Governance"
-						title="Review paths are part of the model"
-						description="The roadmap treats approvals, audit, and operational recovery as core runtime concerns."
-					/>
+					<article class="paper-panel p-6">
+						<p class="eyebrow text-teal-700">Topology</p>
+						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">Users and agents are nodes</h3>
+						<p class="mt-3 text-sm leading-6 text-slate-600">The user is a first-class node. Edges are typed authority. Sessions activate a runtime subgraph over a static topology.</p>
+					</article>
+					<article class="paper-panel p-6">
+						<p class="eyebrow text-teal-700">Execution</p>
+						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">One runner per active node</h3>
+						<p class="mt-3 text-sm leading-6 text-slate-600">AgentPackage is portable storage. NodeInstance is a graph-local binding. Runner is the execution boundary that matters.</p>
+					</article>
+					<article class="paper-panel p-6">
+						<p class="eyebrow text-teal-700">Handoff</p>
+						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">Messages coordinate, artifacts carry work</h3>
+						<p class="mt-3 text-sm leading-6 text-slate-600">Coordination flows over signed Nostr messages. Work products move as git-backed artifacts with explicit publish and retrieve.</p>
+					</article>
+					<article class="paper-panel p-6">
+						<p class="eyebrow text-teal-700">Governance</p>
+						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">Approvals, recovery, audit</h3>
+						<p class="mt-3 text-sm leading-6 text-slate-600">Approval request/response is in the protocol. Recovery policy and host-derived consistency findings are in the runtime.</p>
+					</article>
 				</div>
 			</div>
 		</section>
 
 		<section class="section-pad bg-slate-950 text-white">
-			<div class="container-wide grid gap-12 lg:grid-cols-[0.85fr_1.15fr]">
-				<div>
-					<p class="eyebrow text-lime-200">First product</p>
-					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.08] md:text-5xl">Entangle Local becomes the first complete product.</h2>
-					<p class="mt-5 text-lg leading-8 text-slate-300">
-						The release path intentionally finishes the local product before cloud or enterprise work begins. Each release adds utility without pretending the product is already a managed production platform.
-					</p>
-					<a href="/local/" class="mt-8 inline-flex items-center gap-2 text-sm font-black text-teal-200 no-underline hover:text-white">
-						Explore Entangle Local
-						<ArrowRight size={16} strokeWidth={2.4} />
-					</a>
-				</div>
-				<div class="grid gap-3">
-					{[
-						['R1', 'Local Operator Baseline', 'Run and inspect the local control plane, runner, relay, Studio, CLI, and git-backed artifact flow.'],
-						['R1.1', 'Local Operator Preview', 'Improve usability around graph inspection, package admission, diagnostics, and operator workflows.'],
-						['R1.2', 'Local Workbench', 'Add richer graph editing, templates, task sessions, artifact navigation, and recovery flows.'],
-						['GA', 'Entangle Local', 'Complete the local product with installer path, docs, reliability gates, and release discipline.'],
-					].map(([step, title, description]) => (
-						<div class="grid gap-4 rounded-[8px] border border-white/10 bg-white/[0.06] p-5 sm:grid-cols-[84px_1fr]">
-							<div class="font-mono text-sm font-black text-lime-200">{step}</div>
-							<div>
-								<h3 class="text-xl font-[820] leading-tight">{title}</h3>
-								<p class="mt-2 text-sm leading-6 text-slate-400">{description}</p>
-							</div>
+			<div class="container-wide">
+				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+					<div>
+						<div class="flex items-center gap-3">
+							<StatusPill status="released" label="Available now" />
 						</div>
+						<h2 class="mt-4 text-balance text-3xl font-[850] leading-[1.06] md:text-5xl">What ships in the L1 Local Operator Baseline.</h2>
+					</div>
+					<p class="text-lg leading-8 text-slate-300">
+						L1 is not a slide deck. It is a real local control plane, two provider adapters, signed transport, git-backed artifact handoff, and a verified end-to-end smoke that publishes and retrieves work between two managed runners.
+					</p>
+				</div>
+				<div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+					{l1Capabilities.map(({ Icon, label, body }) => (
+						<article class="rounded-[10px] border border-white/10 bg-white/[0.04] p-6">
+							<Icon size={22} stroke-width={2.2} class="text-teal-300" />
+							<h3 class="mt-4 text-lg font-[820] text-white">{label}</h3>
+							<p class="mt-2 text-sm leading-6 text-slate-300">{body}</p>
+						</article>
 					))}
+				</div>
+				<div class="mt-10 flex flex-wrap items-center gap-4">
+					<a href="/local/" class="button-primary">
+						See everything in L1
+						<ArrowRight size={16} stroke-width={2.4} />
+					</a>
+					<a href="/roadmap/" class="text-sm font-bold text-slate-300 no-underline hover:text-white">View the L-series release train →</a>
 				</div>
 			</div>
 		</section>
 
 		<section class="section-pad bg-[#eef6f4]">
-			<div class="container-wide grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-				<div>
-					<p class="eyebrow text-teal-800">Product line</p>
-					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.08] text-slate-950 md:text-5xl">
-						One model, three finished products.
-					</h2>
-					<p class="mt-5 text-lg leading-8 text-slate-700">
-						The roadmap does not treat Local as throwaway scaffolding. Local, Cloud, and Enterprise are separate final products built in sequence from the same graph-native operating model.
+			<div class="container-wide">
+				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+					<div>
+						<p class="eyebrow text-teal-800">Product family</p>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">One model. Three finished products. Built in order.</h2>
+					</div>
+					<p class="text-lg leading-8 text-slate-700">
+						The roadmap does not treat Local as throwaway scaffolding. Local, Cloud, and Enterprise are separate final products built in strict sequence from the same graph-native operating model.
 					</p>
 				</div>
-				<div class="grid gap-4">
-					<div class="paper-panel p-6">
-						<div class="flex items-center gap-3">
-							<Workflow class="text-teal-700" size={22} strokeWidth={2.3} />
-							<h3 class="text-2xl font-[850] text-slate-950">Entangle Local</h3>
+				<div class="mt-10 grid gap-4 lg:grid-cols-3">
+					<div class="rounded-[10px] border border-teal-300/40 bg-slate-950 p-6 text-white shadow-[0_18px_60px_rgba(13,148,136,0.18)]">
+						<div class="flex items-center justify-between gap-3">
+							<div class="flex items-center gap-3">
+								<Workflow size={22} stroke-width={2.2} class="text-teal-300" />
+								<h3 class="text-2xl font-[850]">Entangle Local</h3>
+							</div>
+							<StatusPill status="released" />
 						</div>
-						<p class="mt-3 text-sm leading-6 text-slate-600">A complete local runtime and operator workbench for serious builders.</p>
+						<p class="mt-4 text-sm leading-6 text-slate-300">A complete local runtime and operator workbench for serious builders. Run, inspect, and govern the graph on your own machine.</p>
+						<a href="/local/" class="mt-6 inline-flex items-center gap-2 text-sm font-black text-teal-200 no-underline hover:text-white">Explore Local <ArrowRight size={16} stroke-width={2.4} /></a>
 					</div>
-					<div class="paper-panel p-6">
-						<div class="flex items-center gap-3">
-							<Network class="text-slate-700" size={22} strokeWidth={2.3} />
-							<h3 class="text-2xl font-[850] text-slate-950">Entangle Cloud</h3>
+					<div class="rounded-[10px] border border-cyan-300/30 bg-slate-950 p-6 text-white">
+						<div class="flex items-center justify-between gap-3">
+							<div class="flex items-center gap-3">
+								<Cloud size={22} stroke-width={2.2} class="text-cyan-300" />
+								<h3 class="text-2xl font-[850]">Entangle Cloud</h3>
+							</div>
+							<StatusPill status="coming-soon" />
 						</div>
-						<p class="mt-3 text-sm leading-6 text-slate-600">A managed product for persistent workspaces, identity, authorization, audit, integrations, and hosted reliability.</p>
+						<p class="mt-4 text-sm leading-6 text-slate-300">Managed multi-tenant graph runtime with workspaces, identity, sandboxed execution, artifact service, audit, and integrations. Begins after Local GA.</p>
+						<a href="/cloud/" class="mt-6 inline-flex items-center gap-2 text-sm font-black text-cyan-200 no-underline hover:text-white">Cloud preview <ArrowRight size={16} stroke-width={2.4} /></a>
 					</div>
-					<div class="paper-panel p-6">
-						<div class="flex items-center gap-3">
-							<ShieldCheck class="text-amber-700" size={22} strokeWidth={2.3} />
-							<h3 class="text-2xl font-[850] text-slate-950">Entangle Enterprise</h3>
+					<div class="rounded-[10px] border border-amber-300/30 bg-slate-950 p-6 text-white">
+						<div class="flex items-center justify-between gap-3">
+							<div class="flex items-center gap-3">
+								<Building2 size={22} stroke-width={2.2} class="text-amber-300" />
+								<h3 class="text-2xl font-[850]">Entangle Enterprise</h3>
+							</div>
+							<StatusPill status="planned" />
 						</div>
-						<p class="mt-3 text-sm leading-6 text-slate-600">A customer-operated distribution for controlled environments once the cloud production core is mature.</p>
+						<p class="mt-4 text-sm leading-6 text-slate-300">Customer-operated distribution for controlled environments — Helm, external dependencies, SSO/SCIM, audit export, backup, upgrade. Begins after Cloud production core.</p>
+						<a href="/enterprise/" class="mt-6 inline-flex items-center gap-2 text-sm font-black text-amber-200 no-underline hover:text-white">Enterprise scope <ArrowRight size={16} stroke-width={2.4} /></a>
 					</div>
+				</div>
+				<div class="mt-8">
+					<a href="/products/" class="inline-flex items-center gap-2 rounded-[6px] border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 no-underline hover:border-slate-400">Compare all three products <ArrowRight size={16} stroke-width={2.4} /></a>
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-white">
+			<div class="container-wide">
+				<div class="max-w-3xl">
+					<p class="eyebrow text-teal-700">Who this is for</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Built for people who treat AI work like infrastructure.</h2>
+				</div>
+				<div class="mt-12 grid gap-4 md:grid-cols-3">
+					{personas.map((p) => (
+						<article class="paper-panel p-6">
+							<Boxes size={22} stroke-width={2.2} class="text-teal-700" />
+							<h3 class="mt-5 text-xl font-[820] leading-tight text-slate-950">{p.title}</h3>
+							<p class="mt-3 text-sm leading-6 text-slate-600">{p.body}</p>
+						</article>
+					))}
 				</div>
 			</div>
 		</section>
 
 		{posts.length > 0 && <LatestPosts posts={posts} />}
+
+		<CtaStrip />
 	</main>
 </SiteLayout>

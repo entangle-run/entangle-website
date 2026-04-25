@@ -1,0 +1,137 @@
+---
+import { ArrowRight, Boxes, Building2, FileLock, KeyRound, Mail, Network, ServerCog, ShieldCheck, Workflow } from '@lucide/astro';
+import CtaStrip from '../components/CtaStrip.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import StatusPill from '../components/StatusPill.astro';
+
+const plannedScope = [
+	{ Icon: ServerCog, title: 'Helm-based install', body: 'Helm chart for the production core, Kubernetes namespace model, customer-operated ingress and TLS, installation preflight and uninstall paths.' },
+	{ Icon: Boxes, title: 'External dependencies', body: 'External PostgreSQL, external object-storage, and external secret-manager modes so customers operate their own production data plane.' },
+	{ Icon: KeyRound, title: 'Enterprise identity', body: 'OIDC at install alpha, then SAML and SCIM at beta. RBAC/ABAC hardening for production access patterns.' },
+	{ Icon: FileLock, title: 'Audit and SIEM', body: 'Audit export, structured log shipping to customer SIEM, retention controls, and tamper-evident audit option on the longer horizon.' },
+	{ Icon: ShieldCheck, title: 'Backup, upgrade, support', body: 'Documented backup and restore drills, upgrade and rollback paths, support bundle, escalation process, and customer runbooks.' },
+	{ Icon: Network, title: 'Network policy and air-gap', body: 'Customer network-policy guidance, support for restricted egress, and an air-gapped install bundle on the long-horizon E4 milestone.' },
+];
+
+const milestones = [
+	{ tag: 'E0', name: 'Enterprise Start Gate', body: 'Confirm the Cloud production core is stable enough to package for customer-operated environments.' },
+	{ tag: 'E1', name: 'Install Alpha', body: 'Helm alpha, external Postgres / object storage / secrets, OIDC, ingress + TLS docs.' },
+	{ tag: 'E2', name: 'Beta', body: 'SAML, SCIM, RBAC/ABAC hardening, SIEM/log export, audit export, backup, upgrade, network policy.' },
+	{ tag: 'E3', name: 'GA', body: 'Supported Helm chart, Terraform examples, compatibility matrix, support bundle, incident process, audit package.' },
+	{ tag: 'E4', name: 'Complete', body: 'Air-gapped install bundle, HA reference architecture, customer-managed keys, advanced retention, data residency.' },
+];
+
+const honestNonClaims = [
+	'No Helm chart, Terraform, or self-host install path exists today.',
+	'No SOC 2, ISO 27001, HIPAA, or other certifications are claimed today.',
+	'No production air-gap or HA story exists yet — those land at E4.',
+	'No support, escalation, or SLA program is offered for self-hosted use today.',
+];
+---
+
+<SiteLayout
+	title="Entangle Enterprise — Customer-operated graph runtime (planned)"
+	description="Entangle Enterprise is the planned customer-operated distribution: Helm install, external dependencies, enterprise identity, audit export, backup, upgrade. Begins after the Cloud production core stabilizes."
+>
+	<main>
+		<section class="pb-16 pt-12 text-white md:pb-24 md:pt-16">
+			<div class="container-wide max-w-5xl">
+				<div class="flex flex-wrap items-center gap-2">
+					<StatusPill status="planned" />
+					<span class="font-mono text-xs font-semibold text-slate-400">Begins after Cloud production core</span>
+				</div>
+				<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">
+					<Building2 class="-mt-4 mr-3 inline-block text-amber-300" size={64} stroke-width={2} />
+					Entangle Enterprise
+				</h1>
+				<p class="mt-6 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
+					The production core, packaged for customer-operated infrastructure. Helm-based install, external dependencies, enterprise identity, audit export, backup, upgrade — for regulated and security-sensitive environments.
+				</p>
+				<div class="mt-8 flex flex-col gap-3 sm:flex-row">
+					<a href="mailto:hello@entangle.run?subject=Entangle%20Enterprise%20interest" class="button-primary">
+						<Mail size={18} stroke-width={2.4} />
+						Talk to us
+					</a>
+					<a href="/local/" class="button-secondary">
+						<Workflow size={18} stroke-width={2.4} />
+						Use Entangle Local today
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-white">
+			<div class="container-wide">
+				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+					<div>
+						<p class="eyebrow text-amber-700">Planned scope</p>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">What Enterprise will package.</h2>
+					</div>
+					<p class="text-lg leading-8 text-slate-600">
+						Enterprise reuses the same control-plane facade and the same graph model as Local and Cloud. The work is in install, external dependencies, identity, audit export, support, and the operational discipline customer-operated production demands.
+					</p>
+				</div>
+				<div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+					{plannedScope.map(({ Icon, title, body }) => (
+						<article class="paper-panel p-6">
+							<Icon size={22} stroke-width={2.2} class="text-amber-700" />
+							<h3 class="mt-4 text-lg font-[820] leading-tight text-slate-950">{title}</h3>
+							<p class="mt-3 text-sm leading-6 text-slate-600">{body}</p>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-[#f7f9fc]">
+			<div class="container-wide">
+				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+					<div>
+						<p class="eyebrow text-amber-700">E-series train</p>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Five milestones to regulated-enterprise maturity.</h2>
+					</div>
+					<p class="text-lg leading-8 text-slate-600">
+						Enterprise development sequences strictly after the Cloud production core stabilizes. Dates are intentionally not promised.
+					</p>
+				</div>
+				<div class="mt-10 grid gap-3">
+					{milestones.map((m) => (
+						<article class="grid gap-5 rounded-[8px] border border-slate-200 bg-white p-5 sm:grid-cols-[88px_1fr]">
+							<div class="font-mono text-sm font-black text-amber-700">{m.tag}</div>
+							<div>
+								<h3 class="text-lg font-[820] leading-tight text-slate-950">{m.name}</h3>
+								<p class="mt-2 text-sm leading-6 text-slate-600">{m.body}</p>
+							</div>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-slate-950 text-white">
+			<div class="container-wide grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+				<div>
+					<p class="eyebrow text-amber-200">Honesty</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] md:text-5xl">What Enterprise is not — yet.</h2>
+					<p class="mt-5 text-lg leading-8 text-slate-300">
+						Enterprise is a destination, not a current product. If the technical context matches yours, please get in touch — we want to design partner conversations early.
+					</p>
+					<a href="/roadmap/" class="mt-7 inline-flex items-center gap-2 text-sm font-black text-amber-200 no-underline hover:text-white">See the full roadmap <ArrowRight size={16} stroke-width={2.4} /></a>
+				</div>
+				<ul class="grid gap-3">
+					{honestNonClaims.map((item) => (
+						<li class="flex items-start gap-3 rounded-[8px] border border-white/10 bg-white/[0.04] p-4 text-sm leading-6 text-slate-200">
+							<span class="mt-2 size-1.5 shrink-0 rounded-full bg-amber-300" aria-hidden="true"></span>
+							<span>{item}</span>
+						</li>
+					))}
+				</ul>
+			</div>
+		</section>
+
+		<CtaStrip
+			heading="Run Local now. Plan for Enterprise together."
+			body="If you operate in a regulated or security-sensitive environment, the conversation should start before the Helm chart, not after."
+		/>
+	</main>
+</SiteLayout>

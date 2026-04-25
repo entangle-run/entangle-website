@@ -3,11 +3,15 @@ import { BookOpen, GitBranch } from '@lucide/astro';
 
 const path = Astro.url.pathname;
 const items = [
-	{ href: '/local/', label: 'Local' },
-	{ href: '/architecture/', label: 'Architecture' },
-	{ href: '/roadmap/', label: 'Roadmap' },
-	{ href: '/blog/', label: 'Blog' },
+	{ href: '/products/', label: 'Products', match: ['/products/', '/local/', '/cloud/', '/enterprise/'] },
+	{ href: '/architecture/', label: 'Architecture', match: ['/architecture/'] },
+	{ href: '/roadmap/', label: 'Roadmap', match: ['/roadmap/'] },
+	{ href: '/blog/', label: 'Blog', match: ['/blog/'] },
 ];
+
+function isActive(matches: string[]) {
+	return matches.some((m) => path === m || path.startsWith(m));
+}
 ---
 
 <header class="relative z-20">
@@ -20,20 +24,21 @@ const items = [
 			{items.map((item) => (
 				<a
 					href={item.href}
-					class={`rounded-[6px] px-3 py-2 no-underline transition hover:bg-white/[0.08] hover:text-white ${path.startsWith(item.href) ? 'bg-white/10 text-white' : ''}`}
+					aria-current={isActive(item.match) ? 'page' : undefined}
+					class={`rounded-[6px] px-3 py-2 no-underline transition hover:bg-white/[0.08] hover:text-white ${isActive(item.match) ? 'bg-white/10 text-white' : ''}`}
 				>
 					{item.label}
 				</a>
 			))}
 		</nav>
 		<div class="order-2 flex items-center gap-2 md:order-3">
-			<a href="/docs/" class="hidden items-center gap-2 rounded-[6px] border border-white/15 px-3 py-2 text-sm font-bold text-slate-100 no-underline transition hover:border-white/30 hover:bg-white/[0.08] md:inline-flex">
-				<BookOpen size={16} strokeWidth={2.2} />
-				Docs
+			<a href="/docs/" class="inline-flex items-center gap-2 rounded-[6px] border border-white/15 px-3 py-2 text-sm font-bold text-slate-100 no-underline transition hover:border-white/30 hover:bg-white/[0.08]">
+				<BookOpen size={16} stroke-width={2.2} />
+				<span class="hidden sm:inline">Docs</span>
 			</a>
 			<a href="https://github.com/entangle-run/entangle" class="inline-flex items-center gap-2 rounded-[6px] bg-teal-100 px-3 py-2 text-sm font-bold text-slate-950 no-underline transition hover:bg-white" rel="noreferrer">
-				<GitBranch size={16} strokeWidth={2.2} />
-				GitHub
+				<GitBranch size={16} stroke-width={2.2} />
+				<span class="hidden sm:inline">GitHub</span>
 			</a>
 		</div>
 	</div>

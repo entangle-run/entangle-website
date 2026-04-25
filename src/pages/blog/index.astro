@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import { ArrowRight, Rss } from '@lucide/astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const dateFormatter = new Intl.DateTimeFormat('en', {
+	day: '2-digit',
+	month: 'short',
+	year: 'numeric',
+});
+---
+
+<SiteLayout
+	title="Blog - Entangle"
+	description="Public product notes, architecture writing, and release updates from Entangle."
+>
+	<main>
+		<section class="pb-16 pt-12 text-white md:pb-24 md:pt-18">
+			<div class="container-wide flex flex-col justify-between gap-8 md:flex-row md:items-end">
+				<div>
+					<p class="eyebrow text-teal-200">Newsroom</p>
+					<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">Product notes for graph-native AI work.</h1>
+					<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
+						Release notes, architecture decisions, and public roadmap updates for Entangle.
+					</p>
+				</div>
+				<a href="/rss.xml" class="button-secondary">
+					<Rss size={18} strokeWidth={2.4} />
+					RSS
+				</a>
+			</div>
+		</section>
+
+		<section class="section-pad bg-[#f7f9fc]">
+			<div class="container-wide">
+				<div class="grid gap-5">
+					{posts.map((post) => (
+						<a href={`/blog/${post.id}/`} class="paper-panel grid gap-6 p-6 no-underline transition hover:-translate-y-0.5 hover:border-teal-300 md:grid-cols-[1fr_auto]">
+							<div>
+								<div class="flex flex-wrap gap-2">
+									{post.data.tags.map((tag) => <span class="rounded-[4px] bg-slate-100 px-2 py-1 text-xs font-black uppercase tracking-[0.12em] text-slate-500">{tag}</span>)}
+								</div>
+								<h2 class="mt-5 text-3xl font-[850] leading-tight text-slate-950">{post.data.title}</h2>
+								<p class="mt-3 max-w-3xl text-sm leading-6 text-slate-600">{post.data.description}</p>
+							</div>
+							<div class="flex items-center justify-between gap-4 text-sm font-bold text-slate-500 md:block md:text-right">
+								<span>{dateFormatter.format(post.data.date)}</span>
+								<span class="inline-flex items-center gap-2 text-teal-700 md:mt-6">
+									Read
+									<ArrowRight size={16} strokeWidth={2.4} />
+								</span>
+							</div>
+						</a>
+					))}
+				</div>
+			</div>
+		</section>
+	</main>
+</SiteLayout>

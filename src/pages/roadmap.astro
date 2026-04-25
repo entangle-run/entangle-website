@@ -1,0 +1,70 @@
+---
+import { ArrowRight, Building2, Cloud, ShieldCheck, Workflow } from '@lucide/astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+	title="Roadmap - Entangle"
+	description="The Entangle roadmap sequences three finished products: Entangle Local, Entangle Cloud, and Entangle Enterprise."
+>
+	<main>
+		<section class="pb-16 pt-12 text-white md:pb-24 md:pt-18">
+			<div class="container-wide max-w-5xl">
+				<p class="eyebrow text-teal-200">Roadmap</p>
+				<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">Three products, built in the order that keeps the model honest.</h1>
+				<p class="mt-6 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
+					Entangle Local is finished first. Cloud work begins after the local product reaches its gate. Enterprise follows after the managed production core is mature enough to package.
+				</p>
+			</div>
+		</section>
+
+		<section class="section-pad bg-white">
+			<div class="container-wide grid gap-5">
+				{[
+					[Workflow, '1', 'Entangle Local', 'Complete local runtime and operator workbench.', 'Current focus: R1 Local Operator Baseline, then preview, workbench, reliability, and GA.'],
+					[Cloud, '2', 'Entangle Cloud', 'Managed graph-native runtime for teams.', 'Begins after Local GA gate. Focus: workspaces, persistence, identity, authorization, audit, integrations, and hosted reliability.'],
+					[Building2, '3', 'Entangle Enterprise', 'Customer-operated distribution for controlled environments.', 'Begins after Cloud production core stabilizes. Focus: self-hosted deployment, external identity, backup, upgrades, observability, and audit export.'],
+				].map(([Icon, order, title, headline, body]) => (
+					<article class="paper-panel grid gap-6 p-6 md:grid-cols-[86px_1fr_auto] md:items-center">
+						<div class="grid size-16 place-items-center rounded-[8px] border border-teal-200 bg-teal-50 font-mono text-xl font-black text-teal-800">{order}</div>
+						<div>
+							<div class="flex items-center gap-3">
+								<Icon size={23} strokeWidth={2.3} class="text-slate-800" />
+								<h2 class="text-2xl font-[850] text-slate-950">{title}</h2>
+							</div>
+							<p class="mt-3 text-lg font-bold text-slate-800">{headline}</p>
+							<p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{body}</p>
+						</div>
+						<a href={order === '1' ? '/local/' : '/docs/roadmap/'} class="inline-flex items-center gap-2 text-sm font-black text-teal-700 no-underline hover:text-slate-950">
+							Details
+							<ArrowRight size={16} strokeWidth={2.4} />
+						</a>
+					</article>
+				))}
+			</div>
+		</section>
+
+		<section class="section-pad bg-slate-950 text-white">
+			<div class="container-wide grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
+				<div>
+					<p class="eyebrow text-lime-200">Audit loop</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.08] md:text-5xl">Every release has a readiness gate.</h2>
+				</div>
+				<div class="grid gap-4 md:grid-cols-2">
+					{[
+						['Code truth', 'Website and docs must match actual repository behavior.'],
+						['Operational proof', 'Checks, local preflight, and smoke paths must pass before a public release.'],
+						['Product boundary', 'Claims must stay inside what the current product can honestly do.'],
+						['Reconsideration', 'If audit finds a mismatch, scope is cut or implementation is fixed before release.'],
+					].map(([title, body]) => (
+						<div class="rounded-[8px] border border-white/10 bg-white/[0.06] p-5">
+							<ShieldCheck size={21} strokeWidth={2.3} class="text-lime-200" />
+							<h3 class="mt-4 text-xl font-[820]">{title}</h3>
+							<p class="mt-2 text-sm leading-6 text-slate-400">{body}</p>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+	</main>
+</SiteLayout>

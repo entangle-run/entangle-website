@@ -1,0 +1,85 @@
+---
+import { BookOpen, Boxes, GitBranch, Network, Radio, ShieldCheck, Terminal, Workflow } from '@lucide/astro';
+import graph from '../assets/entangle-graph.svg';
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+	title="Architecture - Entangle"
+	description="Public architecture overview for Entangle's graph-native local runtime, control plane, runners, relay, Studio, CLI, and artifact handoff."
+>
+	<main>
+		<section class="pb-16 pt-12 text-white md:pb-24 md:pt-18">
+			<div class="container-wide grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+				<div>
+					<p class="eyebrow text-teal-200">Architecture</p>
+					<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">A runtime graph, not a chatbot wrapper.</h1>
+					<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
+						Entangle makes the operating topology explicit: nodes execute, edges authorize coordination, messages move intent, and artifacts carry work between sessions.
+					</p>
+					<a href="/docs/architecture/" class="button-primary mt-8">
+						<BookOpen size={18} strokeWidth={2.4} />
+						Read architecture docs
+					</a>
+				</div>
+				<div class="panel overflow-hidden bg-slate-950/80 p-3">
+					<img src={graph.src} alt="Entangle graph runtime diagram" class="w-full rounded-[6px]" />
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-white">
+			<div class="container-wide">
+				<div class="grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
+					<div>
+						<p class="eyebrow text-teal-700">Runtime shape</p>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.08] text-slate-950 md:text-5xl">Ownership boundaries stay visible.</h2>
+					</div>
+					<div class="grid gap-4 md:grid-cols-2">
+						{[
+							[Workflow, 'Host owns control-plane truth', 'Graph state, admission, materialization, inspection APIs, and reconciliation belong at the host boundary.'],
+							[Terminal, 'Runners own node execution', 'Each active node executes inside an explicit runner process with a separate lifecycle.'],
+							[Network, 'Studio and CLI are clients', 'Visual and headless surfaces read host truth and send mutations through the same boundary.'],
+							[GitBranch, 'Artifacts carry work', 'Messages coordinate; artifacts preserve and hand off work products. Git is the first backend.'],
+						].map(([Icon, title, body]) => (
+							<article class="paper-panel p-6">
+								<Icon size={24} strokeWidth={2.3} class="text-teal-700" />
+								<h3 class="mt-5 text-xl font-[820] leading-tight text-slate-950">{title}</h3>
+								<p class="mt-3 text-sm leading-6 text-slate-600">{body}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-[#eef6f4]">
+			<div class="container-wide grid gap-10 lg:grid-cols-[1fr_1fr]">
+				<div>
+					<p class="eyebrow text-teal-800">Local profile</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.08] text-slate-950 md:text-5xl">The public baseline is intentionally concrete.</h2>
+					<p class="mt-5 text-lg leading-8 text-slate-700">
+						The current repository does not describe an abstract platform only. It contains a local composition of services that can be checked, started, and tested.
+					</p>
+				</div>
+				<div class="paper-panel p-6">
+					<div class="grid gap-4">
+						{[
+							[Boxes, 'TypeScript contracts and validators'],
+							[Workflow, 'entangle-host control plane'],
+							[Terminal, 'entangle-runner execution process'],
+							[Radio, 'strfry local Nostr relay'],
+							[GitBranch, 'Gitea-backed artifact handoff'],
+							[ShieldCheck, 'Preflight and smoke validation'],
+						].map(([Icon, label]) => (
+							<div class="flex items-center gap-3 border-b border-slate-200 pb-4 last:border-b-0 last:pb-0">
+								<Icon size={20} strokeWidth={2.3} class="text-slate-700" />
+								<span class="text-sm font-bold text-slate-800">{label}</span>
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+</SiteLayout>

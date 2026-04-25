@@ -1,0 +1,223 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+@import "tailwindcss";
+
+:root {
+	color-scheme: light;
+	--entangle-ink: #080a12;
+	--entangle-ink-2: #111827;
+	--entangle-paper: #f7f9fc;
+	--entangle-line: rgba(15, 23, 42, 0.12);
+	--entangle-cyan: #2dd4bf;
+	--entangle-lime: #a3e635;
+	--entangle-amber: #f59e0b;
+	--entangle-coral: #f97362;
+	--sl-font: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+	--sl-font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Consolas, monospace;
+	--sl-color-accent-low: #ccfbf1;
+	--sl-color-accent: #0f766e;
+	--sl-color-accent-high: #0f172a;
+}
+
+html {
+	scroll-behavior: smooth;
+	background: var(--entangle-paper);
+}
+
+body {
+	margin: 0;
+	font-family: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+	text-rendering: optimizeLegibility;
+	background: var(--entangle-paper);
+	color: var(--entangle-ink);
+	letter-spacing: 0;
+}
+
+code,
+pre,
+kbd,
+samp {
+	font-family: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+::selection {
+	background: rgba(45, 212, 191, 0.3);
+}
+
+.site-shell {
+	min-height: 100vh;
+	background:
+		linear-gradient(180deg, rgba(8, 10, 18, 0.98), rgba(8, 10, 18, 0.92) 620px, #f7f9fc 621px),
+		#f7f9fc;
+}
+
+.noise-layer {
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background-image:
+		linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+	background-size: 44px 44px;
+	mask-image: linear-gradient(to bottom, black 0, black 48rem, transparent 100%);
+}
+
+.container-wide {
+	width: min(100% - 32px, 1180px);
+	margin-inline: auto;
+}
+
+.panel {
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.055);
+	box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+}
+
+.paper-panel {
+	border: 1px solid var(--entangle-line);
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.84);
+	box-shadow: 0 18px 60px rgba(15, 23, 42, 0.08);
+}
+
+.eyebrow {
+	font-size: 0.75rem;
+	font-weight: 760;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.text-balance {
+	text-wrap: balance;
+}
+
+.button-primary,
+.button-secondary,
+.button-dark {
+	display: inline-flex;
+	min-height: 44px;
+	align-items: center;
+	justify-content: center;
+	gap: 0.55rem;
+	border-radius: 6px;
+	padding: 0.72rem 1rem;
+	font-size: 0.92rem;
+	font-weight: 720;
+	line-height: 1;
+	text-decoration: none;
+	transition:
+		transform 160ms ease,
+		border-color 160ms ease,
+		background-color 160ms ease,
+		color 160ms ease;
+}
+
+.button-primary {
+	border: 1px solid rgba(45, 212, 191, 0.7);
+	background: #ccfbf1;
+	color: #071113;
+}
+
+.button-secondary {
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	background: rgba(255, 255, 255, 0.06);
+	color: #f8fafc;
+}
+
+.button-dark {
+	border: 1px solid rgba(15, 23, 42, 0.12);
+	background: #0b0f19;
+	color: #f8fafc;
+}
+
+.button-primary:hover,
+.button-secondary:hover,
+.button-dark:hover {
+	transform: translateY(-1px);
+}
+
+.button-secondary:hover {
+	border-color: rgba(255, 255, 255, 0.36);
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.button-dark:hover {
+	background: #141a27;
+}
+
+.section-pad {
+	padding-block: clamp(4.5rem, 8vw, 7.5rem);
+}
+
+.prose-slim {
+	color: #334155;
+	font-size: 1rem;
+	line-height: 1.75;
+}
+
+.prose-slim :where(h2, h3) {
+	color: #0f172a;
+	line-height: 1.16;
+}
+
+.prose-slim h2 {
+	margin-top: 2.25rem;
+	font-size: clamp(1.7rem, 3vw, 2.35rem);
+}
+
+.prose-slim h3 {
+	margin-top: 1.6rem;
+	font-size: 1.25rem;
+}
+
+.prose-slim a {
+	color: #0f766e;
+	font-weight: 650;
+	text-decoration: none;
+}
+
+.prose-slim a:hover {
+	text-decoration: underline;
+}
+
+.prose-slim pre {
+	overflow-x: auto;
+	border-radius: 8px;
+	border: 1px solid rgba(15, 23, 42, 0.14);
+	background: #0b0f19;
+	color: #e5e7eb;
+	padding: 1rem;
+}
+
+.prose-slim code:not(pre code) {
+	border-radius: 4px;
+	background: rgba(15, 23, 42, 0.08);
+	padding: 0.12rem 0.28rem;
+	color: #111827;
+	font-size: 0.92em;
+}
+
+@media (max-width: 760px) {
+	.container-wide {
+		width: min(100% - 24px, 1180px);
+	}
+
+	.button-primary,
+	.button-secondary,
+	.button-dark {
+		width: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+	}
+}

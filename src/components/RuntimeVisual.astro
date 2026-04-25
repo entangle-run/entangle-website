@@ -1,0 +1,94 @@
+---
+import { GitBranch, Radio, ShieldCheck, Terminal, Workflow } from '@lucide/astro';
+---
+
+<div class="panel overflow-hidden" aria-label="Entangle runtime visual">
+	<div class="flex items-center justify-between border-b border-white/[0.12] bg-white/[0.07] px-4 py-3">
+		<div class="flex items-center gap-2">
+			<span class="size-2.5 rounded-full bg-[#f97362]"></span>
+			<span class="size-2.5 rounded-full bg-[#f59e0b]"></span>
+			<span class="size-2.5 rounded-full bg-[#2dd4bf]"></span>
+		</div>
+		<div class="rounded-[4px] border border-white/[0.12] px-2 py-1 font-mono text-[11px] font-semibold text-slate-400">local graph live</div>
+	</div>
+	<div class="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
+		<div class="relative min-h-[460px] border-b border-white/[0.12] p-5 lg:border-b-0 lg:border-r">
+			<div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:34px_34px] opacity-70"></div>
+			<div class="relative h-full min-h-[420px]">
+				<div class="absolute left-[8%] top-[45%] rounded-[6px] border border-teal-300/50 bg-teal-200 px-4 py-3 text-slate-950 shadow-2xl shadow-teal-950/25">
+					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em]">User</p>
+					<p class="mt-1 text-sm font-bold">operator</p>
+				</div>
+				<div class="absolute left-[34%] top-[14%] rounded-[6px] border border-cyan-200/[0.45] bg-slate-950/[0.85] px-4 py-3 text-slate-50 shadow-2xl">
+					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-cyan-200">Host</p>
+					<p class="mt-1 text-sm font-bold">control plane</p>
+				</div>
+				<div class="absolute right-[9%] top-[25%] rounded-[6px] border border-lime-300/45 bg-lime-200 px-4 py-3 text-slate-950 shadow-2xl shadow-lime-950/20">
+					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em]">Runner</p>
+					<p class="mt-1 text-sm font-bold">node executor</p>
+				</div>
+				<div class="absolute bottom-[13%] left-[31%] rounded-[6px] border border-amber-300/50 bg-amber-200 px-4 py-3 text-slate-950 shadow-2xl shadow-amber-950/20">
+					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em]">Artifact</p>
+					<p class="mt-1 text-sm font-bold">git handoff</p>
+				</div>
+				<div class="absolute bottom-[23%] right-[11%] rounded-[6px] border border-white/20 bg-white/10 px-4 py-3 text-slate-50 shadow-2xl backdrop-blur">
+					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-slate-300">Relay</p>
+					<p class="mt-1 text-sm font-bold">signed messages</p>
+				</div>
+				<svg class="absolute inset-0 h-full w-full" viewBox="0 0 620 420" fill="none" aria-hidden="true">
+					<path d="M92 225 L250 83 L515 129 L468 326 L238 330 L92 225 Z" stroke="#2dd4bf" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".95" />
+					<path d="M250 83 L238 330 M515 129 L238 330 M92 225 L468 326" stroke="#f8fafc" stroke-width="1.2" stroke-dasharray="7 9" opacity=".32" />
+				</svg>
+			</div>
+		</div>
+		<div class="bg-slate-950/[0.72] p-5">
+			<div class="grid gap-3">
+				<div class="rounded-[6px] border border-white/10 bg-white/[0.06] p-4">
+					<div class="flex items-center gap-3">
+						<Workflow class="text-teal-200" size={20} strokeWidth={2.2} />
+						<div>
+							<p class="text-sm font-black text-white">Topology is runtime state</p>
+							<p class="mt-1 text-xs leading-5 text-slate-400">Nodes, edges, messages, approvals, and artifacts stay inspectable.</p>
+						</div>
+					</div>
+				</div>
+				<div class="rounded-[6px] border border-white/10 bg-white/[0.06] p-4">
+					<div class="flex items-center gap-3">
+						<Terminal class="text-lime-200" size={20} strokeWidth={2.2} />
+						<div>
+							<p class="text-sm font-black text-white">CLI and Studio share the same truth</p>
+							<p class="mt-1 text-xs leading-5 text-slate-400">Headless workflows and visual operation hit the host boundary.</p>
+						</div>
+					</div>
+				</div>
+				<div class="rounded-[6px] border border-white/10 bg-white/[0.06] p-4">
+					<div class="flex items-center gap-3">
+						<GitBranch class="text-amber-200" size={20} strokeWidth={2.2} />
+						<div>
+							<p class="text-sm font-black text-white">Artifacts carry work</p>
+							<p class="mt-1 text-xs leading-5 text-slate-400">Git-backed materialization keeps handoff outside the chat transcript.</p>
+						</div>
+					</div>
+				</div>
+				<div class="rounded-[6px] border border-white/10 bg-white/[0.06] p-4">
+					<div class="flex items-center gap-3">
+						<Radio class="text-cyan-200" size={20} strokeWidth={2.2} />
+						<div>
+							<p class="text-sm font-black text-white">Signed coordination lane</p>
+							<p class="mt-1 text-xs leading-5 text-slate-400">The local profile uses Nostr relay semantics for message flow.</p>
+						</div>
+					</div>
+				</div>
+				<div class="rounded-[6px] border border-white/10 bg-white/[0.06] p-4">
+					<div class="flex items-center gap-3">
+						<ShieldCheck class="text-orange-200" size={20} strokeWidth={2.2} />
+						<div>
+							<p class="text-sm font-black text-white">Approval surfaces are explicit</p>
+							<p class="mt-1 text-xs leading-5 text-slate-400">The architecture is shaped for review, repair, and audit loops.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

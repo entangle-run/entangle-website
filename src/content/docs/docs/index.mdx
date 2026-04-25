@@ -1,0 +1,43 @@
+---
+title: Entangle Docs
+description: Public documentation for Entangle Local and the graph-native runtime model.
+template: splash
+hero:
+  tagline: Build, run, inspect, and govern graph-native AI organizations.
+  image:
+    file: ../../../assets/entangle-graph.svg
+  actions:
+    - text: Get Started
+      link: /docs/getting-started/
+      icon: right-arrow
+    - text: View on GitHub
+      link: https://github.com/entangle-run/entangle
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+Entangle is a graph-native runtime for AI organizations.
+
+The current public focus is **Entangle Local**: a local runtime, Studio, CLI,
+relay, runners, and git-backed artifact flow for technical users who want to
+inspect the architecture and run the local profile.
+
+<CardGrid>
+	<Card title="Getting started" icon="rocket">
+		Clone the public repository, install dependencies, run checks, and start
+		the local profile.
+	</Card>
+	<Card title="Entangle Local" icon="laptop">
+		Understand the first product line, release scope, and what the local
+		boundary does and does not claim.
+	</Card>
+	<Card title="Core concepts" icon="setting">
+		Learn how nodes, edges, host, runners, messages, artifacts, and Studio fit
+		together.
+	</Card>
+	<Card title="Architecture" icon="document">
+		Read the public architecture overview for the current local runtime.
+	</Card>
+</CardGrid>

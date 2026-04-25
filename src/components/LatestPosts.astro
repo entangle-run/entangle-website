@@ -1,0 +1,51 @@
+---
+import { ArrowRight } from '@lucide/astro';
+
+interface Post {
+	id: string;
+	data: {
+		title: string;
+		description: string;
+		date: Date;
+		tags: string[];
+	};
+}
+
+interface Props {
+	posts: Post[];
+}
+
+const { posts } = Astro.props;
+const dateFormatter = new Intl.DateTimeFormat('en', {
+	day: '2-digit',
+	month: 'short',
+	year: 'numeric',
+});
+---
+
+<section class="section-pad bg-white">
+	<div class="container-wide">
+		<div class="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+			<div>
+				<p class="eyebrow text-teal-700">Newsroom</p>
+				<h2 class="mt-3 max-w-3xl text-balance text-3xl font-[840] leading-[1.08] text-slate-950 md:text-5xl">Public notes from the Entangle roadmap.</h2>
+			</div>
+			<a href="/blog/" class="inline-flex items-center gap-2 text-sm font-black text-slate-950 no-underline hover:text-teal-700">
+				View all posts
+				<ArrowRight size={16} strokeWidth={2.4} />
+			</a>
+		</div>
+		<div class="mt-10 grid gap-4 md:grid-cols-2">
+			{posts.map((post) => (
+				<a href={`/blog/${post.id}/`} class="paper-panel block p-6 no-underline transition hover:-translate-y-0.5 hover:border-teal-300">
+					<div class="flex flex-wrap gap-2">
+						{post.data.tags.slice(0, 2).map((tag) => <span class="rounded-[4px] bg-slate-100 px-2 py-1 text-xs font-black uppercase tracking-[0.12em] text-slate-500">{tag}</span>)}
+					</div>
+					<h3 class="mt-5 text-2xl font-[820] leading-tight text-slate-950">{post.data.title}</h3>
+					<p class="mt-3 text-sm leading-6 text-slate-600">{post.data.description}</p>
+					<p class="mt-6 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">{dateFormatter.format(post.data.date)}</p>
+				</a>
+			))}
+		</div>
+	</div>
+</section>

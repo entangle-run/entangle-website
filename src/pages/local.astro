@@ -1,0 +1,133 @@
+---
+import { ArrowRight, BookOpen, CheckCircle2, GitBranch, Radio, Route, Terminal, Workflow } from '@lucide/astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+	title="Entangle Local - Local graph-native runtime"
+	description="Entangle Local is the first complete Entangle product: a local graph-native runtime, Studio, CLI, relay, runners, and artifact workflow for AI organizations."
+>
+	<main>
+		<section class="pb-16 pt-12 text-white md:pb-24 md:pt-18">
+			<div class="container-wide grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+				<div>
+					<p class="eyebrow text-teal-200">Product one</p>
+					<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">Entangle Local</h1>
+					<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
+						A local operator runtime for building and inspecting graph-native AI organizations before any cloud or enterprise packaging work begins.
+					</p>
+					<div class="mt-8 flex flex-col gap-3 sm:flex-row">
+						<a href="/docs/getting-started/" class="button-primary">
+							<BookOpen size={18} strokeWidth={2.4} />
+							Get started
+						</a>
+						<a href="https://github.com/entangle-run/entangle" class="button-secondary">
+							<GitBranch size={18} strokeWidth={2.4} />
+							Repository
+						</a>
+					</div>
+				</div>
+				<div class="panel p-5">
+					<div class="grid gap-3 sm:grid-cols-2">
+						{[
+							['Host', 'Control plane and inspection APIs'],
+							['Runner', 'One execution process per active node'],
+							['Studio', 'Visual operator surface'],
+							['CLI', 'Headless local workflows'],
+							['Relay', 'Local Nostr coordination lane'],
+							['Artifacts', 'Gitea-backed handoff path'],
+						].map(([label, value]) => (
+							<div class="rounded-[6px] border border-white/10 bg-white/[0.06] p-4">
+								<p class="font-mono text-xs font-black uppercase tracking-[0.14em] text-teal-200">{label}</p>
+								<p class="mt-2 text-sm leading-6 text-slate-300">{value}</p>
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-white">
+			<div class="container-wide">
+				<div class="max-w-3xl">
+					<p class="eyebrow text-teal-700">What ships first</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.08] text-slate-950 md:text-5xl">R1 is useful as a serious local operator baseline.</h2>
+					<p class="mt-5 text-lg leading-8 text-slate-600">
+						R1 is not a cloud product. It should be judged as a local product release: can a technical user clone it, run it, inspect the graph, understand the boundaries, and validate the architecture without private context?
+					</p>
+				</div>
+				<div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+					<FeatureCard kicker="Run" title="Local profile" description="Docker Compose path for Studio, host, relay, Gitea, and runner image build." />
+					<FeatureCard kicker="Inspect" title="Studio and CLI" description="Two surfaces over the same host-owned control-plane truth." />
+					<FeatureCard kicker="Validate" title="Preflight and smoke" description="Strict local checks plus smoke commands to verify the baseline path." />
+					<FeatureCard kicker="Explain" title="Public docs" description="Getting started, concepts, architecture, release boundaries, and roadmap." />
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-[#eef6f4]">
+			<div class="container-wide grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+				<div>
+					<p class="eyebrow text-teal-800">Incremental releases</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.08] text-slate-950 md:text-5xl">The local product gets finished in public stages.</h2>
+					<p class="mt-5 text-lg leading-8 text-slate-700">
+						The purpose of the release ladder is to preserve what is already implemented while making each public milestone coherent on its own.
+					</p>
+				</div>
+				<div class="grid gap-4">
+					{[
+						['R1', 'Local Operator Baseline', 'Architecture-proof release with public docs, strict checks, local compose path, Studio/CLI visibility, and artifact handoff.'],
+						['R1.1', 'Local Operator Preview', 'More complete user path: graph state browsing, clearer diagnostics, package admission polish, and failure guidance.'],
+						['R1.2', 'Local Workbench', 'Builder workflows: graph templates, task sessions, artifact explorer, replay surfaces, and operator recovery actions.'],
+						['R1.3', 'Local Reliability', 'Release gates, install path, test hardening, destructive-action guardrails, and documentation for repeated use.'],
+						['GA', 'Entangle Local', 'A finished local product for serious individual and team evaluation, still distinct from managed cloud production.'],
+					].map(([release, title, body]) => (
+						<article class="paper-panel grid gap-4 p-5 sm:grid-cols-[82px_1fr]">
+							<div class="font-mono text-sm font-black text-teal-700">{release}</div>
+							<div>
+								<h3 class="text-xl font-[820] leading-tight text-slate-950">{title}</h3>
+								<p class="mt-2 text-sm leading-6 text-slate-600">{body}</p>
+							</div>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-slate-950 text-white">
+			<div class="container-wide">
+				<div class="max-w-3xl">
+					<p class="eyebrow text-lime-200">Boundaries</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.08] md:text-5xl">Local is a complete product, not a production SaaS claim.</h2>
+					<p class="mt-5 text-lg leading-8 text-slate-300">
+						The product is allowed to be excellent inside its boundary. It should not claim hosted tenancy, billing, production identity, or enterprise deployment before those products exist.
+					</p>
+				</div>
+				<div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+					{[
+						[Workflow, 'Graph runtime', 'Operate the topology as a first-class object.'],
+						[Terminal, 'Developer surface', 'CLI and Studio paths for local work.'],
+						[Radio, 'Coordination', 'Signed local message transport semantics.'],
+						[Route, 'Release gates', 'Audit loops before every increment.'],
+					].map(([Icon, title, body]) => (
+						<div class="rounded-[8px] border border-white/10 bg-white/[0.06] p-5">
+							<Icon size={22} strokeWidth={2.3} class="text-teal-200" />
+							<h3 class="mt-4 text-xl font-[820]">{title}</h3>
+							<p class="mt-2 text-sm leading-6 text-slate-400">{body}</p>
+						</div>
+					))}
+				</div>
+				<div class="mt-12 rounded-[8px] border border-white/10 bg-white/[0.06] p-6">
+					<h3 class="flex items-center gap-3 text-xl font-[820]">
+						<CheckCircle2 class="text-lime-200" size={22} strokeWidth={2.4} />
+						R1 acceptance gate
+					</h3>
+					<p class="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+						R1 is presentable when the public website, docs, repository checks, local preflight, smoke path, and honest product boundaries all agree with the actual codebase.
+					</p>
+				</div>
+			</div>
+		</section>
+	</main>
+</SiteLayout>

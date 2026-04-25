@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteNav from '../components/SiteNav.astro';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'Entangle - Graph-native runtime for AI organizations',
+	description = 'Entangle is the graph-native runtime for building, running, inspecting, and governing local AI organizations before they move to cloud and enterprise environments.',
+} = Astro.props;
+
+const site = Astro.site ?? new URL('https://entangle.run');
+const canonical = new URL(Astro.url.pathname, site);
+const ogImage = new URL('/og.svg', site);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="canonical" href={canonical.href} />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Entangle" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical.href} />
+		<meta property="og:image" content={ogImage.href} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage.href} />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+	</head>
+	<body>
+		<div class="site-shell">
+			<div class="noise-layer"></div>
+			<SiteNav />
+			<slot />
+			<SiteFooter />
+		</div>
+	</body>
+</html>

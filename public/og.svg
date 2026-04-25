@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Entangle</title>
+  <desc id="desc">Graph-native runtime for AI organizations.</desc>
+  <rect width="1200" height="630" fill="#080a12"/>
+  <path d="M0 520h1200" stroke="#2dd4bf" stroke-width="2" opacity=".38"/>
+  <path d="M136 372 330 190l302 62 248 174-280 82-270-78Z" fill="none" stroke="#2dd4bf" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M330 190 600 508M632 252 330 430M136 372 632 252M880 426 330 190" fill="none" stroke="#f8fafc" stroke-width="3" stroke-dasharray="14 14" opacity=".36"/>
+  <g fill="#f8fafc" stroke="#2dd4bf" stroke-width="6">
+    <circle cx="136" cy="372" r="34"/>
+    <circle cx="330" cy="190" r="44"/>
+    <circle cx="632" cy="252" r="40"/>
+    <circle cx="880" cy="426" r="42"/>
+    <circle cx="600" cy="508" r="38"/>
+    <circle cx="330" cy="430" r="36"/>
+  </g>
+  <text x="80" y="104" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="58" font-weight="820">Entangle</text>
+  <text x="80" y="166" fill="#99f6e4" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="720">Graph-native runtime for AI organizations</text>
+  <text x="80" y="566" fill="#94a3b8" font-family="JetBrains Mono, ui-monospace, monospace" font-size="22" font-weight="700">local-first / explicit topology / artifact handoff</text>
+</svg>

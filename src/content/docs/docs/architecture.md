@@ -1,35 +1,129 @@
 ---
 title: Architecture
-description: Public architecture overview.
+description: The federated runtime model and the main flows inside Entangle.
 ---
 
-Entangle is designed as a graph-native runtime, not a chatbot wrapper.
+Entangle is a federated runtime for distributed organizations of agents
+and users. The architecture keeps topology, execution, coordination,
+artifacts, memory, approval, and operator surfaces separate enough to
+inspect and govern, and connected by signed messages instead of shared
+state.
 
-## Current Local Architecture
+## Ownership model
 
-The current public repository contains:
+Four ownership rules:
 
-- TypeScript contracts in shared packages.
-- Semantic validators over graph, package, transport, and runtime contracts.
-- `entangle-host` as the control plane.
-- `entangle-runner` as the per-node execution process.
-- Studio as the visual client.
-- CLI as the headless client.
-- Local Docker Compose profile.
-- Local Nostr relay through `strfry`.
-- Local Gitea-backed artifact handoff.
+- the Host owns desired state and a Host Authority signing key;
+- runners own per-node execution and runner-signed observations, wherever
+  those runners are placed;
+- user nodes own user intent through their own signing keys;
+- Studio and CLI are Host clients; the User Client is the participant
+  surface for a running human node.
 
-## Boundary Rules
+Federation only works when these boundaries hold. Entangle is designed for
+an organization of actors, not a master orchestrator hiding every agent
+behind one process.
 
-- The host owns control-plane state.
-- Runners own runner-local lifecycle mutation.
-- Studio and CLI are clients.
-- Messages coordinate work.
-- Artifacts carry work.
-- Git is the first artifact backend, not the only possible backend.
+## Layers
 
-## Why This Shape
+Five layers, each replaceable on its own boundary:
 
-Entangle keeps topology, authority, and handoff visible. This makes it easier
-to inspect what happened, understand which node owns which work, and evolve
-from a local runtime toward managed Cloud and Enterprise products.
+1. User-facing surfaces: Studio as the operator control room, CLI as the
+   headless surface, and User Client as the human-node participant
+   interface.
+2. Host control plane: resource-oriented routes for nodes, edges,
+   runtimes, sessions, turns, approvals, artifacts, recovery, principals,
+   events, plus a projection store built from signed observations.
+3. Runners: generic at start, node-specific only after a signed assignment,
+   and able to run on separate machines.
+4. Event fabric: Nostr relays carrying control, observe, and A2A events,
+   NIP-59 wrapped, with dedicated rumor kinds and dedup keys.
+5. Artifact backend: a git remote (Gitea today; locator stays portable)
+   with publish, retrieve, and lineage by git log.
+
+## Host responsibilities
+
+- Host Authority key management: status, export/import, rotation.
+- Desired graph state: nodes, edges, revisions, package admission,
+  catalogs, principals.
+- Runner trust: registration, trust state, revocation, heartbeat, stale
+  status.
+- Runtime assignment: signed Host->runner assignments with leases and
+  receipts.
+- Projection store: rebuilds session, turn, approval, artifact, memory,
+  source-change, recovery, and event state from signed observations.
+- Mutation APIs consumed by Studio and CLI.
+
+The Host does not reach into runner-local filesystems for runtime truth.
+
+## Runner responsibilities
+
+A runner owns execution for one assigned node:
+
+- joins by signed hello;
+- consumes the signed assignment and resolves effective runtime context;
+- receives signed coordination messages and validates routes;
+- builds engine turn requests from graph, peer, memory, artifact, policy,
+  and session context;
+- interacts with the configured node runtime engine;
+- records turns, engine outcomes, and bounded execution insights;
+- materializes artifacts to git;
+- updates structured node memory;
+- records approval lifecycle;
+- harvests source workspace changes;
+- emits signed observations and graph-valid replies or handoffs.
+
+## Coordination flow
+
+1. A user node or agent node sends a signed task or handoff message.
+2. The relay delivers the wrapped event.
+3. The receiving runner verifies route, message shape, and signer.
+4. The runner runs the turn in the node runtime context.
+5. The runner emits signed observations carrying turns, artifacts,
+   approvals, memory updates, source changes, and trace events.
+6. The Host updates its projection. Studio and CLI read from the projection.
+
+## Artifact flow
+
+Artifacts are not large message payloads. The runner materializes work
+products into a git-backed workspace, commits, and publishes through the
+configured git remote. Downstream nodes retrieve published artifacts by
+reference. Lineage is git log; signing follows git's existing model.
+
+## Memory flow
+
+Runner-owned memory keeps runtime context durable:
+
+- deterministic task pages record work after each turn;
+- recent-work summaries keep fresh context visible;
+- focused registers keep stable facts, decisions, open questions, next
+  actions, and resolutions separate;
+- lifecycle discipline reconciles closures across registers;
+- bounded model-guided synthesis updates the focused registers without
+  taking ownership of the wiki write path.
+
+Memory is node-owned. It is not a global hidden scratchpad.
+
+## Engine boundary
+
+The default per-node coding engine is OpenCode, behind an adapter. The
+internal `agent-engine` package owns Anthropic and OpenAI-compatible
+adapters with normalized usage and stop metadata. Provider details stay
+behind the adapter; the runner contract is provider-neutral.
+
+Entangle owns graph identity, policy, workspace roots, artifact handoff,
+memory, approval, and inspection around the engine. The engine is a
+replaceable execution brain, not the product boundary.
+
+## Deployment shapes
+
+The same software runs in three shapes:
+
+- **Single-host**: every part on one machine.
+- **Federated**: Host on one machine, runners joining from others over a
+  reachable relay and git remote, with no shared filesystem between Host
+  and runner.
+- **Self-hosted with capabilities**: federated shape plus capability slices
+  (production identity, audit retention, multi-tenancy, recovery) turned on.
+
+These are deployment shapes for the same runtime, not different products.

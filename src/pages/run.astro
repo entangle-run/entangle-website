@@ -1,0 +1,208 @@
+---
+import {
+	ArrowRight,
+	BookOpen,
+	Boxes,
+	Eye,
+	GitBranch,
+	GitMerge,
+	KeyRound,
+	Network,
+	Radio,
+	RefreshCcw,
+	Route,
+	ShieldCheck,
+	Terminal,
+	Users,
+	Workflow,
+} from '@lucide/astro';
+import CommandBlock from '../components/CommandBlock.astro';
+import CtaStrip from '../components/CtaStrip.astro';
+import EntangleGraph from '../components/EntangleGraph.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import StatusPill from '../components/StatusPill.astro';
+
+const services = [
+	{ label: 'Host', value: 'entangle-host authority, graph control, and inspection APIs' },
+	{ label: 'Runner', value: 'entangle-runner on any machine, joining by signed handshake' },
+	{ label: 'Studio', value: 'visual control room for graph, runners, state, and audit' },
+	{ label: 'CLI', value: 'entangle-cli over the same Host boundary as Studio' },
+	{ label: 'Relay', value: 'strfry Nostr relay for distributed signed coordination' },
+	{ label: 'Artifacts', value: 'Gitea-backed git service for durable artifact handoff' },
+];
+
+const capabilities = [
+	{ Icon: Workflow, label: 'Host control plane', body: 'Operate graph state, runner trust, assignments, policy, status, events, and projection through one Host-owned boundary.' },
+	{ Icon: Boxes, label: 'Generic distributed runners', body: 'Start runners wherever compute or users live, advertise capability, then let the Host assign the right node runtime.' },
+	{ Icon: Radio, label: 'Signed relay coordination', body: 'Nostr carries signed control, observation, and node-to-node messages without requiring direct inbound connectivity to every runner.' },
+	{ Icon: GitBranch, label: 'Git artifact workflow', body: 'Materialize, publish, retrieve, preview, diff, restore, and promote work products through git-backed references.' },
+	{ Icon: GitMerge, label: 'Graph-native handoff', body: 'Delegation follows typed edges, node ownership, runtime policy, and approval rules.' },
+	{ Icon: Eye, label: 'Inspectable runtime', body: 'Sessions, turns, approvals, artifacts, traces, memory, source changes, and recovery all remain visible.' },
+	{ Icon: ShieldCheck, label: 'Approvals and policy', body: 'Approval requests and responses are first-class runtime events tied to users, resources, and policy.' },
+	{ Icon: Users, label: 'Human nodes', body: 'Users participate from their own node identity with signed actions, conversation surfaces, approvals, and artifact review.' },
+	{ Icon: KeyRound, label: 'Authority and identity', body: 'Host, runner, user node, runtime, and git principal identities stay separate and auditable.' },
+	{ Icon: Network, label: 'Per-node memory', body: 'Each node carries structured memory, recent work, decisions, questions, and context forward.' },
+	{ Icon: RefreshCcw, label: 'Recovery tools', body: 'Status, restart, recovery policy, doctor, diagnostics, backup, restore, and repair support operations.' },
+	{ Icon: Terminal, label: 'Studio and CLI', body: 'Operate visually in Studio or script the same Host truth from the CLI.' },
+];
+
+const shapes = [
+	{ name: 'Workstation', body: 'Host, runner image, relay, git backend, Studio, and CLI on one machine while preserving the federated model.' },
+	{ name: 'Federated', body: 'Host on one machine, runners and users joining from others over a reachable relay and git backend.' },
+	{ name: 'Self-hosted', body: 'Your own infrastructure, your graph, your runner placement, your artifact backend, and your operating policies.' },
+];
+---
+
+<SiteLayout
+	title="Run Entangle: boot the federated runtime"
+	description="Boot Entangle and run a federated AI organization with Host, distributed runners, Nostr coordination, git artifacts, Studio, and CLI."
+>
+	<main>
+		<section class="hero-band pb-16 pt-12 text-white md:pb-24 md:pt-16">
+			<div class="container-wide grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-end">
+				<div>
+					<div class="flex items-center gap-2">
+						<StatusPill status="runtime" label="Operational runtime" />
+					</div>
+					<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">Run it.</h1>
+					<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
+						Boot the federated dev profile, open Studio, and operate a distributed graph of agents and users: Host, runners, relay, git backend, assignments, sessions, approvals, artifacts, memory, and trace.
+					</p>
+					<div class="mt-8 flex flex-col gap-3 sm:flex-row">
+						<a href="/docs/getting-started/" class="button-primary">
+							<BookOpen size={18} stroke-width={2.4} />
+							Step-by-step
+							<ArrowRight size={16} stroke-width={2.4} />
+						</a>
+						<a href="https://github.com/entangle-run/entangle" class="button-secondary" rel="noreferrer">
+							<GitBranch size={18} stroke-width={2.4} />
+							Repository
+						</a>
+					</div>
+				</div>
+				<div class="panel p-5">
+					<div class="grid gap-3 sm:grid-cols-2">
+						{services.map((s) => (
+							<div class="rounded-[6px] border border-white/10 bg-white/[0.05] p-4">
+								<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-teal-200">{s.label}</p>
+								<p class="mt-1.5 text-sm leading-6 text-slate-300">{s.value}</p>
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-white">
+			<div class="container-wide">
+				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+					<div>
+						<p class="eyebrow text-teal-700">In the box</p>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">A complete runtime in one install.</h2>
+					</div>
+					<p class="text-lg leading-8 text-slate-600">
+						Entangle boots as a complete federated runtime: control plane, distributed runner layer, relay, artifact backend, Studio, CLI, diagnostics, recovery, and inspection.
+					</p>
+				</div>
+				<div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+					{capabilities.map(({ Icon, label, body }) => (
+						<article class="paper-panel p-6">
+							<Icon size={22} stroke-width={2.2} class="text-teal-700" />
+							<h3 class="mt-5 text-lg font-[820] leading-tight text-slate-950">{label}</h3>
+							<p class="mt-3 text-sm leading-6 text-slate-600">{body}</p>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-[#f7f9fc]">
+			<div class="container-wide grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+				<div>
+						<p class="eyebrow text-teal-700">Start</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Three commands to a federated graph.</h2>
+					<p class="mt-5 text-lg leading-8 text-slate-600">
+						Clone, install, run the operating path. Entangle starts the runtime services, applies a graph, runs assigned nodes, publishes git-backed artifacts, and leaves Studio ready to inspect the federation.
+					</p>
+					<div class="mt-7 grid gap-3 text-sm font-bold text-slate-700">
+						<div class="flex items-start gap-3"><Route size={18} class="mt-0.5 shrink-0 text-teal-700" stroke-width={2.3} />Studio at <code class="font-mono text-slate-900">localhost:3000</code></div>
+						<div class="flex items-start gap-3"><Route size={18} class="mt-0.5 shrink-0 text-teal-700" stroke-width={2.3} />Host API at <code class="font-mono text-slate-900">localhost:7071</code></div>
+						<div class="flex items-start gap-3"><Route size={18} class="mt-0.5 shrink-0 text-teal-700" stroke-width={2.3} />Gitea at <code class="font-mono text-slate-900">localhost:3001</code></div>
+						<div class="flex items-start gap-3"><Route size={18} class="mt-0.5 shrink-0 text-teal-700" stroke-width={2.3} />Nostr relay at <code class="font-mono text-slate-900">ws://localhost:7777</code></div>
+					</div>
+				</div>
+				<div class="grid gap-4">
+					<CommandBlock
+						caption="install + preflight"
+						commands={[
+							'git clone https://github.com/entangle-run/entangle.git',
+							'cd entangle && pnpm install',
+							'pnpm verify',
+							'pnpm ops:check-federated-dev:strict',
+						]}
+					/>
+					<CommandBlock
+						caption="boot the runtime"
+						commands={[
+							'docker compose -f deploy/federated-dev/compose/docker-compose.federated-dev.yml \\',
+							'  --profile runner-build build runner-image',
+							'docker compose -f deploy/federated-dev/compose/docker-compose.federated-dev.yml \\',
+							'  up --build studio host strfry gitea',
+						]}
+					/>
+					<CommandBlock
+						caption="prove it runs"
+						commands={[
+							'pnpm ops:smoke-federated-dev:disposable:runtime',
+							'pnpm ops:demo-federated-preview',
+						]}
+					/>
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-[#eef6f4]">
+			<div class="container-wide grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+				<div>
+					<p class="eyebrow text-teal-800">Shapes</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Same runtime, wherever the parts live.</h2>
+					<p class="mt-5 text-lg leading-8 text-slate-700">
+						Entangle keeps the graph, identity, assignment, coordination, artifact, and operator model consistent whether every process is nearby or runners live across machines.
+					</p>
+					<div class="mt-7 flex flex-wrap gap-3">
+						<a href="/runtime/" class="button-dark">The runtime</a>
+						<a href="/roadmap/" class="button-dark">Capabilities</a>
+					</div>
+				</div>
+				<div class="paper-panel p-6">
+					<ul class="grid gap-4">
+						{shapes.map((s) => (
+							<li class="border-l-2 border-teal-300 pl-4">
+								<p class="text-sm font-[820] text-slate-950">{s.name}</p>
+								<p class="mt-1 text-sm leading-6 text-slate-600">{s.body}</p>
+							</li>
+						))}
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-slate-950 text-white">
+			<div class="container-wide grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+				<div>
+					<p class="eyebrow text-teal-200">Control room</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] md:text-5xl">A graph that is also a system.</h2>
+					<p class="mt-5 text-lg leading-8 text-slate-300">
+						Open Studio and the graph is no longer documentation. It is the live operating surface for nodes, runners, assignments, sessions, approvals, artifacts, memory, and audit.
+					</p>
+					<a href="/architecture/" class="mt-7 inline-flex items-center gap-2 text-sm font-black text-teal-200 no-underline hover:text-white">Read the architecture <ArrowRight size={16} stroke-width={2.4} /></a>
+				</div>
+				<div class="panel p-4">
+					<EntangleGraph />
+				</div>
+			</div>
+		</section>
+
+		<CtaStrip />
+	</main>
+</SiteLayout>

@@ -18,7 +18,7 @@ const org = {
 	name: 'Entangle',
 	url: site.href,
 	logo: new URL('/og.png', site).href,
-	description: 'Graph-native runtime for AI organizations.',
+	description: 'A federated runtime for distributed AI organizations.',
 	sameAs: ['https://github.com/entangle-run/entangle'],
 };
 
@@ -48,8 +48,8 @@ const article = type === 'article' && title && description && url && datePublish
 
 {type === 'home' && (
 	<>
-		<script type="application/ld+json" set:html={JSON.stringify(org)} />
-		<script type="application/ld+json" set:html={JSON.stringify(website)} />
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(org)} />
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(website)} />
 	</>
 )}
-{article && <script type="application/ld+json" set:html={JSON.stringify(article)} />}
+{article && <script is:inline type="application/ld+json" set:html={JSON.stringify(article)} />}

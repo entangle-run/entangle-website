@@ -6,10 +6,11 @@ import {
 	Eye,
 	GitBranch,
 	GitMerge,
+	KeyRound,
 	Network,
 	Radio,
 	ShieldCheck,
-	Terminal,
+	Users,
 	Workflow,
 } from '@lucide/astro';
 import CtaStrip from '../components/CtaStrip.astro';
@@ -18,49 +19,49 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import StatusPill from '../components/StatusPill.astro';
 
 const ownership = [
-	{ Icon: Workflow, label: 'Host owns control-plane truth', body: 'Graph state, package admission, runtime materialization, reconciliation snapshots, recovery policies, and inspection APIs all live behind the host boundary. Studio and CLI never own state.' },
-	{ Icon: Terminal, label: 'Runners own node execution', body: 'Each active node runs as a separate entangle-runner process with its own lifecycle, runtime context, peer-route summary, and runner-local session/conversation/turn store.' },
-	{ Icon: Network, label: 'Studio and CLI are clients', body: 'Visual and headless surfaces consume host truth and send mutations through the same typed routes. Identical presentation helpers in the shared host-client package keep their vocabulary aligned.' },
-	{ Icon: GitBranch, label: 'Artifacts carry work', body: 'Messages coordinate; artifacts preserve and hand off work products. Git is the first implemented backend; the protocol locator is portable across future backends.' },
+	{ Icon: KeyRound, label: 'The Host governs the graph', body: 'The Host keeps the desired topology, runner trust, assignments, policy, projection, and audit state under one authority boundary.' },
+	{ Icon: Workflow, label: 'Runners execute nodes', body: 'Runners can live on different machines, join generically, receive assignments, start the correct runtime, and report signed observations back to the Host.' },
+	{ Icon: Users, label: 'Users participate as nodes', body: 'Human participants sign their own tasks, replies, approvals, and reviews through a User Node identity instead of acting as anonymous chat users.' },
+	{ Icon: GitBranch, label: 'Artifacts preserve work', body: 'Messages coordinate the work; git-backed artifacts preserve it. Nodes hand off references instead of moving large payloads through the message bus.' },
 ];
 
 const concepts = [
-	{ Icon: Boxes, title: 'AgentPackage vs NodeInstance', body: 'AgentPackage is portable storage. NodeInstance is a graph-local binding. Runner is the execution boundary. The split keeps packages reusable and credentials cleanly scoped.' },
-	{ Icon: Network, title: 'Edges as authority', body: 'Edges define typed relationships — delegation, review, consultation, escalation. Controlled autonomous handoffs validate against effective edge routes and local autonomy policy before emitting task.handoff.' },
-	{ Icon: Radio, title: 'Messages vs artifacts', body: 'Messages coordinate work over signed Nostr (NIP-59 wrapped, dedicated rumor kind). Artifacts carry work over git-backed materialization, publication, and retrieval — never inside chat transcripts.' },
-	{ Icon: Eye, title: 'Memory as a first-class layer', body: 'Each node maintains a local wiki: deterministic post-turn task pages plus model-guided synthesis into focused registers (working-context, stable-facts, open-questions, decisions, next-actions, resolutions) with lifecycle discipline.' },
-	{ Icon: ShieldCheck, title: 'Approvals in the protocol', body: 'A2A approval.request and approval.response have explicit metadata contracts. The runner materializes gates, applies decisions, completes unblocked sessions, and absorbs orphan responses without phantom work.' },
-	{ Icon: GitMerge, title: 'Provider adapters behind one boundary', body: 'The internal agent-engine package owns Anthropic and OpenAI-compatible adapters with normalized usage and stop metadata. Provider-native types never leak into the runner contract.' },
+	{ Icon: Boxes, title: 'Packages become live nodes', body: 'Reusable agent packages are bound into a graph with identities, routes, policies, memory, and runtime settings.' },
+	{ Icon: Network, title: 'Edges define authority', body: 'The graph decides who may delegate, review, escalate, approve, or hand off. Execution follows the route, not a hidden prompt.' },
+	{ Icon: Radio, title: 'Nostr carries coordination', body: 'Control commands, runner observations, and node-to-node work messages travel as signed events through relays, even when nodes are on separate networks.' },
+	{ Icon: Eye, title: 'Projection makes work visible', body: 'The Host builds a live read model from signed observations so Studio can show state without owning or inventing it.' },
+	{ Icon: ShieldCheck, title: 'Approvals are first-class', body: 'Approval requests and responses are explicit runtime events, linked to users, sessions, artifacts, source changes, and policy.' },
+	{ Icon: GitMerge, title: 'Engines stay replaceable', body: 'OpenCode and other execution engines sit behind adapters. Entangle owns graph, identity, policy, artifacts, memory, and control.' },
 ];
 
 const layers = [
-	{ name: 'Studio + CLI', body: 'Two surfaces, same host-facing contract. Visual operator + headless automation.' },
-	{ name: 'Host control plane', body: 'Resource-oriented routes for nodes, edges, runtimes, sessions, turns, approvals, artifacts, recovery, principals, events.' },
-	{ name: 'Runner execution', body: 'Per-node process. Effective runtime context, bounded tool loops, controlled handoff, runner-local memory.' },
-	{ name: 'Transport + artifact backends', body: 'Local strfry relay (NIP-59 wrapped). Local Gitea git artifact backend with publish/retrieve cache.' },
-	{ name: 'Schemas + validators', body: 'packages/types owns zod contracts and DTOs. packages/validator owns semantic correctness on top.' },
+	{ name: 'Control surfaces', body: 'Studio gives operators the live control room. CLI gives teams a headless and scriptable surface. User Client gives human nodes their participant interface.' },
+	{ name: 'Host control plane', body: 'The Host owns graph state, runner trust, assignments, policy, projection, audit, package admission, and public APIs.' },
+	{ name: 'Runners', body: 'Runners advertise capability, accept assignments, run agent, human-interface, or service nodes, and sign runtime observations.' },
+	{ name: 'Nostr event fabric', body: 'The relay carries signed control, observation, and node-to-node messages without requiring runners to expose public IP addresses.' },
+	{ name: 'Git artifact layer', body: 'A git backend holds work products, source changes, wiki publications, and handoff artifacts with real lineage.' },
 ];
 ---
 
 <SiteLayout
-	title="Architecture — Entangle"
-	description="A runtime graph for AI organizations. Host control plane, per-node runners, signed Nostr coordination, git-backed artifact handoff, Studio and CLI on the same boundary."
+	title="Architecture: Entangle"
+	description="Entangle architecture for federated AI organizations: Host, distributed runners, user nodes, Nostr coordination, git-backed artifacts, and Studio as the live control room."
 >
 	<main>
-		<section class="pb-16 pt-12 text-white md:pb-24 md:pt-16">
+		<section class="hero-band pb-16 pt-12 text-white md:pb-24 md:pt-16">
 			<div class="container-wide grid items-center gap-10 lg:grid-cols-[0.92fr_1.08fr]">
 				<div>
 					<div class="flex items-center gap-2">
-						<StatusPill status="released" label="Architecture · public" />
+						<StatusPill status="federated" label="Federated architecture" />
 					</div>
-					<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">A runtime graph, not a chatbot wrapper.</h1>
+					<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">A graph that federates the organization.</h1>
 					<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
-						Nodes execute. Edges authorize coordination. Messages move intent. Artifacts carry work. Memory is durable, structured, and observable. Every layer has an explicit owner and an explicit contract.
+						Entangle separates the pieces a distributed AI organization needs: authority, execution, identity, coordination, artifacts, memory, and observability. Agents and users can live across machines while Studio keeps the whole graph governable.
 					</p>
 					<div class="mt-8 flex flex-col gap-3 sm:flex-row">
 						<a href="/docs/architecture/" class="button-primary">
 							<BookOpen size={18} stroke-width={2.4} />
-							Read architecture docs
+							Architecture docs
 							<ArrowRight size={16} stroke-width={2.4} />
 						</a>
 						<a href="/docs/concepts/" class="button-secondary">Concepts overview</a>
@@ -77,10 +78,10 @@ const layers = [
 				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
 					<div>
 						<p class="eyebrow text-teal-700">Ownership</p>
-						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Boundaries stay visible by design.</h2>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Clear ownership at every boundary.</h2>
 					</div>
 					<p class="text-lg leading-8 text-slate-600">
-						The architecture is what makes Local credible and what lets Cloud and Enterprise inherit a coherent foundation. Authority is split deliberately so the control plane can evolve without rewriting the runtime.
+						Federation works because Entangle does not collapse everyone into one orchestrator. The Host governs, runners execute wherever they are placed, users approve as themselves, and agents produce work under their own runtime identities.
 					</p>
 				</div>
 				<div class="mt-12 grid gap-4 md:grid-cols-2">
@@ -99,11 +100,11 @@ const layers = [
 			<div class="container-wide">
 				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
 					<div>
-						<p class="eyebrow text-teal-700">Core concepts</p>
-						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Six ideas that distinguish Entangle.</h2>
+						<p class="eyebrow text-teal-700">Concepts</p>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">The primitives behind the runtime.</h2>
 					</div>
 					<p class="text-lg leading-8 text-slate-600">
-						Most agent frameworks collapse these into a single orchestrator object. Entangle keeps them separate so each one can be inspected, governed, and replaced.
+						Entangle keeps topology, policy, messages, artifacts, memory, approvals, and engines on explicit boundaries. That makes the system inspectable, governable, portable, and distributed by design.
 					</p>
 				</div>
 				<div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -122,9 +123,9 @@ const layers = [
 			<div class="container-wide grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
 				<div>
 					<p class="eyebrow text-teal-200">Layers</p>
-					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] md:text-5xl">Five layers, each replaceable on its own boundary.</h2>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] md:text-5xl">Five layers, one operating system for federation.</h2>
 					<p class="mt-5 text-lg leading-8 text-slate-300">
-						Local uses local implementations of every layer. Cloud and Enterprise will swap in production persistence, sandboxed execution, and an artifact service while keeping the same graph model and the same client surfaces.
+						Swap an engine, move a runner, change a relay, or point artifacts at a different git service. The graph, authority model, and operating surface remain coherent.
 					</p>
 				</div>
 				<ol class="grid gap-3">
@@ -141,9 +142,6 @@ const layers = [
 			</div>
 		</section>
 
-		<CtaStrip
-			heading="See the model in your terminal."
-			body="Local ships the full architecture — host, runner, relay, Gitea, Studio, CLI. Three commands to a working profile."
-		/>
+		<CtaStrip />
 	</main>
 </SiteLayout>

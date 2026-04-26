@@ -1,0 +1,135 @@
+---
+import { Boxes, Eye, GitBranch, KeyRound, Network, Radio, ShieldCheck, Terminal, Users, Workflow } from '@lucide/astro';
+import CtaStrip from '../components/CtaStrip.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import StatusPill from '../components/StatusPill.astro';
+
+const surfaces = [
+	{ Icon: Workflow, title: 'Host', body: 'The graph authority for desired state, runner trust, assignments, policy, projection, audit, and operator APIs.' },
+	{ Icon: Boxes, title: 'Distributed runners', body: 'Generic workers can run on different machines, advertise capability, receive assignments, and start the right node runtime.' },
+	{ Icon: Users, title: 'User nodes', body: 'Human participants are graph actors with stable identity, signed tasks, signed approvals, conversation, and review.' },
+	{ Icon: Radio, title: 'Nostr coordination', body: 'Signed messages let nodes coordinate without exposing every runner to direct inbound connections.' },
+	{ Icon: GitBranch, title: 'Git artifacts', body: 'Code, reports, source changes, and knowledge outputs move through durable git-backed references.' },
+	{ Icon: Eye, title: 'Projection', body: 'The Host turns signed observations from distributed runtimes into one live operating view for Studio and CLI.' },
+];
+
+const strengths = [
+	{ title: 'Federation over orchestration', body: 'Entangle does not hide every agent behind one central dispatcher. It lets an organization of independent actors coordinate through signed protocol boundaries.' },
+	{ title: 'Distributed execution', body: 'Runners can sit on different machines and still receive assignments through signed control messages and relay-based coordination.' },
+	{ title: 'Human accountability', body: 'Users participate as graph nodes and sign task, reply, approval, and review actions with their own identity.' },
+	{ title: 'Durable work products', body: 'Artifacts move through git, so output has history, references, diff, restore, and review semantics built in.' },
+	{ title: 'Engine freedom', body: 'OpenCode and other agent engines sit behind adapters. Entangle stays the federated operating layer around them.' },
+	{ title: 'Live observability', body: 'Studio and CLI show the same Host projection: nodes, runners, sessions, turns, approvals, artifacts, memory, and events.' },
+];
+---
+
+<SiteLayout
+	title="The runtime: Entangle"
+	description="Entangle is a federated runtime for distributed organizations of agents and users: Host, runners, Nostr coordination, git-backed artifacts, and one live control room."
+>
+	<main>
+		<section class="hero-band pb-16 pt-12 text-white md:pb-24 md:pt-16">
+			<div class="container-wide max-w-5xl">
+				<div class="flex items-center gap-2">
+					<StatusPill status="runtime" label="Federated runtime" />
+				</div>
+				<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">The runtime for federated agent organizations.</h1>
+				<p class="mt-6 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
+					Agent orchestration keeps work behind one controller. Entangle lets agents and users live as signed nodes across machines, coordinate over Nostr, exchange git-backed artifacts, and remain governable from one graph.
+				</p>
+			</div>
+		</section>
+
+		<section class="section-pad bg-[#f7f9fc]">
+			<div class="container-wide">
+				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+					<div>
+						<p class="eyebrow text-teal-700">The model</p>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Six surfaces for a distributed organization.</h2>
+					</div>
+					<p class="text-lg leading-8 text-slate-600">
+						Entangle keeps the distributed organization legible. You can see who exists, where they run, what they can do, what they produced, and which signed event moved the work forward.
+					</p>
+				</div>
+				<div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+					{surfaces.map(({ Icon, title, body }) => (
+						<article class="paper-panel p-6">
+							<Icon size={22} stroke-width={2.2} class="text-teal-700" />
+							<h3 class="mt-4 text-lg font-[820] leading-tight text-slate-950">{title}</h3>
+							<p class="mt-3 text-sm leading-6 text-slate-600">{body}</p>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-slate-950 text-white">
+			<div class="container-wide">
+				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+					<div>
+						<p class="eyebrow text-teal-200">Strengths</p>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] md:text-5xl">Built for governed, distributed AI work.</h2>
+					</div>
+					<p class="text-lg leading-8 text-slate-300">
+						Entangle is designed for organizations where work crosses agents, users, repositories, approvals, and machines.
+					</p>
+				</div>
+				<div class="mt-12 grid gap-4 md:grid-cols-2">
+					{strengths.map((d) => (
+						<article class="rounded-[8px] border border-white/10 bg-white/[0.04] p-6">
+							<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-teal-200">{d.title}</p>
+							<p class="mt-3 text-sm leading-6 text-slate-300">{d.body}</p>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-[#eef6f4]">
+			<div class="container-wide grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+				<div>
+					<p class="eyebrow text-teal-800">Deployment shapes</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Keep the organization federated wherever it runs.</h2>
+					<p class="mt-5 text-lg leading-8 text-slate-700">
+						Entangle keeps the same architecture wherever the parts live. Put everything on a workstation for a compact deployment, or place Host, runners, relay, and git services across your own infrastructure.
+					</p>
+					<div class="mt-7 flex flex-wrap gap-3">
+						<a href="/run/" class="button-dark">
+							<Terminal size={18} stroke-width={2.4} />
+							Boot the runtime
+						</a>
+						<a href="/roadmap/" class="button-dark">
+							<Workflow size={18} stroke-width={2.4} />
+							Capabilities
+						</a>
+					</div>
+				</div>
+				<div class="grid gap-3">
+					<article class="paper-panel border-teal-200 bg-white p-5">
+						<div class="flex items-center gap-3">
+							<KeyRound size={20} stroke-width={2.2} class="text-teal-700" />
+							<h3 class="text-lg font-[820] text-slate-950">Workstation shape</h3>
+						</div>
+						<p class="mt-3 text-sm leading-6 text-slate-600">Host, runners, relay, git backend, Studio, and CLI on one workstation for a compact operating environment.</p>
+					</article>
+					<article class="paper-panel border-cyan-200 bg-white p-5">
+						<div class="flex items-center gap-3">
+							<Network size={20} stroke-width={2.2} class="text-cyan-700" />
+							<h3 class="text-lg font-[820] text-slate-950">Federated shape</h3>
+						</div>
+						<p class="mt-3 text-sm leading-6 text-slate-600">Host on one machine, runners joining from others, shared relay and git services, and signed events as the coordination boundary.</p>
+					</article>
+					<article class="paper-panel border-amber-200 bg-white p-5">
+						<div class="flex items-center gap-3">
+							<ShieldCheck size={20} stroke-width={2.2} class="text-amber-700" />
+							<h3 class="text-lg font-[820] text-slate-950">Self-hosted operations</h3>
+						</div>
+						<p class="mt-3 text-sm leading-6 text-slate-600">Production identity, audit retention, recovery, policy, and team operations on the same federated runtime model.</p>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<CtaStrip />
+	</main>
+</SiteLayout>

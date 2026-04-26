@@ -7,22 +7,28 @@ interface Props {
 
 const { variant = 'hero', animated = true, class: className = '' } = Astro.props;
 
-// Canonical Entangle topology. Coordinates are computed once and reused
-// everywhere so the brand motif is geometrically stable.
+const machineGroups = [
+	{ label: 'Machine A', sub: 'human interface runner', x: 70, y: 198, w: 210, h: 160, accent: 'teal' },
+	{ label: 'Machine B', sub: 'agent runner', x: 555, y: 118, w: 210, h: 155, accent: 'cyan' },
+	{ label: 'Machine C', sub: 'agent runner', x: 555, y: 338, w: 210, h: 155, accent: 'lime' },
+] as const;
+
 const nodes = [
-	{ id: 'user', label: 'User', sub: 'operator', x: 130, y: 380, r: 38, accent: 'teal' },
-	{ id: 'host', label: 'Host', sub: 'control plane', x: 320, y: 130, r: 44, accent: 'cyan' },
-	{ id: 'runner', label: 'Runner', sub: 'per node', x: 560, y: 215, r: 42, accent: 'lime' },
-	{ id: 'relay', label: 'Relay', sub: 'signed Nostr', x: 690, y: 400, r: 38, accent: 'slate' },
-	{ id: 'artifact', label: 'Artifact', sub: 'git handoff', x: 380, y: 460, r: 40, accent: 'amber' },
+	{ id: 'user', label: 'User Node', sub: 'signed human', x: 175, y: 285, r: 40, accent: 'teal' },
+	{ id: 'planner', label: 'Planner', sub: 'agent node', x: 660, y: 205, r: 39, accent: 'cyan' },
+	{ id: 'builder', label: 'Builder', sub: 'agent node', x: 660, y: 425, r: 39, accent: 'lime' },
+	{ id: 'relay', label: 'Nostr Relay', sub: 'signed messages', x: 420, y: 300, r: 43, accent: 'slate' },
+	{ id: 'git', label: 'Git', sub: 'artifact refs', x: 420, y: 508, r: 41, accent: 'amber' },
 ] as const;
 
 const edges = [
-	{ from: 'user', to: 'host', label: 'operates', kind: 'ctrl' },
-	{ from: 'host', to: 'runner', label: 'lifecycle', kind: 'ctrl' },
-	{ from: 'runner', to: 'relay', label: 'A2A messages', kind: 'msg' },
-	{ from: 'runner', to: 'artifact', label: 'publishes', kind: 'art' },
-	{ from: 'artifact', to: 'user', label: 'inspectable', kind: 'view' },
+	{ from: 'user', to: 'relay', label: 'brief', kind: 'msg', labelX: 300, labelY: 279, bend: -8 },
+	{ from: 'relay', to: 'planner', label: 'task', kind: 'msg', labelX: 535, labelY: 244, bend: -16 },
+	{ from: 'planner', to: 'relay', label: 'plan', kind: 'msg', labelX: 548, labelY: 318, bend: -18 },
+	{ from: 'relay', to: 'builder', label: 'handoff', kind: 'msg', labelX: 540, labelY: 379, bend: 16 },
+	{ from: 'builder', to: 'relay', label: 'status', kind: 'view', labelX: 544, labelY: 336, bend: 18 },
+	{ from: 'builder', to: 'git', label: 'push ref', kind: 'art', labelX: 550, labelY: 474, bend: 10 },
+	{ from: 'git', to: 'user', label: 'review ref', kind: 'view', labelX: 290, labelY: 462, bend: -14 },
 ] as const;
 
 const accentMap = {
@@ -34,7 +40,6 @@ const accentMap = {
 } as const;
 
 const kindStroke = {
-	ctrl: '#2dd4bf',
 	msg: '#22d3ee',
 	art: '#f59e0b',
 	view: '#94a3b8',
@@ -46,22 +51,27 @@ function trim(p: { x: number; y: number }, q: { x: number; y: number }, by: numb
 	const dx = q.x - p.x;
 	const dy = q.y - p.y;
 	const d = Math.sqrt(dx * dx + dy * dy);
+
+	if (d === 0) {
+		return p;
+	}
+
 	const k = (d - by) / d;
 	return { x: p.x + dx * k, y: p.y + dy * k };
 }
 
-const sizeClass = variant === 'inline' ? 'h-auto w-full max-w-[420px]' : 'h-auto w-full';
+const sizeClass = variant === 'inline' ? 'h-auto w-full max-w-[440px]' : 'h-auto w-full';
 ---
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
-	viewBox="0 0 820 560"
+	viewBox="40 48 760 520"
 	role="img"
 	aria-labelledby="entangle-graph-title entangle-graph-desc"
 	class={`entangle-graph ${sizeClass} ${animated ? 'is-animated' : ''} ${className}`}
 >
-	<title id="entangle-graph-title">Entangle runtime graph</title>
-	<desc id="entangle-graph-desc">User, Host, Runner, Relay, and Artifact nodes connected by typed edges showing how Entangle operates AI organizations as a graph.</desc>
+	<title id="entangle-graph-title">Federated Entangle organization graph</title>
+	<desc id="entangle-graph-desc">An example Entangle organization with a User Node, Planner Agent, Builder Agent, Nostr Relay, and Git artifact backend distributed across multiple machines.</desc>
 
 	<defs>
 		{Object.entries(kindStroke).map(([kind, color]) => (
@@ -70,51 +80,91 @@ const sizeClass = variant === 'inline' ? 'h-auto w-full max-w-[420px]' : 'h-auto
 			</marker>
 		))}
 		<radialGradient id="node-glow" cx="50%" cy="50%" r="50%">
-			<stop offset="0%" stop-color="rgba(255,255,255,0.10)" />
-			<stop offset="100%" stop-color="rgba(255,255,255,0)" />
+			<stop offset="0%" stop-color="#ffffff" stop-opacity="0.12" />
+			<stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
 		</radialGradient>
 	</defs>
 
-	{/* Subtle background grid */}
 	<g aria-hidden="true">
-		{Array.from({ length: 17 }).map((_, i) => (
-			<line x1={i * 50} y1="0" x2={i * 50} y2="560" stroke="rgba(148,163,184,0.06)" stroke-width="1" />
+		{Array.from({ length: 18 }).map((_, i) => (
+			<line x1={i * 48} y1="0" x2={i * 48} y2="620" stroke="rgba(148,163,184,0.055)" stroke-width="1" />
 		))}
-		{Array.from({ length: 12 }).map((_, i) => (
-			<line x1="0" y1={i * 50} x2="820" y2={i * 50} stroke="rgba(148,163,184,0.06)" stroke-width="1" />
+		{Array.from({ length: 13 }).map((_, i) => (
+			<line x1="0" y1={i * 48} x2="860" y2={i * 48} stroke="rgba(148,163,184,0.055)" stroke-width="1" />
 		))}
 	</g>
 
-	{/* Edges */}
+	<g class="machine-groups">
+		{machineGroups.map((group) => (
+			<g class="machine-group">
+				<rect
+					x={group.x}
+					y={group.y}
+					width={group.w}
+					height={group.h}
+					rx="10"
+					fill="rgba(15,23,42,0.48)"
+					stroke={accentMap[group.accent]}
+					stroke-width="1.2"
+					opacity="0.52"
+				/>
+				<text
+					x={group.x + 14}
+					y={group.y + 23}
+					font-family="JetBrains Mono, ui-monospace, monospace"
+					font-size="10"
+					font-weight="800"
+					fill={accentMap[group.accent]}
+					letter-spacing="0.8"
+				>{group.label}</text>
+				<text
+					x={group.x + 14}
+					y={group.y + 39}
+					font-family="Inter, ui-sans-serif, system-ui, sans-serif"
+					font-size="11"
+					font-weight="650"
+					fill="rgba(226,232,240,0.62)"
+				>{group.sub}</text>
+			</g>
+		))}
+	</g>
+
 	<g class="edges">
 		{edges.map((e, i) => {
 			const a = nodeById[e.from];
 			const b = nodeById[e.to];
-			const start = trim(a, b, a.r + 2);
-			const end = trim(b, a, b.r + 8);
+			const start = trim(b, a, a.r + 2);
+			const end = trim(a, b, b.r + 8);
 			const stroke = kindStroke[e.kind];
-			const mx = (start.x + end.x) / 2;
-			const my = (start.y + end.y) / 2 - 6;
+			const dx = end.x - start.x;
+			const dy = end.y - start.y;
+			const distance = Math.sqrt(dx * dx + dy * dy);
+			const normalX = distance === 0 ? 0 : -dy / distance;
+			const normalY = distance === 0 ? 0 : dx / distance;
+			const controlX = (start.x + end.x) / 2 + normalX * e.bend;
+			const controlY = (start.y + end.y) / 2 + normalY * e.bend;
+			const path = `M ${start.x} ${start.y} Q ${controlX} ${controlY} ${end.x} ${end.y}`;
+
 			return (
 				<g class={`edge edge-${e.kind}`}>
 					<path
-						d={`M ${start.x} ${start.y} L ${end.x} ${end.y}`}
+						d={path}
 						stroke={stroke}
 						stroke-width="2"
 						stroke-linecap="round"
 						fill="none"
-						opacity="0.85"
+						opacity="0.82"
 						marker-end={`url(#arrow-${e.kind})`}
-						style={`--edge-delay: ${i * 0.18}s`}
+						style={`--edge-delay: ${i * 0.12}s`}
 					/>
 					<text
-						x={mx}
-						y={my}
+						x={e.labelX}
+						y={e.labelY}
 						text-anchor="middle"
 						font-family="JetBrains Mono, ui-monospace, monospace"
-						font-size="10"
-						font-weight="600"
-						fill="rgba(226,232,240,0.62)"
+						font-size="9.5"
+						font-weight="750"
+						fill="rgba(226,232,240,0.72)"
 						class="edge-label"
 					>{e.label}</text>
 				</g>
@@ -122,55 +172,61 @@ const sizeClass = variant === 'inline' ? 'h-auto w-full max-w-[420px]' : 'h-auto
 		})}
 	</g>
 
-	{/* Nodes */}
 	<g class="nodes">
 		{nodes.map((n, i) => (
-			<g class="node" transform={`translate(${n.x} ${n.y})`} style={`--node-delay: ${0.2 + i * 0.12}s`}>
-				<circle r={n.r + 6} fill="url(#node-glow)" />
-				<circle r={n.r} fill="#0b1020" stroke={accentMap[n.accent]} stroke-width="2" />
-				<text
-					y="-3"
-					text-anchor="middle"
-					font-family="Inter, ui-sans-serif, system-ui, sans-serif"
-					font-size="14"
-					font-weight="800"
-					fill="#f1f5f9"
-				>{n.label}</text>
-				<text
-					y="14"
-					text-anchor="middle"
-					font-family="JetBrains Mono, ui-monospace, monospace"
-					font-size="10"
-					font-weight="600"
-					fill={accentMap[n.accent]}
-					opacity="0.85"
-				>{n.sub}</text>
+			<g class="node" transform={`translate(${n.x} ${n.y})`} style={`--node-delay: ${0.16 + i * 0.09}s`}>
+				<g class="node-core">
+					<circle r={n.r + 7} fill="url(#node-glow)" />
+					<circle r={n.r} fill="#0b1020" stroke={accentMap[n.accent]} stroke-width="2" />
+					<text
+						y="-4"
+						text-anchor="middle"
+						font-family="Inter, ui-sans-serif, system-ui, sans-serif"
+						font-size="13"
+						font-weight="850"
+						fill="#f1f5f9"
+					>{n.label}</text>
+					<text
+						y="14"
+						text-anchor="middle"
+						font-family="JetBrains Mono, ui-monospace, monospace"
+						font-size="9.5"
+						font-weight="650"
+						fill={accentMap[n.accent]}
+						opacity="0.9"
+					>{n.sub}</text>
+				</g>
 			</g>
 		))}
 	</g>
 </svg>
 
 <style>
+	.entangle-graph .machine-group {
+		opacity: 0;
+		animation: fade-in 0.7s ease-out forwards;
+	}
 	.entangle-graph .edge path {
-		stroke-dasharray: 320;
-		stroke-dashoffset: 320;
-		animation: edge-draw 1.4s ease-out forwards;
+		stroke-dasharray: 360;
+		stroke-dashoffset: 360;
+		animation: edge-draw 1.25s ease-out forwards;
 		animation-delay: var(--edge-delay, 0s);
 	}
 	.entangle-graph .edge-label {
 		opacity: 0;
 		animation: fade-in 0.6s ease-out forwards;
-		animation-delay: calc(var(--edge-delay, 0s) + 0.9s);
+		animation-delay: calc(var(--edge-delay, 0s) + 0.65s);
 	}
-	.entangle-graph .node {
+	.entangle-graph .node-core {
 		opacity: 0;
 		transform-origin: center;
-		animation: pop-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+		animation: pop-in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 		animation-delay: var(--node-delay, 0s);
 	}
+	.entangle-graph:not(.is-animated) .machine-group,
 	.entangle-graph:not(.is-animated) .edge path,
 	.entangle-graph:not(.is-animated) .edge-label,
-	.entangle-graph:not(.is-animated) .node {
+	.entangle-graph:not(.is-animated) .node-core {
 		animation: none;
 		opacity: 1;
 		stroke-dashoffset: 0;
@@ -198,9 +254,10 @@ const sizeClass = variant === 'inline' ? 'h-auto w-full max-w-[420px]' : 'h-auto
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.entangle-graph .machine-group,
 		.entangle-graph .edge path,
 		.entangle-graph .edge-label,
-		.entangle-graph .node {
+		.entangle-graph .node-core {
 			animation: none !important;
 			opacity: 1 !important;
 			stroke-dashoffset: 0 !important;

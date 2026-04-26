@@ -1,40 +1,73 @@
 ---
 title: Entangle Docs
-description: Public documentation for Entangle Local and the graph-native runtime model.
+description: Documentation for Entangle, a federated runtime for distributed AI organizations.
 template: splash
 hero:
-  tagline: Build, run, inspect, and govern graph-native AI organizations.
+  tagline: Run the graph. Govern the work.
   actions:
-    - text: Get Started
+    - text: Boot it
       link: /docs/getting-started/
       icon: right-arrow
-    - text: View on GitHub
-      link: https://github.com/entangle-run/entangle
+    - text: The runtime
+      link: /runtime/
       icon: external
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-Entangle is a graph-native runtime for AI organizations.
+Entangle is a federated runtime for distributed AI organizations. Agents,
+users, and services live as signed nodes on a graph and can run across
+different machines. The Host governs the topology. Runners execute
+assigned nodes. Coordination flows over Nostr. Work moves through
+git-backed artifacts. Studio and CLI expose the same Host-owned truth.
 
-The current public focus is **Entangle Local**: a local control plane with
-per-node runners, Studio, CLI, signed Nostr coordination, and git-backed
-artifact handoff. Cloud and Enterprise are planned products on the roadmap.
+## Start
 
 <CardGrid>
-	<Card title="Getting started" icon="rocket">
-		Clone the public repository, install dependencies, run checks, and start
-		the local profile.
-	</Card>
-	<Card title="Entangle Local" icon="laptop">
-		The first product line. Understand release scope and what the local
-		boundary does and does not claim.
-	</Card>
-	<Card title="Core concepts" icon="setting">
-		Nodes, edges, host, runners, messages, artifacts, and the memory model.
-	</Card>
-	<Card title="Architecture" icon="document">
-		The public architecture overview for the current local runtime.
-	</Card>
+	<LinkCard
+		title="Getting started"
+		href="/docs/getting-started/"
+		description="Clone, install, boot, and prove the runtime moves."
+	/>
+	<LinkCard
+		title="The runtime"
+		href="/runtime/"
+		description="One product, many shapes. Six surfaces, one model."
+	/>
+</CardGrid>
+
+## Operate
+
+<CardGrid>
+	<LinkCard
+		title="Operator workbench"
+		href="/docs/workbench/"
+		description="Studio and CLI as two surfaces over the same Host truth."
+	/>
+	<LinkCard
+		title="Trust model"
+		href="/docs/security-boundary/"
+		description="How identity, authority, secrets, and audit signal compose from the architecture."
+	/>
+</CardGrid>
+
+## Understand
+
+<CardGrid>
+	<LinkCard
+		title="Core concepts"
+		href="/docs/concepts/"
+		description="Graph, node, edge, Host, runner, message, artifact, memory, approval, policy, trace."
+	/>
+	<LinkCard
+		title="Architecture"
+		href="/docs/architecture/"
+		description="The federated runtime model and the main flows inside it."
+	/>
+	<LinkCard
+		title="Capabilities"
+		href="/docs/roadmap/"
+		description="The capability map across runtime, federation, operations, and trust."
+	/>
 </CardGrid>

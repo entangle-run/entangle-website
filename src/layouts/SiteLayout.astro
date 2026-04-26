@@ -12,8 +12,8 @@ interface Props {
 }
 
 const {
-	title = 'Entangle — Graph-native runtime for AI organizations',
-	description = 'Entangle is the graph-native runtime for building, running, inspecting, and governing AI organizations. Local-first today; managed Cloud and customer-operated Enterprise on the roadmap.',
+	title = 'Entangle: run federated AI organizations',
+	description = 'Entangle is a federated runtime where agents, users, and services live as signed nodes across machines. Coordination flows over Nostr, work moves through git, and Studio gives operators a live control room.',
 	ogType = 'website',
 	noindex = false,
 } = Astro.props;
@@ -34,7 +34,6 @@ const rssUrl = new URL('/rss.xml', site);
 		<meta name="theme-color" content="#f7f9fc" media="(prefers-color-scheme: light)" />
 		<link rel="canonical" href={canonical.href} />
 		{noindex && <meta name="robots" content="noindex,nofollow" />}
-		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<meta property="og:type" content={ogType} />
@@ -56,7 +55,6 @@ const rssUrl = new URL('/rss.xml', site);
 	<body>
 		<a href="#main" class="skip-link">Skip to main content</a>
 		<div class="site-shell">
-			<div class="noise-layer" aria-hidden="true"></div>
 			<SiteNav />
 			<div id="main">
 				<slot />

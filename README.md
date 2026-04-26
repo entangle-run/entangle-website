@@ -1,14 +1,14 @@
 # Entangle Website
 
-Public website, docs, and newsroom for Entangle.
+Public website, docs, and notes for Entangle.
 
 The engineering source of truth remains in the core repository:
 
 - `entangle-run/entangle`
 
 This repository contains the curated public surface: product positioning,
-getting started material, public concepts, architecture overview, public
-roadmap, and blog/newsroom posts.
+getting started material, public concepts, architecture overview,
+capability pages, and notes.
 
 ## Stack
 
@@ -45,6 +45,6 @@ pnpm preview
 
 ## Content Policy
 
-Public docs should be concise and product-facing. Do not copy the internal
-`wiki/` or `references/` corpus wholesale. Turn internal material into stable,
+Public docs are concise and product-facing. Use the `wiki/` and `references/`
+corpus as source material, then turn it into stable,
 reader-oriented documentation.

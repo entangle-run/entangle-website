@@ -1,8 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <rect width="128" height="128" rx="24" fill="#0f172a"/>
-  <path d="M34 70 64 34l30 36-30 24-30-24Z" fill="none" stroke="#38bdf8" stroke-width="8" stroke-linejoin="round"/>
-  <circle cx="64" cy="34" r="10" fill="#f8fafc"/>
-  <circle cx="34" cy="70" r="10" fill="#f8fafc"/>
-  <circle cx="94" cy="70" r="10" fill="#f8fafc"/>
-  <circle cx="64" cy="94" r="10" fill="#f8fafc"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" role="img" aria-labelledby="title">
+  <title id="title">Entangle mark</title>
+  <rect width="40" height="40" rx="8" fill="#0b1020"/>
+  <g fill="none" stroke="#5eead4" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M25.5 10C15.8 10 9.5 14.1 9.5 20S15.8 30 25.5 30"/>
+    <path d="M9.5 20H22.5"/>
+  </g>
+  <circle cx="25.5" cy="10" r="4" fill="#5eead4"/>
+  <circle cx="28" cy="20" r="4" fill="none" stroke="#5eead4" stroke-width="2.7"/>
+  <circle cx="25.5" cy="30" r="4" fill="#5eead4"/>
 </svg>

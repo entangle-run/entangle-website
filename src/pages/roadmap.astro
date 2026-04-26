@@ -1,159 +1,109 @@
 ---
-import { ArrowRight, Building2, BadgeCheck, Cloud, ShieldCheck, Workflow } from '@lucide/astro';
+import { CheckCheck, CircleDashed, Hammer, Sparkles } from '@lucide/astro';
 import CtaStrip from '../components/CtaStrip.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import StatusPill from '../components/StatusPill.astro';
 
-const localTrain = [
-	{ tag: 'L1', name: 'Local Operator Baseline', status: 'released' as const, body: 'Host, runner, relay, Gitea, two provider adapters, approval lifecycle, recovery policy, Studio + CLI parity, preflight + smoke. Architecture-proof.' },
-	{ tag: 'L1.5', name: 'Local Operator Preview', status: 'in-progress' as const, body: 'Demo agent package, near one-command demo, troubleshooting guide, clearer Studio empty/error states, smoke as recommended proof path.' },
-	{ tag: 'L2', name: 'Local Workbench', status: 'planned' as const, body: 'Package authoring, graph templates, graph diff and import/export, Studio session launch, artifact preview, memory workbench.' },
-	{ tag: 'L3', name: 'Local Reliability', status: 'planned' as const, body: 'entangle doctor, repair, backup and restore, versioned local state, upgrade notes, diagnostics bundle.' },
-	{ tag: 'L4', name: 'Entangle Local GA', status: 'planned' as const, body: 'Polished installer, regression smoke suite, model-provider setup guidance, complete Local non-goals doc.' },
+const runtimeCapabilities = [
+	{ tag: 'R1', name: 'Federated organization graph', body: 'Agents, users, and services are explicit nodes that can live across machines. Edges define delegation, review, approval, escalation, and handoff.' },
+	{ tag: 'R2', name: 'Host control plane', body: 'The Host owns desired graph state, runner trust, assignments, package admission, projection, status, and audit APIs.' },
+	{ tag: 'R3', name: 'Generic distributed runners', body: 'Runners start without graph context, join by signed handshake, advertise capability, receive assignment, and start the correct runtime.' },
+	{ tag: 'R4', name: 'Human and agent nodes', body: 'Agent nodes run coding engines. User nodes sign tasks, replies, approvals, and reviews through a human-interface boundary.' },
+	{ tag: 'R5', name: 'Studio and CLI', body: 'Studio gives operators a live control room; CLI gives teams a repeatable headless surface over the same Host truth.' },
 ];
 
-const cloudTrain = [
-	{ tag: 'C0', name: 'Cloud Start Gate', body: 'Confirm Local GA is closed and managed-production work may begin.' },
-	{ tag: 'C1', name: 'Cloud Foundation', body: 'PostgreSQL, identity, tenancy, auth, audit, OpenAPI discipline, idempotency keys, cursor pagination.' },
-	{ tag: 'C2', name: 'Governed Execution MVP', body: 'Production-style session launch, sandbox profile, model gateway, object-storage artifact service, approval inbox, lineage.' },
-	{ tag: 'C3', name: 'Cloud Private Beta', body: 'Onboarding templates, search, notifications, integrations (Slack, GitHub/GitLab/Gitea), cost dashboard, support runbooks.' },
-	{ tag: 'C4', name: 'Cloud Production GA', body: 'Billing and entitlements, SLO dashboards, alerting, backup/restore, security review, customer onboarding flow.' },
-	{ tag: 'C5', name: 'Cloud Scale', body: 'Advanced governance, marketplace, analytics, cost optimization, replay and regression workflows.' },
+const federationCapabilities = [
+	{ tag: 'F1', name: 'Host Authority', body: 'Graph revisions, trust decisions, assignments, and control commands are anchored to a Host Authority identity.' },
+	{ tag: 'F2', name: 'Signed event fabric', body: 'Nostr carries control, observation, and node-to-node messages with verification, dedupe, and private delivery across networks.' },
+	{ tag: 'F3', name: 'Runner registry', body: 'Runner hello, trust, revoke, heartbeat, stale status, and capability records make placement explicit.' },
+	{ tag: 'F4', name: 'Runtime assignments', body: 'The Host assigns nodes to trusted runners wherever they run, with runtime kind, graph revision, lease, policy, and receipts.' },
+	{ tag: 'F5', name: 'Projection store', body: 'Studio and CLI read a Host projection built from desired state and signed observations, not hidden runner-local state.' },
+	{ tag: 'F6', name: 'Artifact references', body: 'Artifacts, source changes, and wiki outputs move through refs and hashes while git stores the durable payload.' },
 ];
 
-const enterpriseTrain = [
-	{ tag: 'E0', name: 'Enterprise Start Gate', body: 'Confirm the Cloud production core is stable enough to package for customer-operated environments.' },
-	{ tag: 'E1', name: 'Enterprise Install Alpha', body: 'Helm chart alpha, external Postgres / object storage / secret manager, OIDC, ingress + TLS docs.' },
-	{ tag: 'E2', name: 'Enterprise Beta', body: 'SAML, SCIM, RBAC/ABAC hardening, SIEM/log export, audit export, backup, upgrade, network policy guidance.' },
-	{ tag: 'E3', name: 'Enterprise GA', body: 'Supported Helm chart, Terraform examples, compatibility matrix, support bundle, escalation process.' },
-	{ tag: 'E4', name: 'Enterprise Complete', body: 'Air-gapped install bundle, HA reference architecture, customer-managed keys, advanced retention, data residency.' },
+const operationsCapabilities = [
+	{ tag: 'O1', name: 'Git-backed work', body: 'Publish, retrieve, preview, diff, restore, promote, and review work products through git-backed artifact workflows.' },
+	{ tag: 'O2', name: 'Memory and context', body: 'Each node maintains structured memory: recent work, stable facts, decisions, open questions, next actions, and resolutions.' },
+	{ tag: 'O3', name: 'Approvals and policy', body: 'Approval requests and responses are first-class runtime events attached to sessions, resources, users, and policy.' },
+	{ tag: 'O4', name: 'Recovery and diagnostics', body: 'Status, trace, restart, recovery policy, doctor, diagnostics, backup, restore, and repair support day-to-day operation.' },
+	{ tag: 'O5', name: 'Engine adapters', body: 'OpenCode and other providers sit behind adapters so Entangle remains the graph, identity, artifact, memory, and control layer.' },
 ];
 
-const gates = [
-	{ title: 'Code truth', body: 'Public website and docs must match actual repository behavior — every L-train release passes a public claim audit.' },
-	{ title: 'Operational proof', body: 'pnpm verify, local preflight, and the strongest feasible smoke must pass (or a concrete blocker must be recorded).' },
-	{ title: 'Product boundary', body: 'No Local release may overclaim production tenancy or compliance. No Cloud release may move forward without Local GA.' },
-	{ title: 'Reconsideration', body: 'After every release, a gate-review pass either updates the roadmap or records a new decision before continuing.' },
-];
 ---
 
 <SiteLayout
-	title="Roadmap — Entangle"
-	description="The Entangle roadmap sequences three finished products: Entangle Local, Entangle Cloud, and Entangle Enterprise. Built strictly in order, each with explicit release gates."
+	title="Capabilities: Entangle"
+	description="The Entangle capability map for federated AI organizations: distributed agents and users, signed coordination, git-backed artifacts, memory, approvals, Studio, CLI, and operations."
 >
 	<main>
-		<section class="pb-16 pt-12 text-white md:pb-24 md:pt-16">
+		<section class="hero-band pb-16 pt-12 text-white md:pb-24 md:pt-16">
 			<div class="container-wide max-w-5xl">
 				<div class="flex items-center gap-2">
-					<StatusPill status="in-progress" label="Active product · Local" />
+					<StatusPill status="capability" label="Capability map" />
 				</div>
-				<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">Three products, built in the order that keeps the model honest.</h1>
+				<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">Everything a federated AI organization needs to run.</h1>
 				<p class="mt-6 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
-					Entangle Local is finished first. Cloud begins after Local reaches its GA gate. Enterprise begins after the Cloud production core is mature enough to package for customer-operated environments.
+					Entangle brings topology, identity, distributed execution, relay coordination, artifacts, memory, approval, observability, and operations into one runtime for agents and users.
 				</p>
 			</div>
 		</section>
 
 		<section class="section-pad bg-white">
-			<div class="container-wide grid gap-5">
-				<article class="paper-panel grid gap-6 p-6 md:grid-cols-[88px_1fr_auto] md:items-center">
-					<div class="grid size-16 place-items-center rounded-[8px] border border-teal-200 bg-teal-50 font-mono text-xl font-black text-teal-800">1</div>
-					<div>
-						<div class="flex flex-wrap items-center gap-3">
-							<Workflow size={23} stroke-width={2.2} class="text-teal-700" />
-							<h2 class="text-2xl font-[850] text-slate-950">Entangle Local</h2>
-							<StatusPill status="released" label="L1 released" class="!text-teal-800 !bg-teal-50 !border-teal-200" />
-						</div>
-						<p class="mt-3 text-base leading-7 text-slate-700">A complete local runtime and operator workbench. L1 today; L2 workbench, L3 reliability, L4 GA next.</p>
-					</div>
-					<a href="/local/" class="inline-flex items-center gap-2 text-sm font-black text-teal-700 no-underline hover:text-slate-950">Local details <ArrowRight size={16} stroke-width={2.4} /></a>
-				</article>
-				<article class="paper-panel grid gap-6 p-6 md:grid-cols-[88px_1fr_auto] md:items-center">
-					<div class="grid size-16 place-items-center rounded-[8px] border border-cyan-200 bg-cyan-50 font-mono text-xl font-black text-cyan-800">2</div>
-					<div>
-						<div class="flex flex-wrap items-center gap-3">
-							<Cloud size={23} stroke-width={2.2} class="text-cyan-700" />
-							<h2 class="text-2xl font-[850] text-slate-950">Entangle Cloud</h2>
-							<StatusPill status="coming-soon" class="!text-cyan-800 !bg-cyan-50 !border-cyan-200" />
-						</div>
-						<p class="mt-3 text-base leading-7 text-slate-700">Managed graph-native runtime for teams. Workspaces, persistence, identity, sandboxed execution, artifact service, audit, integrations.</p>
-					</div>
-					<a href="/cloud/" class="inline-flex items-center gap-2 text-sm font-black text-cyan-700 no-underline hover:text-slate-950">Cloud preview <ArrowRight size={16} stroke-width={2.4} /></a>
-				</article>
-				<article class="paper-panel grid gap-6 p-6 md:grid-cols-[88px_1fr_auto] md:items-center">
-					<div class="grid size-16 place-items-center rounded-[8px] border border-amber-200 bg-amber-50 font-mono text-xl font-black text-amber-800">3</div>
-					<div>
-						<div class="flex flex-wrap items-center gap-3">
-							<Building2 size={23} stroke-width={2.2} class="text-amber-700" />
-							<h2 class="text-2xl font-[850] text-slate-950">Entangle Enterprise</h2>
-							<StatusPill status="planned" class="!text-amber-800 !bg-amber-50 !border-amber-200" />
-						</div>
-						<p class="mt-3 text-base leading-7 text-slate-700">Customer-operated distribution for controlled environments. Helm, external dependencies, SSO/SCIM, audit export, backup, upgrade.</p>
-					</div>
-					<a href="/enterprise/" class="inline-flex items-center gap-2 text-sm font-black text-amber-700 no-underline hover:text-slate-950">Enterprise scope <ArrowRight size={16} stroke-width={2.4} /></a>
-				</article>
-			</div>
-		</section>
-
-		<section class="section-pad bg-[#f7f9fc]">
-			<div class="container-wide">
-				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
-					<div>
-						<p class="eyebrow text-teal-700">L-series train</p>
-						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Local: incremental milestones to GA.</h2>
-					</div>
-					<p class="text-lg leading-8 text-slate-600">
-						Each Local release adds capability without forking the architecture. R1 is retained only as the historical name of the L1 release ledger.
-					</p>
-				</div>
-				<div class="mt-10 grid gap-3">
-					{localTrain.map((r) => (
-						<article class="grid gap-5 rounded-[8px] border border-slate-200 bg-white p-5 sm:grid-cols-[120px_1fr_auto] sm:items-center">
-							<div class="font-mono text-sm font-black text-teal-700">{r.tag}</div>
-							<div>
-								<h3 class="text-lg font-[820] leading-tight text-slate-950">{r.name}</h3>
-								<p class="mt-2 text-sm leading-6 text-slate-600">{r.body}</p>
-							</div>
-							<div class="sm:justify-self-end"><StatusPill status={r.status} class="!text-slate-700 !bg-slate-50 !border-slate-200" /></div>
-						</article>
-					))}
-				</div>
-			</div>
-		</section>
-
-		<section class="section-pad bg-white">
-			<div class="container-wide grid gap-10 lg:grid-cols-2">
+			<div class="container-wide grid gap-12">
 				<div>
 					<div class="flex items-center gap-3">
-						<Cloud size={22} stroke-width={2.2} class="text-cyan-700" />
-						<p class="eyebrow text-cyan-800">Cloud — coming soon</p>
+						<CheckCheck size={22} stroke-width={2.2} class="text-teal-700" />
+						<p class="eyebrow text-teal-700">Runtime</p>
 					</div>
-					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-4xl">C-series begins after Local GA.</h2>
-					<ul class="mt-6 grid gap-3">
-						{cloudTrain.map((r) => (
-							<li class="grid gap-3 rounded-[8px] border border-slate-200 bg-slate-50/60 p-4 sm:grid-cols-[64px_1fr]">
-								<div class="font-mono text-sm font-black text-cyan-700">{r.tag}</div>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-4xl">An operating layer for distributed agents and users.</h2>
+					<p class="mt-3 max-w-3xl text-base leading-7 text-slate-600">Model the organization as nodes and edges, place work on runners wherever they live, and operate the system through Studio and CLI.</p>
+					<ul class="mt-7 grid gap-3">
+						{runtimeCapabilities.map((r) => (
+							<li class="grid gap-3 rounded-[8px] border border-teal-100 bg-teal-50/70 p-4 sm:grid-cols-[64px_1fr]">
+								<div class="font-mono text-sm font-black text-teal-700">{r.tag}</div>
 								<div>
 									<p class="text-sm font-[820] text-slate-950">{r.name}</p>
-									<p class="mt-1 text-xs leading-5 text-slate-600">{r.body}</p>
+									<p class="mt-1 text-xs leading-5 text-slate-700">{r.body}</p>
 								</div>
 							</li>
 						))}
 					</ul>
 				</div>
+
 				<div>
 					<div class="flex items-center gap-3">
-						<Building2 size={22} stroke-width={2.2} class="text-amber-700" />
-						<p class="eyebrow text-amber-800">Enterprise — planned</p>
+						<Hammer size={22} stroke-width={2.2} class="text-cyan-700" />
+						<p class="eyebrow text-cyan-700">Federation</p>
 					</div>
-					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-4xl">E-series begins after Cloud production core.</h2>
-					<ul class="mt-6 grid gap-3">
-						{enterpriseTrain.map((r) => (
-							<li class="grid gap-3 rounded-[8px] border border-slate-200 bg-slate-50/60 p-4 sm:grid-cols-[64px_1fr]">
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-4xl">Distributed without losing control.</h2>
+					<p class="mt-3 max-w-3xl text-base leading-7 text-slate-600">Host, runners, users, and agents coordinate through signed identities, assignments, observations, relays, and portable references.</p>
+					<ul class="mt-7 grid gap-3">
+						{federationCapabilities.map((r) => (
+							<li class="grid gap-3 rounded-[8px] border border-cyan-100 bg-cyan-50/70 p-4 sm:grid-cols-[64px_1fr]">
+								<div class="font-mono text-sm font-black text-cyan-700">{r.tag}</div>
+								<div>
+									<p class="text-sm font-[820] text-slate-950">{r.name}</p>
+									<p class="mt-1 text-xs leading-5 text-slate-700">{r.body}</p>
+								</div>
+							</li>
+						))}
+					</ul>
+				</div>
+
+				<div>
+					<div class="flex items-center gap-3">
+						<Sparkles size={22} stroke-width={2.2} class="text-amber-700" />
+						<p class="eyebrow text-amber-700">Operations</p>
+					</div>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-4xl">The controls teams need every day.</h2>
+					<p class="mt-3 max-w-3xl text-base leading-7 text-slate-600">Entangle turns AI work into inspectable objects: sessions, turns, approvals, artifacts, source changes, memory, recovery, and events.</p>
+					<ul class="mt-7 grid gap-3">
+						{operationsCapabilities.map((r) => (
+							<li class="grid gap-3 rounded-[8px] border border-amber-100 bg-amber-50/70 p-4 sm:grid-cols-[64px_1fr]">
 								<div class="font-mono text-sm font-black text-amber-700">{r.tag}</div>
 								<div>
 									<p class="text-sm font-[820] text-slate-950">{r.name}</p>
-									<p class="mt-1 text-xs leading-5 text-slate-600">{r.body}</p>
+									<p class="mt-1 text-xs leading-5 text-slate-700">{r.body}</p>
 								</div>
 							</li>
 						))}
@@ -163,26 +113,28 @@ const gates = [
 		</section>
 
 		<section class="section-pad bg-slate-950 text-white">
-			<div class="container-wide grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
+			<div class="container-wide grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
 				<div>
-					<p class="eyebrow text-lime-200">Audit loop</p>
-					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] md:text-5xl">Every release passes the same gate.</h2>
-					<p class="mt-5 text-lg leading-8 text-slate-300">
-						The same loop applies at every step. If the website says something the code cannot do, either the code is fixed or the claim is removed.
-					</p>
+					<p class="eyebrow text-teal-200">Operating principles</p>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] md:text-5xl">Built around boundaries that stay clear.</h2>
 				</div>
-				<div class="grid gap-4 md:grid-cols-2">
-					{gates.map((g) => (
-						<div class="rounded-[8px] border border-white/10 bg-white/[0.04] p-5">
-							{g.title === 'Operational proof' ? (
-								<BadgeCheck size={21} stroke-width={2.3} class="text-lime-200" />
-							) : (
-								<ShieldCheck size={21} stroke-width={2.3} class="text-lime-200" />
-							)}
-							<h3 class="mt-4 text-lg font-[820]">{g.title}</h3>
-							<p class="mt-2 text-sm leading-6 text-slate-300">{g.body}</p>
-						</div>
-					))}
+				<div class="grid gap-3 md:grid-cols-2">
+					<div class="rounded-[8px] border border-white/10 bg-white/[0.04] p-5">
+						<div class="flex items-center gap-2"><CircleDashed size={16} class="text-teal-200" stroke-width={2.4} /><p class="font-mono text-xs font-black uppercase tracking-[0.14em] text-teal-200">Graph first</p></div>
+						<p class="mt-3 text-sm leading-6 text-slate-300">Nodes, edges, policy, and identity are the operating model, not decoration around a chat.</p>
+					</div>
+					<div class="rounded-[8px] border border-white/10 bg-white/[0.04] p-5">
+						<div class="flex items-center gap-2"><CircleDashed size={16} class="text-cyan-200" stroke-width={2.4} /><p class="font-mono text-xs font-black uppercase tracking-[0.14em] text-cyan-200">Identity per role</p></div>
+						<p class="mt-3 text-sm leading-6 text-slate-300">Host, runner, user node, agent runtime, and git principal identities remain separate.</p>
+					</div>
+					<div class="rounded-[8px] border border-white/10 bg-white/[0.04] p-5">
+						<div class="flex items-center gap-2"><CircleDashed size={16} class="text-amber-200" stroke-width={2.4} /><p class="font-mono text-xs font-black uppercase tracking-[0.14em] text-amber-200">Messages coordinate</p></div>
+						<p class="mt-3 text-sm leading-6 text-slate-300">Signed events move intent and state. Git-backed artifacts carry the durable work products.</p>
+					</div>
+					<div class="rounded-[8px] border border-white/10 bg-white/[0.04] p-5">
+						<div class="flex items-center gap-2"><CircleDashed size={16} class="text-lime-200" stroke-width={2.4} /><p class="font-mono text-xs font-black uppercase tracking-[0.14em] text-lime-200">Projection is truth</p></div>
+						<p class="mt-3 text-sm leading-6 text-slate-300">Studio and CLI read Host-owned state built from signed observations, not client-side guesses.</p>
+					</div>
 				</div>
 			</div>
 		</section>

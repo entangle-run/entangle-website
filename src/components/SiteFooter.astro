@@ -1,28 +1,26 @@
 ---
 const columns = [
 	{
-		label: 'Products',
+		label: 'See it',
 		links: [
-			{ href: '/products/', label: 'Overview' },
-			{ href: '/local/', label: 'Entangle Local' },
-			{ href: '/cloud/', label: 'Entangle Cloud' },
-			{ href: '/enterprise/', label: 'Entangle Enterprise' },
+			{ href: '/runtime/', label: 'The runtime' },
+			{ href: '/architecture/', label: 'Architecture' },
+			{ href: '/run/', label: 'Run it' },
+			{ href: '/roadmap/', label: 'Capabilities' },
 		],
 	},
 	{
-		label: 'Learn',
+		label: 'Read',
 		links: [
-			{ href: '/architecture/', label: 'Architecture' },
-			{ href: '/roadmap/', label: 'Roadmap' },
 			{ href: '/docs/', label: 'Docs' },
-			{ href: '/blog/', label: 'Blog' },
+			{ href: '/blog/', label: 'Notes' },
+			{ href: '/security/', label: 'Trust model' },
 		],
 	},
 	{
 		label: 'Project',
 		links: [
 			{ href: 'https://github.com/entangle-run/entangle', label: 'GitHub repository' },
-			{ href: '/security/', label: 'Security' },
 			{ href: '/rss.xml', label: 'RSS feed' },
 		],
 	},
@@ -37,7 +35,7 @@ const columns = [
 				<span class="font-[820]">Entangle</span>
 			</a>
 			<p class="mt-4 max-w-xs text-sm leading-6 text-slate-600">
-				Graph-native runtime for AI organizations. Local-first today; managed Cloud and customer-operated Enterprise on the roadmap.
+				A federated runtime for distributed AI organizations. Agents and users live as signed nodes across machines; work moves through git.
 			</p>
 		</div>
 		<nav class="grid gap-8 sm:grid-cols-3" aria-label="Footer navigation">
@@ -59,8 +57,8 @@ const columns = [
 	</div>
 	<div class="border-t border-slate-200 py-4">
 		<div class="container-wide flex flex-wrap items-center justify-between gap-3 text-xs font-semibold text-slate-500">
-			<span>© {new Date().getFullYear()} Entangle. Public website and documentation.</span>
-			<span>Local-first · open source · graph-native</span>
+			<span>Copyright {new Date().getFullYear()} Entangle.</span>
+			<span>Run the graph. Govern the work.</span>
 		</div>
 	</div>
 </footer>

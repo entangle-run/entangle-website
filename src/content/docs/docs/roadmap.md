@@ -1,49 +1,61 @@
 ---
-title: Roadmap
-description: Public product roadmap.
+title: Capabilities
+description: The Entangle capability map across distributed runtime, federation, operations, and trust.
 ---
 
-The Entangle roadmap has three final product lines.
+Entangle has one product surface: a federated runtime for distributed AI
+organizations of agents and users.
+Capabilities compose on that runtime instead of splitting the system into
+separate product lines.
 
-## 1. Entangle Local
+## Runtime
 
-The local product comes first and is not throwaway scaffolding.
+- Graph-native organization: agents, users, and services are explicit
+  nodes that can live across machines.
+- Typed edges: delegation, review, approval, escalation, and handoff are
+  modeled in the graph.
+- Host control plane: graph state, runner trust, runtime assignments,
+  package admission, projection, status, events, and audit APIs.
+- Generic distributed runners: runners join by signed handshake,
+  advertise capabilities, and execute assigned nodes wherever compute or
+  users live.
+- Human and agent runtimes: agent nodes run engine adapters; user nodes
+  sign task, reply, approval, and review actions through a
+  human-interface boundary.
 
-Planned sequence:
+## Federation
 
-- R1 Local Operator Baseline.
-- R1.1 Local Operator Preview.
-- R1.2 Local Workbench.
-- R1.3 Local Reliability.
-- Entangle Local GA.
+- Host Authority identity for graph revisions, trust decisions,
+  assignments, and control commands.
+- Runner registry with hello, trust, revoke, heartbeat, stale-state, and
+  capability records.
+- Signed control and observation lanes over Nostr.
+- Relay-based coordination that does not require every runner to expose a
+  public inbound endpoint.
+- Node-to-node A2A messages for tasks, replies, handoff, approvals, and
+  conversation lifecycle.
+- Projection store built from desired state and signed observations.
+- Portable artifact, source-change, and wiki references.
 
-## 2. Entangle Cloud
+## Operations
 
-Cloud starts only after Entangle Local reaches its GA gate.
+- Studio as the visual control room for graph, runners, assignments,
+  sessions, approvals, artifacts, memory, recovery, and events.
+- CLI as the headless surface for summaries, dry runs, scripting,
+  diagnostics, and automation.
+- Git-backed artifact workflows: publish, retrieve, preview, diff,
+  restore, promote, and review.
+- Structured node memory: recent work, stable facts, decisions, open
+  questions, next actions, and resolutions.
+- Recovery tooling: status, trace, restart, recovery policy, doctor,
+  diagnostics, backup, restore, and repair.
 
-Cloud will focus on managed production use: workspaces, production
-persistence, identity, authorization, audit, sandboxed execution, artifact
-services, search, integrations, and managed reliability.
+## Trust
 
-## 3. Entangle Enterprise
-
-Enterprise starts after the Cloud production core is stable enough to package
-for customer-operated environments.
-
-Enterprise will focus on self-hosted production deployment, external identity,
-backup and upgrade, observability, audit export, and regulated-environment
-operational needs.
-
-## Audit Loop
-
-Every public release must pass the same basic gate:
-
-- code behavior matches the public claim;
-- checks and smoke paths pass;
-- docs describe the actual product boundary;
-- claims are cut or implementation is fixed when audit finds a mismatch.
-
-## Current Status
-
-The current public milestone is R1 Local Operator Baseline. It is a serious
-local architecture proof, not a production multi-tenant claim.
+- Separate identities for Host, runner, user node, node runtime, git
+  principal, and operator.
+- Graph-shaped authorization through typed edges and policy.
+- Bounded secret delivery for model and git credentials.
+- Signed events as operational evidence.
+- Audit and security surfaces that align with the runtime model instead
+  of living in a separate system.

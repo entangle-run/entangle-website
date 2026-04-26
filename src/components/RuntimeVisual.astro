@@ -9,29 +9,29 @@ import EntangleGraph from './EntangleGraph.astro';
 			<span class="size-2.5 rounded-full bg-[#f59e0b]"></span>
 			<span class="size-2.5 rounded-full bg-[#2dd4bf]"></span>
 		</div>
-		<span class="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">runtime / local profile</span>
+		<span class="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">runtime / federated graph</span>
 	</div>
 	<div class="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
-		<div class="relative border-b border-white/[0.10] p-5 lg:border-b-0 lg:border-r">
-			<EntangleGraph />
+		<div class="relative flex min-h-[300px] items-center justify-center border-b border-white/[0.10] p-5 lg:min-h-[420px] lg:border-b-0 lg:border-r">
+			<EntangleGraph class="max-w-[560px]" />
 		</div>
 		<div class="bg-slate-950/[0.7] p-5">
 			<div class="grid gap-3">
 				<div class="rounded-[6px] border border-white/10 bg-white/[0.04] p-4">
-					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-teal-200">Topology is runtime state</p>
-					<p class="mt-1.5 text-xs leading-5 text-slate-400">Nodes, edges, sessions, approvals, turns, and artifacts are all inspectable through the host control plane.</p>
+					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-teal-200">Federated organization</p>
+					<p class="mt-1.5 text-xs leading-5 text-slate-400">A user node, planner agent, and builder agent can run on different machines while staying inside one governed graph.</p>
 				</div>
 				<div class="rounded-[6px] border border-white/10 bg-white/[0.04] p-4">
-					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-cyan-200">Signed coordination lane</p>
-					<p class="mt-1.5 text-xs leading-5 text-slate-400">Messages flow over a local Nostr relay using NIP-59 gift wrapping and a dedicated Entangle rumor kind.</p>
+					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-cyan-200">Relay, not direct reachability</p>
+					<p class="mt-1.5 text-xs leading-5 text-slate-400">Coordination flows over Nostr, so runners do not need public inbound network access to participate.</p>
 				</div>
 				<div class="rounded-[6px] border border-white/10 bg-white/[0.04] p-4">
-					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-amber-200">Artifacts carry work</p>
-					<p class="mt-1.5 text-xs leading-5 text-slate-400">Git-backed materialization through local Gitea, with publish, retrieve, and cache for downstream nodes.</p>
+					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-amber-200">Work is a git ref</p>
+					<p class="mt-1.5 text-xs leading-5 text-slate-400">Artifacts are real commits in a real repo. Agents hand off code, reports, source changes, and knowledge by reference.</p>
 				</div>
 				<div class="rounded-[6px] border border-white/10 bg-white/[0.04] p-4">
-					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-lime-200">One runner per active node</p>
-					<p class="mt-1.5 text-xs leading-5 text-slate-400">Lifecycle, recovery policy, and effective runtime context are owned by the host and observed per node.</p>
+					<p class="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-lime-200">Governed placement</p>
+					<p class="mt-1.5 text-xs leading-5 text-slate-400">Nodes are assigned to trusted runners and the live operating view is built from signed observations.</p>
 				</div>
 			</div>
 		</div>

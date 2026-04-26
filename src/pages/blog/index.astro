@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { ArrowRight, Rss } from '@lucide/astro';
+import CtaStrip from '../../components/CtaStrip.astro';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
@@ -14,17 +15,17 @@ const dateFormatter = new Intl.DateTimeFormat('en', {
 ---
 
 <SiteLayout
-	title="Blog - Entangle"
-	description="Public product notes, architecture writing, and release updates from Entangle."
+	title="Notes: Entangle"
+	description="Notes from Entangle: product ideas, runtime design, federation, graph-native operations, and AI organization workflows."
 >
 	<main>
-		<section class="pb-16 pt-12 text-white md:pb-24 md:pt-18">
+		<section class="hero-band pb-16 pt-12 text-white md:pb-24 md:pt-18">
 			<div class="container-wide flex flex-col justify-between gap-8 md:flex-row md:items-end">
 				<div>
-					<p class="eyebrow text-teal-200">Newsroom</p>
-					<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">Product notes for graph-native AI work.</h1>
+					<p class="eyebrow text-teal-200">Notes</p>
+					<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">Notes from the runtime.</h1>
 					<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
-						Release notes, architecture decisions, and public roadmap updates for Entangle.
+						Product ideas, runtime decisions, federation notes, and short essays on what an AI organization should feel like to operate.
 					</p>
 				</div>
 				<a href="/rss.xml" class="button-secondary">
@@ -58,5 +59,7 @@ const dateFormatter = new Intl.DateTimeFormat('en', {
 				</div>
 			</div>
 		</section>
+
+		<CtaStrip />
 	</main>
 </SiteLayout>

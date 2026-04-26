@@ -1,36 +1,25 @@
 ---
-import { ArrowRight, BookOpen, GitBranch } from '@lucide/astro';
+import { ArrowRight, Network, Terminal } from '@lucide/astro';
 
-interface Props {
-	heading?: string;
-	body?: string;
-	tone?: 'dark' | 'light';
-}
-
-const {
-	heading = 'Ready to run a graph-native runtime locally?',
-	body = 'Clone the repository, run the local profile, and inspect the architecture in your own terminal.',
-	tone = 'dark',
-} = Astro.props;
-
-const isDark = tone === 'dark';
+const heading = 'Run a federated AI organization.';
+const body = 'Boot Entangle, open Studio, and watch distributed agents, users, runners, signed messages, approvals, and git-backed artifacts move through one governed graph.';
 ---
 
-<section class={isDark ? 'bg-slate-950 text-white' : 'bg-[#f7f9fc] text-slate-950'}>
+<section class="bg-slate-950 text-white">
 	<div class="container-wide grid items-center gap-8 py-16 md:grid-cols-[1.4fr_1fr] md:py-20">
 		<div>
-			<h2 class={`max-w-2xl text-balance text-3xl font-[850] leading-[1.06] md:text-4xl ${isDark ? 'text-white' : 'text-slate-950'}`}>{heading}</h2>
-			<p class={`mt-4 max-w-2xl text-base leading-7 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{body}</p>
+			<h2 class="max-w-2xl text-balance text-3xl font-[850] leading-[1.06] text-white md:text-4xl">{heading}</h2>
+			<p class="mt-4 max-w-2xl text-base leading-7 text-slate-300">{body}</p>
 		</div>
 		<div class="flex flex-col gap-3 sm:flex-row md:justify-end">
-			<a href="/docs/getting-started/" class="button-primary">
-				<BookOpen size={18} stroke-width={2.4} />
-				Get started
+			<a href="/run/" class="button-primary">
+				<Terminal size={18} stroke-width={2.4} />
+				Boot the runtime
 				<ArrowRight size={16} stroke-width={2.4} />
 			</a>
-			<a href="https://github.com/entangle-run/entangle" class={isDark ? 'button-secondary' : 'button-dark'} rel="noreferrer">
-				<GitBranch size={18} stroke-width={2.4} />
-				View on GitHub
+			<a href="/architecture/" class="button-secondary">
+				<Network size={18} stroke-width={2.4} />
+				See how it works
 			</a>
 		</div>
 	</div>

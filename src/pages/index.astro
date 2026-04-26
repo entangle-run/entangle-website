@@ -2,22 +2,20 @@
 import { getCollection } from 'astro:content';
 import {
 	ArrowRight,
-	Boxes,
-	Building2,
-	Cloud,
 	Eye,
 	GitBranch,
 	GitPullRequest,
+	KeyRound,
 	Network,
 	Radio,
 	ShieldCheck,
 	Terminal,
+	Users,
 	Workflow,
 } from '@lucide/astro';
-import CommandBlock from '../components/CommandBlock.astro';
 import CtaStrip from '../components/CtaStrip.astro';
+import EntangleGraph from '../components/EntangleGraph.astro';
 import LatestPosts from '../components/LatestPosts.astro';
-import RuntimeVisual from '../components/RuntimeVisual.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import StatusPill from '../components/StatusPill.astro';
 
@@ -25,68 +23,62 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 	.slice(0, 3);
 
-const l1Capabilities = [
-	{ Icon: Workflow, label: 'Host control plane', body: 'entangle-host owns graph state, package admission, runtime materialization, reconciliation, and inspection over a typed REST + WebSocket surface.' },
-	{ Icon: Terminal, label: 'Per-node runners', body: 'One entangle-runner per active node, with effective runtime context, lifecycle, restart generations, and bounded recovery policies.' },
-	{ Icon: Radio, label: 'NIP-59 transport', body: 'Real Nostr coordination over a local strfry relay using gift-wrapped Entangle rumors with relay-readiness preconnect.' },
-	{ Icon: GitBranch, label: 'Git-backed artifacts', body: 'Materialize, publish, and retrieve work products through local Gitea, with locator-specific repository targets and per-service principals.' },
-	{ Icon: Eye, label: 'Studio + CLI', body: 'Two surfaces over the same host truth. Operate visually, audit headlessly. No client owns control-plane state.' },
-	{ Icon: ShieldCheck, label: 'Approval & audit loops', body: 'Approval request/response lifecycle, runner-owned reconciliation, runtime trace events, and a host event surface for audit workflows.' },
+const primitives = [
+	{ Icon: Users, label: 'Users are nodes', body: 'Human participants have stable identities, sign their own messages, and live inside the same distributed graph as the agents.' },
+	{ Icon: Network, label: 'Edges govern work', body: 'Typed relationships decide who can delegate, review, approve, escalate, or hand off. The org chart is executable.' },
+	{ Icon: Radio, label: 'Nostr connects the organization', body: 'Tasks, replies, approvals, and lifecycle events move as signed Nostr messages between nodes that can live on different machines.' },
+	{ Icon: GitBranch, label: 'Artifacts move through git', body: 'Work products are committed, published, fetched, inspected, and restored through real git references.' },
+	{ Icon: KeyRound, label: 'Runners can live anywhere', body: 'A runner joins with a signed handshake, advertises capabilities, receives assignments, and runs nodes without public IP gymnastics.' },
+	{ Icon: Eye, label: 'Operations stay visible', body: 'Nodes, runners, sessions, turns, approvals, artifacts, memory, and recovery all surface in Studio and CLI.' },
 ];
 
-const personas = [
-	{
-		title: 'Package authors',
-		body: 'Ship reusable AgentPackages with declared tool catalogs, runtime intents, and provider adapters. Validate manifests with semantic checks, not vibes.',
-	},
-	{
-		title: 'Graph designers',
-		body: 'Compose users, agents, and services as nodes with typed edges. Make delegation, review, and handoff first-class topology, not hidden orchestration.',
-	},
-	{
-		title: 'Technical founders',
-		body: 'Run a credible local control plane today. Inherit the same boundary on managed Cloud and customer-operated Enterprise as those products land.',
-	},
+const heroCards = [
+	{ label: 'Federated organization', body: 'User nodes, agent nodes, and service nodes can run on different machines while staying inside one governed graph.', tone: 'text-teal-200' },
+	{ label: 'Relay-based coordination', body: 'Signed Nostr messages let nodes coordinate without requiring public inbound network access for every runner.', tone: 'text-cyan-200' },
+	{ label: 'Git-backed work', body: 'Artifacts are durable refs: code changes, reports, source updates, and knowledge can be published, reviewed, and restored.', tone: 'text-amber-200' },
+	{ label: 'Governed placement', body: 'Nodes are assigned to trusted runners, and the live operating view is built from signed runtime observations.', tone: 'text-lime-200' },
 ];
 ---
 
 <SiteLayout>
 	<main>
-		<section class="relative overflow-hidden pb-16 pt-10 text-white md:pb-24 md:pt-16">
-			<div class="container-wide grid items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
-				<div>
-					<div class="flex flex-wrap items-center gap-2">
-						<StatusPill status="released" label="L1 baseline · open source" />
+		<section class="hero-band relative overflow-hidden pb-16 pt-10 text-white md:pb-24 md:pt-16">
+			<div class="container-wide">
+				<div class="grid items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
+					<div>
+						<div class="flex flex-wrap items-center gap-2">
+							<StatusPill status="federated" label="Federated AI organization" />
+						</div>
+						<h1 class="mt-6 max-w-4xl text-balance text-5xl font-[880] leading-[0.98] text-white md:text-7xl">
+							Run a federated AI organization.
+						</h1>
+						<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
+							Entangle is not another agent orchestrator. It is a runtime for distributed organizations of agents and users: signed nodes on different machines, coordinated over Nostr, sharing work through git, governed from one graph.
+						</p>
+						<div class="mt-8 flex flex-col gap-3 sm:flex-row">
+							<a href="/run/" class="button-primary">
+								<Terminal size={18} stroke-width={2.4} />
+								Boot the runtime
+								<ArrowRight size={16} stroke-width={2.4} />
+							</a>
+							<a href="/architecture/" class="button-secondary">
+								<Network size={18} stroke-width={2.4} />
+								See how it works
+							</a>
+						</div>
 					</div>
-					<h1 class="mt-6 max-w-4xl text-balance text-5xl font-[880] leading-[0.98] text-white md:text-7xl">
-						The runtime layer for AI&nbsp;organizations.
-					</h1>
-					<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
-						Compose multi-agent systems as a graph you can see, govern, and replay. Run the full control plane locally today; inherit the same model on managed Cloud and customer-operated Enterprise.
-					</p>
-					<div class="mt-8 flex flex-col gap-3 sm:flex-row">
-						<a href="/docs/getting-started/" class="button-primary">
-							<Terminal size={18} stroke-width={2.4} />
-							Run it locally
-							<ArrowRight size={16} stroke-width={2.4} />
-						</a>
-						<a href="/architecture/" class="button-secondary">
-							<Network size={18} stroke-width={2.4} />
-							Read the architecture
-						</a>
-					</div>
-					<div class="mt-8 max-w-md">
-						<CommandBlock
-							caption="get started"
-							commands={[
-								'git clone https://github.com/entangle-run/entangle.git',
-								'cd entangle && pnpm install',
-								'pnpm ops:check-local:strict',
-							]}
-						/>
+					<div class="relative flex min-h-[320px] items-center justify-center lg:min-h-[440px]">
+						<EntangleGraph class="max-w-[660px]" />
 					</div>
 				</div>
-				<RuntimeVisual />
+				<div class="mt-10 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+					{heroCards.map((card) => (
+						<article class="rounded-[8px] border border-white/10 bg-white/[0.045] p-5">
+							<p class={`font-mono text-[11px] font-black uppercase tracking-[0.14em] ${card.tone}`}>{card.label}</p>
+							<p class="mt-3 text-sm leading-6 text-slate-300">{card.body}</p>
+						</article>
+					))}
+				</div>
 			</div>
 		</section>
 
@@ -94,19 +86,19 @@ const personas = [
 			<div class="container-wide grid gap-3 text-sm font-bold md:grid-cols-4">
 				<div class="flex items-center gap-2">
 					<Network size={17} class="text-teal-300" stroke-width={2.3} />
-					Graph-native control plane
+					Federated organization graph
 				</div>
 				<div class="flex items-center gap-2">
-					<Terminal size={17} class="text-lime-300" stroke-width={2.3} />
-					Studio + CLI on the same host boundary
+					<KeyRound size={17} class="text-cyan-300" stroke-width={2.3} />
+					Agents and users as nodes
 				</div>
 				<div class="flex items-center gap-2">
 					<GitPullRequest size={17} class="text-amber-300" stroke-width={2.3} />
-					Git-backed artifact handoff
+					Nostr + git substrate
 				</div>
 				<div class="flex items-center gap-2">
-					<ShieldCheck size={17} class="text-cyan-300" stroke-width={2.3} />
-					Audit-loop discipline
+					<ShieldCheck size={17} class="text-lime-300" stroke-width={2.3} />
+					Observable by design
 				</div>
 			</div>
 		</section>
@@ -115,35 +107,35 @@ const personas = [
 			<div class="container-wide">
 				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
 					<div>
-						<p class="eyebrow text-teal-700">Why it exists</p>
+						<p class="eyebrow text-teal-700">Why Entangle</p>
 						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">
-							AI work should be operated as a system, not buried inside one chat window.
-						</h2>
+						Agent orchestration is not enough.
+					</h2>
 					</div>
 					<p class="text-lg leading-8 text-slate-600">
-						Most tools start from the shape of a chat product. Entangle starts from the shape of an organization: explicit topology, explicit ownership, signed coordination, durable artifacts, and approval loops as first-class runtime concerns.
+						Most systems put a central orchestrator in front of agents. Entangle treats the organization itself as distributed infrastructure: agents and users can live anywhere, sign their own messages, and exchange durable work without collapsing into one hidden controller.
 					</p>
 				</div>
 				<div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 					<article class="paper-panel p-6">
-						<p class="eyebrow text-teal-700">Topology</p>
-						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">Users and agents are nodes</h3>
-						<p class="mt-3 text-sm leading-6 text-slate-600">The user is a first-class node. Edges are typed authority. Sessions activate a runtime subgraph over a static topology.</p>
+						<p class="eyebrow text-teal-700">Organization</p>
+						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">Agents and users together</h3>
+						<p class="mt-3 text-sm leading-6 text-slate-600">Humans are not outside the system. They are graph nodes with identity, routes, approvals, and conversations.</p>
 					</article>
 					<article class="paper-panel p-6">
-						<p class="eyebrow text-teal-700">Execution</p>
-						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">One runner per active node</h3>
-						<p class="mt-3 text-sm leading-6 text-slate-600">AgentPackage is portable storage. NodeInstance is a graph-local binding. Runner is the execution boundary that matters.</p>
+						<p class="eyebrow text-teal-700">Distribution</p>
+						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">Runners anywhere</h3>
+						<p class="mt-3 text-sm leading-6 text-slate-600">Agent and human-interface runtimes can be assigned to runners on different machines and networks.</p>
 					</article>
 					<article class="paper-panel p-6">
-						<p class="eyebrow text-teal-700">Handoff</p>
-						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">Messages coordinate, artifacts carry work</h3>
-						<p class="mt-3 text-sm leading-6 text-slate-600">Coordination flows over signed Nostr messages. Work products move as git-backed artifacts with explicit publish and retrieve.</p>
+						<p class="eyebrow text-teal-700">Federation</p>
+						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">No public IP dependency</h3>
+						<p class="mt-3 text-sm leading-6 text-slate-600">Nodes coordinate through relays and signed events, so runners do not need to be directly reachable.</p>
 					</article>
 					<article class="paper-panel p-6">
-						<p class="eyebrow text-teal-700">Governance</p>
-						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">Approvals, recovery, audit</h3>
-						<p class="mt-3 text-sm leading-6 text-slate-600">Approval request/response is in the protocol. Recovery policy and host-derived consistency findings are in the runtime.</p>
+						<p class="eyebrow text-teal-700">Substrate</p>
+						<h3 class="mt-4 text-xl font-[820] leading-tight text-slate-950">Git carries the work</h3>
+						<p class="mt-3 text-sm leading-6 text-slate-600">Agents hand off artifacts, source changes, and knowledge through git refs instead of message blobs.</p>
 					</article>
 				</div>
 			</div>
@@ -154,17 +146,17 @@ const personas = [
 				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
 					<div>
 						<div class="flex items-center gap-3">
-							<StatusPill status="released" label="Available now" />
+							<StatusPill status="runtime" label="Runtime primitives" />
 						</div>
-						<h2 class="mt-4 text-balance text-3xl font-[850] leading-[1.06] md:text-5xl">What ships in the L1 Local Operator Baseline.</h2>
+						<h2 class="mt-4 text-balance text-3xl font-[850] leading-[1.06] md:text-5xl">Six primitives for federated AI work.</h2>
 					</div>
 					<p class="text-lg leading-8 text-slate-300">
-						L1 is not a slide deck. It is a real local control plane, two provider adapters, signed transport, git-backed artifact handoff, and a verified end-to-end smoke that publishes and retrieves work between two managed runners.
+						Entangle keeps topology, identity, execution, coordination, artifacts, and observability separate enough to distribute and connected enough to govern.
 					</p>
 				</div>
 				<div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-					{l1Capabilities.map(({ Icon, label, body }) => (
-						<article class="rounded-[10px] border border-white/10 bg-white/[0.04] p-6">
+					{primitives.map(({ Icon, label, body }) => (
+						<article class="rounded-[8px] border border-white/10 bg-white/[0.04] p-6">
 							<Icon size={22} stroke-width={2.2} class="text-teal-300" />
 							<h3 class="mt-4 text-lg font-[820] text-white">{label}</h3>
 							<p class="mt-2 text-sm leading-6 text-slate-300">{body}</p>
@@ -172,11 +164,11 @@ const personas = [
 					))}
 				</div>
 				<div class="mt-10 flex flex-wrap items-center gap-4">
-					<a href="/local/" class="button-primary">
-						See everything in L1
+					<a href="/runtime/" class="button-primary">
+						See the runtime
 						<ArrowRight size={16} stroke-width={2.4} />
 					</a>
-					<a href="/roadmap/" class="text-sm font-bold text-slate-300 no-underline hover:text-white">View the L-series release train →</a>
+					<a href="/architecture/" class="inline-flex items-center gap-2 text-sm font-bold text-slate-300 no-underline hover:text-white">Read the model <ArrowRight size={16} stroke-width={2.4} /></a>
 				</div>
 			</div>
 		</section>
@@ -185,68 +177,38 @@ const personas = [
 			<div class="container-wide">
 				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
 					<div>
-						<p class="eyebrow text-teal-800">Product family</p>
-						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">One model. Three finished products. Built in order.</h2>
+						<p class="eyebrow text-teal-800">Operate it</p>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Boot the graph and watch work move.</h2>
 					</div>
 					<p class="text-lg leading-8 text-slate-700">
-						The roadmap does not treat Local as throwaway scaffolding. Local, Cloud, and Enterprise are separate final products built in strict sequence from the same graph-native operating model.
+						Start the runtime, open Studio, inspect the graph, send a task from a user node, watch an assigned agent run, publish a git artifact, and review the trace from the same control room.
 					</p>
 				</div>
 				<div class="mt-10 grid gap-4 lg:grid-cols-3">
-					<div class="rounded-[10px] border border-teal-300/40 bg-slate-950 p-6 text-white shadow-[0_18px_60px_rgba(13,148,136,0.18)]">
-						<div class="flex items-center justify-between gap-3">
-							<div class="flex items-center gap-3">
-								<Workflow size={22} stroke-width={2.2} class="text-teal-300" />
-								<h3 class="text-2xl font-[850]">Entangle Local</h3>
-							</div>
-							<StatusPill status="released" />
+					<div class="paper-panel border-teal-200 bg-white p-6">
+						<div class="flex items-center gap-3">
+							<Workflow size={22} stroke-width={2.2} class="text-teal-700" />
+							<h3 class="text-2xl font-[850] text-slate-950">1. Open Studio</h3>
 						</div>
-						<p class="mt-4 text-sm leading-6 text-slate-300">A complete local runtime and operator workbench for serious builders. Run, inspect, and govern the graph on your own machine.</p>
-						<a href="/local/" class="mt-6 inline-flex items-center gap-2 text-sm font-black text-teal-200 no-underline hover:text-white">Explore Local <ArrowRight size={16} stroke-width={2.4} /></a>
+						<p class="mt-4 text-sm leading-6 text-slate-600">See the graph, Host status, runner placement, assignments, sessions, approvals, artifacts, and runtime health.</p>
 					</div>
-					<div class="rounded-[10px] border border-cyan-300/30 bg-slate-950 p-6 text-white">
-						<div class="flex items-center justify-between gap-3">
-							<div class="flex items-center gap-3">
-								<Cloud size={22} stroke-width={2.2} class="text-cyan-300" />
-								<h3 class="text-2xl font-[850]">Entangle Cloud</h3>
-							</div>
-							<StatusPill status="coming-soon" />
+					<div class="paper-panel border-cyan-200 bg-white p-6">
+						<div class="flex items-center gap-3">
+							<Radio size={22} stroke-width={2.2} class="text-cyan-700" />
+							<h3 class="text-2xl font-[850] text-slate-950">2. Assign and run</h3>
 						</div>
-						<p class="mt-4 text-sm leading-6 text-slate-300">Managed multi-tenant graph runtime with workspaces, identity, sandboxed execution, artifact service, audit, and integrations. Begins after Local GA.</p>
-						<a href="/cloud/" class="mt-6 inline-flex items-center gap-2 text-sm font-black text-cyan-200 no-underline hover:text-white">Cloud preview <ArrowRight size={16} stroke-width={2.4} /></a>
+						<p class="mt-4 text-sm leading-6 text-slate-600">The Host assigns nodes to capable runners. The relay carries signed messages. Each runtime proves what it did.</p>
 					</div>
-					<div class="rounded-[10px] border border-amber-300/30 bg-slate-950 p-6 text-white">
-						<div class="flex items-center justify-between gap-3">
-							<div class="flex items-center gap-3">
-								<Building2 size={22} stroke-width={2.2} class="text-amber-300" />
-								<h3 class="text-2xl font-[850]">Entangle Enterprise</h3>
-							</div>
-							<StatusPill status="planned" />
+					<div class="paper-panel border-amber-200 bg-white p-6">
+						<div class="flex items-center gap-3">
+							<GitBranch size={22} stroke-width={2.2} class="text-amber-700" />
+							<h3 class="text-2xl font-[850] text-slate-950">3. Review the artifact</h3>
 						</div>
-						<p class="mt-4 text-sm leading-6 text-slate-300">Customer-operated distribution for controlled environments — Helm, external dependencies, SSO/SCIM, audit export, backup, upgrade. Begins after Cloud production core.</p>
-						<a href="/enterprise/" class="mt-6 inline-flex items-center gap-2 text-sm font-black text-amber-200 no-underline hover:text-white">Enterprise scope <ArrowRight size={16} stroke-width={2.4} /></a>
+						<p class="mt-4 text-sm leading-6 text-slate-600">The result lands as a git-backed artifact with lineage, retrieval state, approval context, and trace evidence.</p>
 					</div>
 				</div>
 				<div class="mt-8">
-					<a href="/products/" class="inline-flex items-center gap-2 rounded-[6px] border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 no-underline hover:border-slate-400">Compare all three products <ArrowRight size={16} stroke-width={2.4} /></a>
-				</div>
-			</div>
-		</section>
-
-		<section class="section-pad bg-white">
-			<div class="container-wide">
-				<div class="max-w-3xl">
-					<p class="eyebrow text-teal-700">Who this is for</p>
-					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">Built for people who treat AI work like infrastructure.</h2>
-				</div>
-				<div class="mt-12 grid gap-4 md:grid-cols-3">
-					{personas.map((p) => (
-						<article class="paper-panel p-6">
-							<Boxes size={22} stroke-width={2.2} class="text-teal-700" />
-							<h3 class="mt-5 text-xl font-[820] leading-tight text-slate-950">{p.title}</h3>
-							<p class="mt-3 text-sm leading-6 text-slate-600">{p.body}</p>
-						</article>
-					))}
+					<a href="/run/" class="inline-flex items-center gap-2 rounded-[6px] border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-900 no-underline hover:border-slate-400">Boot Entangle <ArrowRight size={16} stroke-width={2.4} /></a>
 				</div>
 			</div>
 		</section>

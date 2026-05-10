@@ -1,11 +1,11 @@
 ---
 title: Getting Started
-description: Clone, install, and boot the Entangle federated runtime.
+description: Clone, install, and run the deterministic Entangle developer proof.
 ---
 
-The shortest path to understanding Entangle is to boot it. This guide takes
-you from a fresh clone to a running Host, runner layer, relay, git backend,
-Studio surface, and CLI.
+The shortest useful path is to run the deterministic developer proof. It
+starts the same architectural pieces used by the federated model while avoiding
+external LLM credentials.
 
 ## Prerequisites
 
@@ -23,87 +23,65 @@ cd entangle
 pnpm install --frozen-lockfile
 ```
 
-Use the lockfile install for a reproducible setup.
-
 ## Verify the repository
 
 ```sh
 pnpm verify
 ```
 
-Lint, typecheck, and tests. Run it before changing runtime contracts,
-deployment files, packages, or operator surfaces.
+This runs lint, typecheck, and tests for the runtime repository.
 
-## Preflight the federated dev profile
-
-```sh
-pnpm ops:check-federated-dev:strict
-```
-
-Strict preflight validates toolchain, Docker access, Compose configuration,
-required profile paths, and the runtime profile before services start.
-
-## Build the runner image
+## Start the relay
 
 ```sh
-docker compose -f deploy/federated-dev/compose/docker-compose.federated-dev.yml \
-  --profile runner-build build runner-image
+docker compose -f deploy/federated-dev/compose/docker-compose.federated-dev.yml up -d strfry
 ```
 
-Runners join by signed handshake and the federated dev launcher boots them
-as Docker containers; build the image before expecting managed nodes to
-come up.
+The default relay URL is `ws://localhost:7777`.
 
-## Boot the runtime
+## Run the user-node proof
 
 ```sh
-docker compose -f deploy/federated-dev/compose/docker-compose.federated-dev.yml \
-  up --build studio host strfry gitea
+pnpm ops:demo-user-node-runtime:fake-opencode
 ```
 
-Default endpoints:
+This exercises the user-node runtime, signed user actions, Host projection, and
+an agent path backed by deterministic fake OpenCode responses.
 
-- Studio: `http://localhost:3000`
-- Host API: `http://localhost:7071`
-- Gitea HTTP: `http://localhost:3001`
-- Gitea SSH: `ssh://localhost:2222`
-- Nostr relay: `ws://localhost:7777`
-
-## Run the full runtime path
+## Run the process-runner proof
 
 ```sh
-pnpm ops:smoke-federated-dev:disposable:runtime
+pnpm ops:smoke-federated-process-runner:fake-opencode
 ```
 
-This is the strongest verification path. It admits a disposable package,
-applies a two-node graph, starts two managed runners, publishes a real
-NIP-59 wrapped event through the relay, runs a provider-backed turn,
-materializes a git artifact, retrieves it downstream by reference, and
-tears the profile down.
+This exercises runner registration, assignment, agent execution through the
+process-runner path, observation, and artifact flow without requiring real LLM
+credentials.
 
-## Open the Federated Preview
+## Optional Studio inspection
+
+Use the Studio-enabled user-node demo when you want a browser surface left
+running for inspection:
 
 ```sh
-pnpm ops:demo-federated-preview
+pnpm ops:demo-user-node-runtime --with-studio
 ```
 
-The command leaves the profile running so you can open Studio and the CLI
-and inspect the same Host-owned state from both sides:
+The operator-facing Studio and the CLI both read Host-owned state. A human
+node's participant interface is a separate runtime surface, not the admin
+control room.
 
-```sh
-pnpm --filter @entangle/cli dev host status --summary
-pnpm --filter @entangle/cli dev host graph get --summary
-pnpm --filter @entangle/cli dev host sessions list --summary
-pnpm --filter @entangle/cli dev host events list --runtime-trace-only --summary
-```
+## Real provider testing
+
+Real OpenCode/provider credentials and real pull request workflows are manual
+operator validation steps. The deterministic proof is the public automated
+baseline; provider failures should be captured and hardened separately.
 
 ## Reset
 
-When you want a clean profile, stop the stack and remove volumes:
+When you intentionally want to wipe the developer profile, stop the stack and
+remove volumes:
 
 ```sh
 docker compose -f deploy/federated-dev/compose/docker-compose.federated-dev.yml down --volumes
 ```
-
-Only use a destructive reset when you intentionally want to wipe Host,
-relay, Gitea, runner, and artifact state.

@@ -8,7 +8,7 @@ export async function GET(context) {
 
 	return rss({
 		title: 'Entangle',
-		description: 'Notes from Entangle, a federated runtime for distributed AI organizations.',
+		description: 'Notes from Entangle, a self-hosted federated runtime for observable coding-agent organizations.',
 		site: context.site,
 		items: posts.map((post) => ({
 			title: post.data.title,

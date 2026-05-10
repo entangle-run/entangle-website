@@ -15,7 +15,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Entangle',
-			description: 'A federated runtime for distributed AI organizations.',
+			description: 'A self-hosted federated runtime for observable coding-agent organizations.',
 			customCss: ['./src/styles/global.css'],
 			disable404Route: true,
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/entangle-run/entangle' }],
@@ -34,7 +34,7 @@ export default defineConfig({
 						{ label: 'Architecture', slug: 'docs/architecture' },
 						{ label: 'Operator Workbench', link: '/docs/workbench/' },
 						{ label: 'Trust Model', link: '/docs/security-boundary/' },
-						{ label: 'Capabilities', slug: 'docs/roadmap' },
+						{ label: 'Status', slug: 'docs/status' },
 					],
 				},
 			],

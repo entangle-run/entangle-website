@@ -4,8 +4,9 @@ description: How identity, authority, secrets, and audit signal compose from the
 ---
 
 Entangle's trust model is not a checklist. It is the shape of the
-architecture. Each role owns the keys it signs with and nothing else; the
-edges decide who may talk to whom; the wire is the audit log.
+architecture. Each role owns the keys it signs with and nothing else; edges
+decide who may talk to whom; signed events and Host projection provide the
+audit trail.
 
 ## Identity is per role
 
@@ -33,9 +34,9 @@ Authority is graph-shaped; nothing routes outside the graph.
 Secrets should remain outside browser bundles, URLs, non-secret runtime
 context, and durable logs.
 
-- Model and git credentials resolve at the Host into effective runtime
-  context.
-- Secrets reach runners as mounted files where applicable.
+- Model and git credentials resolve through Host-controlled runtime context.
+- Secrets should reach runners through explicit secret delivery where
+  applicable.
 - Git transport supports principal bindings without embedding raw token
   material in remote URLs.
 - Auth-mode selection is explicit per profile — there is no unsafe
@@ -56,8 +57,8 @@ Audit signal exposed today:
 - Recovery events: history, controller updates.
 - Source-mutation evidence with approval scope.
 
-This is operator-grade audit signal. Compliance attestations are a
-separate program (see "Capability layers" below).
+This is pre-release operator audit signal. Compliance attestations are a
+separate hardening program.
 
 ## Runtime posture
 
@@ -84,15 +85,15 @@ The federation layer includes:
 - projection store built from signed observations, removing implicit
   Host-reads-runner-filesystem trust.
 
-## Security capabilities
+## Hardening still required
 
-These capabilities sit on the same runtime:
+Before production readiness claims, Entangle still needs:
 
+- real-provider secret handling validation;
 - production identity beyond bootstrap operator-token;
-- multi-tenancy primitives;
 - audit retention and SIEM-ready export;
-- compliance workflows (SOC 2, ISO 27001, HIPAA);
-- security review and responsible disclosure.
+- backup/restore and disaster-recovery exercises;
+- security review and responsible disclosure process.
 
 ## Reporting
 

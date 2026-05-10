@@ -3,11 +3,11 @@ title: Architecture
 description: The federated runtime model and the main flows inside Entangle.
 ---
 
-Entangle is a federated runtime for distributed organizations of agents
-and users. The architecture keeps topology, execution, coordination,
+Entangle is a self-hosted federated runtime for observable coding-agent
+organizations. The architecture keeps topology, execution, coordination,
 artifacts, memory, approval, and operator surfaces separate enough to
-inspect and govern, and connected by signed messages instead of shared
-state.
+inspect and govern, and connected by signed messages instead of hidden
+shared state.
 
 ## Ownership model
 
@@ -106,10 +106,10 @@ Memory is node-owned. It is not a global hidden scratchpad.
 
 ## Engine boundary
 
-The default per-node coding engine is OpenCode, behind an adapter. The
-internal `agent-engine` package owns Anthropic and OpenAI-compatible
-adapters with normalized usage and stop metadata. Provider details stay
-behind the adapter; the runner contract is provider-neutral.
+The default per-node coding engine is OpenCode-oriented, behind an adapter.
+The runtime also has external process and external HTTP engine boundaries plus
+deterministic fake-provider paths for automated tests. Provider details stay
+behind adapters; the runner contract is provider-neutral.
 
 Entangle owns graph identity, policy, workspace roots, artifact handoff,
 memory, approval, and inspection around the engine. The engine is a
@@ -117,13 +117,13 @@ replaceable execution brain, not the product boundary.
 
 ## Deployment shapes
 
-The same software runs in three shapes:
+The same software should run in three shapes:
 
 - **Single-host**: every part on one machine.
-- **Federated**: Host on one machine, runners joining from others over a
-  reachable relay and git remote, with no shared filesystem between Host
-  and runner.
-- **Self-hosted with capabilities**: federated shape plus capability slices
-  (production identity, audit retention, multi-tenancy, recovery) turned on.
+- **Federated**: Host on one machine, runners and user nodes joining from
+  others over a reachable relay and git remote, with no shared filesystem
+  between Host and runner.
+- **Self-hosted with production hardening**: federated shape plus identity,
+  audit retention, recovery, security, and packaging hardening.
 
 These are deployment shapes for the same runtime, not different products.

@@ -1,0 +1,135 @@
+---
+import { CheckCheck, CircleDashed, Hammer, Sparkles, TriangleAlert } from '@lucide/astro';
+import CtaStrip from '../components/CtaStrip.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import StatusPill from '../components/StatusPill.astro';
+
+const implemented = [
+	'Host control plane with graph, package, principal, runner, assignment, projection, event, session, approval, artifact, memory, recovery, and source-change surfaces.',
+	'Generic runner registration, trust/revoke, heartbeat, signed assignments, and deterministic process-runner smoke coverage.',
+	'User Node runtime with stable identity, signed task launch, reply, approval, inbox/outbox, and a human-node client surface.',
+	'OpenCode-oriented engine boundary with fake OpenCode and fake external HTTP paths for deterministic tests.',
+	'Git-backed artifact publish/retrieve flows and source-change handoff records.',
+	'Studio and CLI surfaces over the same Host projection.',
+];
+
+const verified = [
+	'Repository-wide verify task for lint/type/test coverage.',
+	'Federated development strict preflight.',
+	'Disposable runtime smoke for the federated developer profile.',
+	'Fake OpenCode process-runner smoke for agent execution without external LLM APIs.',
+	'User-node runtime demo and deterministic smoke paths.',
+	'Product naming checks that reject obsolete local-only product framing.',
+];
+
+const manual = [
+	'Real OpenCode connected to real LLM provider credentials.',
+	'Real coding task producing a commit or PR in an operator-selected repository.',
+	'Physical multi-machine proof with Host, runner, User Node, relay, and git service on different hosts.',
+	'Long-running recovery, backup/restore, and operational retention exercises.',
+	'Security review beyond the current pre-release trust model.',
+];
+
+const next = [
+	{ title: 'Real-provider validation', body: 'Run OpenCode or another adapter against live credentials, capture failures, and harden provider setup, secrets, retries, and usage reporting.' },
+	{ title: 'Physical federation', body: 'Prove the same scenario across different machines and networks with no Host-runner shared filesystem assumptions.' },
+	{ title: 'PR workflow', body: 'Exercise real git remotes, source-change review, branch publication, and pull request creation from agent output.' },
+	{ title: 'Production packaging', body: 'Harden identity lifecycle, install/update paths, monitoring, backup/restore, and security disclosure process.' },
+];
+---
+
+<SiteLayout
+	title="Status: Entangle"
+	description="Current Entangle implementation status: what is implemented, what is automatically verified, what requires manual provider testing, and what remains before production readiness."
+>
+	<main>
+		<section class="hero-band pb-16 pt-12 text-white md:pb-24 md:pt-16">
+			<div class="container-wide max-w-5xl">
+				<div class="flex items-center gap-2">
+					<StatusPill status="capability" label="Project status" />
+				</div>
+				<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">Pre-release, but the runtime shape is real.</h1>
+				<p class="mt-6 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
+					Entangle has moved past static architecture notes into runnable Host, runner, user-node, artifact, Studio, CLI, and deterministic agent-execution paths. The remaining work is mostly validation and hardening against real providers, real repositories, and real distributed infrastructure.
+				</p>
+			</div>
+		</section>
+
+		<section class="section-pad bg-white">
+			<div class="container-wide grid gap-12">
+				<div>
+					<div class="flex items-center gap-3">
+						<CheckCheck size={22} stroke-width={2.2} class="text-teal-700" />
+						<p class="eyebrow text-teal-700">Implemented</p>
+					</div>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-4xl">The core runtime exists in code.</h2>
+					<ul class="mt-7 grid gap-3">
+						{implemented.map((item) => (
+							<li class="flex items-start gap-3 rounded-[8px] border border-teal-100 bg-teal-50/70 p-4 text-sm leading-6 text-slate-700">
+								<span class="mt-2 size-1.5 shrink-0 rounded-full bg-teal-500" aria-hidden="true"></span>
+								<span>{item}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+
+				<div>
+					<div class="flex items-center gap-3">
+						<Hammer size={22} stroke-width={2.2} class="text-cyan-700" />
+						<p class="eyebrow text-cyan-700">Verified automatically</p>
+					</div>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-4xl">Deterministic checks cover the important path.</h2>
+					<ul class="mt-7 grid gap-3">
+						{verified.map((item) => (
+							<li class="flex items-start gap-3 rounded-[8px] border border-cyan-100 bg-cyan-50/70 p-4 text-sm leading-6 text-slate-700">
+								<span class="mt-2 size-1.5 shrink-0 rounded-full bg-cyan-500" aria-hidden="true"></span>
+								<span>{item}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+
+				<div>
+					<div class="flex items-center gap-3">
+						<TriangleAlert size={22} stroke-width={2.2} class="text-amber-700" />
+						<p class="eyebrow text-amber-700">Manual validation</p>
+					</div>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-4xl">These are not public completion claims yet.</h2>
+					<ul class="mt-7 grid gap-3">
+						{manual.map((item) => (
+							<li class="flex items-start gap-3 rounded-[8px] border border-amber-100 bg-amber-50/70 p-4 text-sm leading-6 text-slate-700">
+								<span class="mt-2 size-1.5 shrink-0 rounded-full bg-amber-500" aria-hidden="true"></span>
+								<span>{item}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section class="section-pad bg-slate-950 text-white">
+			<div class="container-wide grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+				<div>
+					<div class="flex items-center gap-3">
+						<Sparkles size={22} stroke-width={2.2} class="text-teal-200" />
+						<p class="eyebrow text-teal-200">Next hardening passes</p>
+					</div>
+					<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] md:text-5xl">The plan from here is validation, not a product pivot.</h2>
+				</div>
+				<div class="grid gap-3 md:grid-cols-2">
+					{next.map((item) => (
+						<div class="rounded-[8px] border border-white/10 bg-white/[0.04] p-5">
+							<div class="flex items-center gap-2">
+								<CircleDashed size={16} class="text-teal-200" stroke-width={2.4} />
+								<p class="font-mono text-xs font-black uppercase tracking-[0.14em] text-teal-200">{item.title}</p>
+							</div>
+							<p class="mt-3 text-sm leading-6 text-slate-300">{item.body}</p>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<CtaStrip />
+	</main>
+</SiteLayout>

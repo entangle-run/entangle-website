@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Entangle — Graph-native runtime for AI organizations</title>
-  <desc id="desc">Brand visual showing the Entangle topology: User, Host, Runner, Relay, and Artifact nodes connected by typed edges.</desc>
+  <title id="title">Entangle - Federated runtime for coding-agent organizations</title>
+  <desc id="desc">Brand visual showing the Entangle topology: User Node, Host, Runner, Relay, and Artifact nodes connected by signed event and git artifact boundaries.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#0b1020"/>
@@ -28,8 +28,8 @@
     <line x1="600" y1="0" x2="600" y2="630"/>
   </g>
   <text x="80" y="118" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="68" font-weight="820">Entangle</text>
-  <text x="80" y="178" fill="#5eead4" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="30" font-weight="720">Graph-native runtime for AI organizations</text>
-  <text x="80" y="222" fill="#94a3b8" font-family="JetBrains Mono, ui-monospace, monospace" font-size="20" font-weight="600">local-first · explicit topology · artifact handoff</text>
+  <text x="80" y="178" fill="#5eead4" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="30" font-weight="720">Federated runtime for coding-agent organizations</text>
+  <text x="80" y="222" fill="#94a3b8" font-family="JetBrains Mono, ui-monospace, monospace" font-size="20" font-weight="600">signed nodes · explicit topology · git artifacts</text>
   <text x="80" y="585" fill="#94a3b8" font-family="JetBrains Mono, ui-monospace, monospace" font-size="18" font-weight="600">entangle.run</text>
   <text x="1120" y="585" text-anchor="end" fill="#94a3b8" font-family="JetBrains Mono, ui-monospace, monospace" font-size="18" font-weight="600">github.com/entangle-run/entangle</text>
 

@@ -1,6 +1,6 @@
 ---
 title: Entangle Docs
-description: Documentation for Entangle, a federated runtime for distributed AI organizations.
+description: Documentation for Entangle, a self-hosted federated runtime for observable coding-agent organizations.
 template: splash
 hero:
   tagline: Run the graph. Govern the work.
@@ -16,11 +16,11 @@ hero:
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-Entangle is a federated runtime for distributed AI organizations. Agents,
-users, and services live as signed nodes on a graph and can run across
-different machines. The Host governs the topology. Runners execute
-assigned nodes. Coordination flows over Nostr. Work moves through
-git-backed artifacts. Studio and CLI expose the same Host-owned truth.
+Entangle is a self-hosted federated runtime for observable coding-agent
+organizations. Agents, users, and services live as signed nodes on a
+graph. The Host governs topology and assignment, runners execute nodes,
+coordination flows over Nostr, work moves through git-backed artifacts,
+and Studio/CLI expose the same Host-owned truth.
 
 ## Start
 
@@ -28,7 +28,7 @@ git-backed artifacts. Studio and CLI expose the same Host-owned truth.
 	<LinkCard
 		title="Getting started"
 		href="/docs/getting-started/"
-		description="Clone, install, boot, and prove the runtime moves."
+		description="Clone, install, and run the deterministic developer proof."
 	/>
 	<LinkCard
 		title="The runtime"
@@ -66,8 +66,8 @@ git-backed artifacts. Studio and CLI expose the same Host-owned truth.
 		description="The federated runtime model and the main flows inside it."
 	/>
 	<LinkCard
-		title="Capabilities"
-		href="/docs/roadmap/"
-		description="The capability map across runtime, federation, operations, and trust."
+		title="Status"
+		href="/docs/status/"
+		description="What is implemented, what is automatically verified, and what still needs manual validation."
 	/>
 </CardGrid>

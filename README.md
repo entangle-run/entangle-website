@@ -1,21 +1,23 @@
 # Entangle Website
 
-Public website, docs, and notes for Entangle.
+This repository contains the public website and docs for Entangle.
 
-The engineering source of truth remains in the core repository:
+The engineering source of truth is the runtime repository:
 
-- `entangle-run/entangle`
+- `/Users/vincenzo/Documents/GitHub/Entangle/entangle`
+- public target: `https://github.com/entangle-run/entangle`
 
-This repository contains the curated public surface: product positioning,
-getting started material, public concepts, architecture overview,
-capability pages, and notes.
+The website must present Entangle as a self-hosted federated runtime for
+observable coding-agent organizations. It must not present obsolete local-only
+framing as the product, and it must distinguish implemented runtime paths from
+manual provider validation and future production hardening.
 
 ## Stack
 
 - Astro 6
 - Starlight docs under `/docs`
 - Tailwind CSS 4
-- Astro content collections for blog posts
+- Astro content collections for notes
 - RSS feed at `/rss.xml`
 - Vercel-ready build configuration
 
@@ -24,14 +26,16 @@ capability pages, and notes.
 ```sh
 pnpm install
 pnpm dev
+pnpm check
 pnpm build
 pnpm preview
 ```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
+| Command | Action |
+| :-- | :-- |
 | `pnpm install` | Installs dependencies |
 | `pnpm dev` | Starts the local dev server |
+| `pnpm check` | Runs Astro checks |
 | `pnpm build` | Builds the production site into `dist/` |
 | `pnpm preview` | Previews the production build locally |
 
@@ -39,12 +43,22 @@ pnpm preview
 
 - Marketing pages: `src/pages/`
 - Docs: `src/content/docs/docs/`
-- Blog posts: `src/content/blog/`
+- Notes: `src/content/blog/`
 - Shared site components: `src/components/`
 - Global styles: `src/styles/global.css`
 
 ## Content Policy
 
-Public docs are concise and product-facing. Use the `wiki/` and `references/`
-corpus as source material, then turn it into stable,
-reader-oriented documentation.
+Public content should be concise, current, and product-facing. Use the runtime
+repo `README.md`, `docs/`, `wiki/`, and `references/` corpus as source
+material, then turn it into reader-oriented documentation.
+
+Every claim should fit one of these categories:
+
+- implemented and covered by automated checks;
+- implemented with deterministic/mock verification;
+- available for manual testing with real providers;
+- planned/future hardening.
+
+Do not advertise unverified real-provider, physical multi-machine, security, or
+production-readiness claims as complete.

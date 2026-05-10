@@ -1,6 +1,6 @@
 ---
-title: "Run the graph"
-description: "The fastest way to understand Entangle is to boot the runtime and watch work move through the graph."
+title: "Run the proof"
+description: "The clearest way to understand Entangle is to run the deterministic proof and inspect the graph, runners, user node, messages, and artifacts."
 date: 2026-04-26
 author: Entangle
 tags:
@@ -8,32 +8,39 @@ tags:
   - Operations
 ---
 
-The shortest path to understanding Entangle is not reading about it. It is
-booting the runtime.
+Entangle is easier to understand once you stop treating it as a diagram.
 
-Clone the repo. Run `pnpm install`. Start the Federated Preview. Entangle
-starts the Host, runner layer, relay, git backend, Studio, and CLI surface.
-It applies a graph, assigns nodes to runners, publishes signed Nostr
-messages, materializes git-backed artifacts, and exposes the state through
-Studio.
+The useful first experience is not a polished marketing tour. It is running
+the deterministic developer proof and watching the pieces move: Host state,
+runner registration, runtime assignment, a User Node task, a fake OpenCode
+agent turn, signed coordination, projection, and git-backed artifacts.
 
-That loop is the pitch.
+That proof intentionally avoids live LLM credentials. It is not trying to show
+model quality. It is trying to show the runtime boundary: a human node can
+initiate work, a runner can execute an assigned agent node, the system can
+record what happened, and the result can be inspected without pretending the
+whole organization is one chat session.
 
-You can describe Entangle in many ways — graph-native runtime, federated
-agent organization, signed coordination fabric — and none of those phrases
-land until you watch a git commit travel from one node to another because
-an edge said it could.
+That distinction matters.
 
-The graph in Studio is the graph the Host validated. The events in the
-relay are the events the runners signed. The artifact in Gitea is the
-artifact the protocol locator points to.
+Most agent demos show a window where an assistant appears to do work. Entangle
+shows the operating model around the work. Which node spoke? Which runner ran
+it? Which edge allowed the route? Which artifact was produced? Which approval
+or source review is waiting? Which surface is acting as operator, and which
+surface is acting as a user node?
 
-That is what makes Entangle operational rather than decorative. A graph
-edge is a real route. A runner assignment starts a real runtime. An
-artifact reference points at real git state.
+Those questions are the product.
 
-The whole runtime can fit on one workstation, and the same model can span
-machines. Entangle does not change identity, policy, messages, or artifact
-semantics just because the parts move apart.
+A compact developer deployment can put Host, relay, runners, Studio, CLI, git
+service, and User Client on one machine. That is a convenience, not a product
+identity. The runtime should still behave as if the pieces could move apart:
+messages go through protocol surfaces, artifacts move by references, and
+operator views read Host projection.
 
-Open it. Watch the work move.
+The next proof is manual and more expensive: connect real OpenCode/provider
+credentials, run a real coding task, publish real source changes, and exercise
+the same flow across different machines.
+
+But the deterministic proof is already enough to reveal the shape of the
+system. Entangle is not a wrapper around an assistant. It is the control plane
+and collaboration substrate around a graph of coding actors.

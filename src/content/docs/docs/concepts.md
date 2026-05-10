@@ -1,121 +1,163 @@
 ---
 title: Core Concepts
-description: The vocabulary used by the Entangle runtime.
+description: The vocabulary behind Entangle's federated coding-agent runtime.
 ---
 
-Entangle is easiest to understand as a federated runtime over a typed
-graph. Agents, users, and services are nodes that can live across
-machines. The terms below are the operating vocabulary of the system.
+Entangle is easiest to understand as an operating model for a coding-agent
+organization. The organization is a graph. Agents, human users, and service
+participants are nodes. Edges define allowed collaboration. Runners execute
+assigned nodes. Signed events coordinate work. Git-backed references preserve
+work products.
+
+The terms below are the vocabulary used across Host, runner, Studio, CLI, and
+User Client surfaces.
 
 ## Graph
 
-A graph is the operating model. It describes users, agents, and services
-as nodes plus typed edges that define allowed relationships. The Host uses
-the graph to validate topology, materialize runtime context, expose
-inspection state, and reject handoffs that do not match the configured
-routes.
+The graph is the live operating model. It describes which actors exist, which
+relationships are allowed, which policies apply, and where work may be routed.
+
+The graph is not a canvas beside the runtime. Host validation, runner
+assignment, message routing, approval flows, and artifact handoff all depend on
+the graph.
 
 ## Node
 
-A node is a runtime participant with an identity. The user is a node. Each
-agent is a node. Service-like participants can be nodes when they need
-identity, visibility, or policy. Workspace roots, memory, turns, artifacts,
-approvals, source changes, and engine status are attached to the node that
-produced them.
+A node is an actor in the graph. It can be a coding agent, a human user, a
+service-like participant, or an external gateway.
+
+Nodes own identity, runtime configuration, memory, sessions, turns, approvals,
+source-change evidence, and artifacts created while that node is running.
 
 ## Edge
 
-An edge defines an allowed relationship between two nodes. Edges represent
-delegation, review, consultation, routing, escalation, or peer
-collaboration. Edges are authority. A runner cannot invent a destination
-that is not in the graph.
+An edge is an allowed relationship between two nodes. Edges model delegation,
+review, consultation, escalation, handoff, and approval relationships.
+
+Edges are authorization data. A runtime may not invent a destination just
+because an engine asked for it. Handoffs and replies must fit the effective
+graph route.
 
 ## Host
 
-The Host is the control plane. It owns desired graph state, the trust list
-of runners, signed runtime assignments, package admission, and a
-projection store built from signed observations. The Host has a Host
-Authority key. Move the key, you move the Host.
+The Host is the authoritative control plane. It owns desired graph state,
+package admission, runner trust, runtime assignments, resource catalogs,
+projection state, and operator-facing APIs.
+
+The Host is not a graph node and does not speak as a user. Its authority comes
+from Host-owned state and Host Authority signing material.
 
 ## Host Authority
 
-A signing key with status, export/import, and rotation semantics. It signs
-graph revisions, runner trust decisions, and runtime assignments. Federation
-hangs off this primitive: any deployment that has the key is the
-authoritative Host for its graph.
+The Host Authority is the signing identity for graph revisions, runner trust
+decisions, assignments, and control commands.
+
+Moving Host authority means moving/importing the key and the Host state needed
+to avoid split brain. In the current pre-release runtime, one active Host
+Authority instance is the safe assumption.
 
 ## Runner
 
-A runner executes one assigned node. It starts generic — without graph
-context — and joins by signed handshake. After the Host trusts it and
-sends a signed assignment, the runner runs that node wherever the runner
-is placed, signs heartbeats and observations, and emits A2A messages on
-the node runtime identity.
+A runner is the process that executes assigned nodes. It starts generic, joins
+with identity, advertises capability, receives assignment, and then runs the
+assigned node runtime.
+
+Runners may execute agent runtimes, human-interface runtimes, or service
+runtimes. They report runtime state back through observations rather than
+requiring the Host to read runner-local filesystems.
 
 ## User Node
 
-A graph-actor identity for a human. The user signs their own task launches,
-replies, and approvals. A human-interface runtime gives that user a
-participant surface, while Studio remains the operator control room.
-Nothing in the runtime forges user actions on their behalf.
+A User Node is the graph identity for a human participant. It is separate from
+operator authority.
+
+The same person can use Studio or CLI as an operator while also participating
+through one or more User Nodes. User Nodes sign their own task launches,
+replies, approvals, and source-review decisions. The User Client is the
+participant interface for that running human node.
 
 ## AgentPackage
 
-Portable package storage: manifest, prompts, runtime configuration, tool
-catalog, assets. Packages are not runtime participants by themselves; they
-become live only when bound into a graph as a NodeInstance.
+An `AgentPackage` is portable authoring material: manifest, prompts, runtime
+configuration, tool catalog, and assets.
+
+Packages are not live actors by themselves. A package becomes operational only
+when the graph binds it into a node instance with identity, policy, routes, and
+runtime assignment.
 
 ## NodeInstance
 
-The graph-local binding of a package, configuration, and runtime identity.
-The same package can be instantiated more than once with different node
-ids, routes, policies, or runtime settings. Authoring stays distinct from
-operation.
+A `NodeInstance` is a graph-local live binding. It connects package material,
+runtime identity, node-specific configuration, policy, routes, workspace state,
+and memory.
+
+The same package can be instantiated more than once with different node ids,
+roles, peers, policies, or engines.
 
 ## Message
 
-Messages coordinate work. Coordination uses signed Nostr events on
-dedicated rumor kinds, NIP-59 wrapped, so nodes can communicate through
-relays instead of requiring direct inbound access to every machine. Three
-event domains:
+Messages coordinate work. They should carry intent, decisions, summaries,
+receipts, and references, not full repositories or large artifacts.
 
-- `entangle.control.v1` — Host control commands.
-- `entangle.observe.v1` — runner observations.
-- `entangle.a2a.v1` — node-to-node messages (task, result, handoff,
-  approval request/response, conversation lifecycle).
+Entangle uses three protocol domains:
+
+- `entangle.control.v1` for Host-to-runner control and assignments;
+- `entangle.observe.v1` for runner-to-Host observations and receipts;
+- `entangle.a2a.v1` for node-to-node work messages such as tasks, replies,
+  handoffs, approval requests, approval responses, and conversation lifecycle.
 
 ## Artifact
 
-Artifacts carry work products. Today, the runtime materializes artifacts
-into a git-backed workspace, publishes through a git remote, and retrieves
-them by reference. The protocol locator is portable, so additional
-backends can sit behind the same shape. Messages coordinate; artifacts
-preserve.
+Artifacts preserve work products. Today the primary backend is git: runners
+materialize output, commit it, publish it, and expose references that downstream
+nodes or users can retrieve and review.
+
+Messages coordinate. Artifacts preserve. Keeping those responsibilities
+separate is what lets work remain auditable and recoverable.
 
 ## Memory
 
-Each node maintains a structured wiki: deterministic post-turn task pages,
-a recent-work summary, and focused registers — working context, stable
-facts, decisions, open questions, next actions, resolutions — with explicit
-lifecycle. Memory is observable runtime state, not an invisible transcript
-appendix.
+Memory is node-owned runtime state. It includes task pages, recent work,
+stable facts, decisions, open questions, next actions, resolutions, and routing
+context.
+
+Memory should be visible and inspectable. It is not an invisible transcript
+appendix and not a global scratchpad shared by every actor.
 
 ## Approval
 
-A first-class A2A flow. `approval.request` and `approval.response` are
-typed messages. The runner records pending gates, applies decisions,
-completes unblocked sessions, and rejects malformed metadata. Approvals
-are signed by the user node, not synthesized by an operator surface.
+Approvals are first-class A2A messages. A runtime can request approval, a User
+Node can sign a response, and Host projection can show the resulting state.
+
+Approvals are not supposed to be forged by an admin UI. Studio can expose the
+state; the User Node signs the human decision.
 
 ## Policy
 
-What a node may read, write, execute, publish, mutate, and communicate.
-Engine action proposals (handoffs, approvals) are validated against
-graph-effective routes and node-bound policy before they take effect.
+Policy decides what a node may read, write, execute, publish, mutate, and
+communicate. Engine proposals are evaluated against graph-effective routes and
+node-bound policy before they become runtime actions.
 
-## Trace
+Policy belongs around the engine. The engine can suggest work; Entangle decides
+whether the graph and policy allow it.
 
-Trace and event records explain what happened. They are the operator path
-from a vague failure to concrete evidence: runtime health, message type,
-turn outcome, approval state, artifact state, source-change candidate,
-recovery finding.
+## Projection
+
+Projection is the Host-owned read model consumed by Studio and CLI. It combines
+desired graph state with runtime observations, receipts, sessions, turns,
+approvals, artifacts, memory, source-change evidence, recovery findings, and
+events.
+
+Operator surfaces should read projection instead of guessing state from local
+files or browser-only assumptions.
+
+## Engine
+
+An engine is the coding brain behind an agent node. OpenCode is the default
+target direction, with fake OpenCode, external process, external HTTP, and
+OpenAI-compatible test/provider boundaries used for verification and
+integration.
+
+Entangle should not become the engine. Entangle wraps engines with graph
+identity, policy, memory, artifact handoff, signed communication, and
+observability.

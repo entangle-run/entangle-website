@@ -1,6 +1,6 @@
 ---
 title: "Why federation, not orchestration"
-description: "Agent orchestration puts every actor behind one controller. Entangle is a federated runtime for distributed agents and users."
+description: "Entangle keeps Host, runners, user nodes, agent runtimes, and artifacts on explicit boundaries instead of hiding every actor behind one controller."
 date: 2026-04-26
 author: Entangle
 tags:
@@ -8,49 +8,42 @@ tags:
   - Federation
 ---
 
-There are many ways to build agent orchestration. You write a master
-orchestrator. It owns the graph, dispatches tasks, holds the state, mounts
-the runners, signs everything. The user is a row in its database. Every
-event passes through it.
+The easiest agent system to build is an orchestrator.
 
-That model is easy to start with. It is also a single point of trust, a
-single point of identity, a single point of failure, and the reason most
-agent stacks feel like one chat with a louder script.
+It owns the graph, holds the state, dispatches tasks, reads every workspace,
+approves every action, signs every event, and shows the user one simplified
+interface. That can work for a prototype. It also turns the organization into
+one privileged process.
 
-Entangle refuses it.
+Entangle aims at a different shape.
 
-In a federated runtime, no actor speaks for another. The Host has its own
-key and signs control commands. Each runner has its own key and signs
-hellos, heartbeats, and observations. Each user has a stable node identity
-and signs their own task launches and approvals. Each node runtime has its
-own key for A2A messages. Studio is the operator control room, not a
-privileged narrator.
+In a federated runtime, each role has its own boundary. The Host owns desired
+graph state and assignment authority. Runners execute nodes and report
+observations. User Nodes sign human intent. Agent runtimes send node-to-node
+messages. Git principals handle artifact publication. Studio and CLI operate
+through Host APIs instead of becoming hidden sources of truth.
 
-The cost is real. Federation means the Host cannot just read a runner's
-filesystem to know what happened — it has to consume signed observations
-and rebuild a projection. It means user approvals are A2A messages, not
-Host mutations. It means the wire is the audit log and you cannot retcon
-state by editing a database.
+This has a cost. The Host cannot rely on reading runner-local files to know
+what happened. A user approval cannot be faked as an admin mutation. A runner
+must prove its state through observations. Work products need durable artifact
+references instead of large message blobs. The system has to keep projection,
+identity, and policy clean.
 
-What you get back is everything that matters.
+The payoff is that the deployment shape can change without changing the
+product model.
 
-You get runtimes that can live anywhere. A runner on your laptop, a runner
-on a colleague's, a runner on a server you do not own, a human-interface
-runtime near the person using it. They join by handshake. They prove what
-they did. The Host never needs to trust their disk.
+A developer can run multiple nodes on one machine with a local relay and local
+git service. Later, Host can sit on one machine, an agent runner on another, a
+human-interface runtime somewhere else, and a shared relay and git backend in
+between. The same ideas still apply: graph routes, signed coordination,
+runner-owned execution, User Node signatures, and artifact references.
 
-You get a security model that is the same shape as the architecture. Edges
-are authority. Nothing routes outside the graph. The keys are real, the
-signatures are real, and the audit story is not a separate add-on.
+That is the difference between federation and orchestration. Orchestration
+often hides actors behind a central brain. Federation lets actors remain
+separate while still being governed by one graph.
 
-You get an end to the "one operator does everything" anti-pattern. When a
-human approves a change in a chat-style agent, the operator API forges that
-approval on their behalf. In Entangle, the user node signs it. There is
-nothing to forge.
-
-You also get one consistent deployment model. The same graph, identity,
-assignment, relay, projection, and artifact semantics apply whether the
-runtime sits on one workstation or spans machines across a team.
-
-Orchestrators want to be the only voice. Federation accepts that there
-are many. The runtime is the chorus.
+Entangle should use the best coding engines available. OpenCode, Claude Code,
+Codex, Aider, or future engines can all sit behind adapters. But the product
+should not become any one engine. Its job is to make those engines into
+observable, policy-bound, artifact-producing participants in a coding
+organization.

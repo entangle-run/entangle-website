@@ -1,6 +1,6 @@
 ---
 title: "The team is the runtime"
-description: "Entangle turns distributed agents, users, services, runners, messages, approvals, and artifacts into one governed federation."
+description: "Entangle models a coding organization as a graph of agent nodes, user nodes, runners, policies, messages, memory, and artifacts."
 date: 2026-04-26
 author: Entangle
 tags:
@@ -8,38 +8,38 @@ tags:
   - Runtime
 ---
 
-For most people, an AI assistant is still a single window. You type, it
-answers. If subagents run somewhere underneath, you do not see them. The
-window becomes the interface and the interface becomes the limit.
+The usual AI assistant interface is a single window. You type, it answers, and
+anything more complex is hidden behind the window.
 
-That model is fine for one user, one task, one turn. It is not enough for
-an organization.
+That is convenient for one person and one task. It becomes weak when AI work
+starts looking like an organization.
 
-The bottleneck is already moving. As models get better at reading code,
-running tools, and reasoning over long horizons, the question is no longer
-"can the model do the work" but "how many agents can do work in parallel,
-who is allowed to talk to whom, where does the work live between turns,
-and how does a human stay inside the loop without becoming the bottleneck
-themselves".
+A coding organization needs more than a strong model. It needs roles, memory,
+handoffs, review, artifact history, approval, identity, and operating
+visibility. It needs to know which actor may talk to which other actor, where a
+piece of work lives between turns, who approved a change, and what evidence
+exists after the agent is done.
 
-That is not a chat-window problem. It is not only an orchestration problem
-either. It is a federation problem.
+Entangle starts from that shape.
 
-Entangle starts from the answer: the team is the runtime. Agents and humans
-are nodes on a graph, and those nodes can live on different machines.
-Edges are typed authority — who may delegate to whom, who may review, who
-may escalate. Messages between nodes are signed and routed through Nostr.
-Work products move as git refs. Memory is structured and observable.
-Approvals are signed by the user, not forged by an operator surface.
+The team is the runtime. Agents, human users, and services are graph nodes.
+Edges define allowed collaboration. Runners execute assigned nodes. User Nodes
+sign their own replies and approvals. Nostr carries signed coordination events.
+Git carries durable artifacts. Studio and CLI read Host-owned projection state.
+The User Client is the participant surface for a running human node.
 
-Studio is the control room for this operating model. You can open the
-graph, inspect distributed runner placement, review sessions and turns, follow
-artifacts, trace approvals, and see what every node is doing.
+This is not just a multi-agent framework. In many frameworks, the graph is
+really an internal plan owned by one orchestrator. In Entangle, the graph is
+the operational model. If an edge does not allow the relationship, the runtime
+should not route the work. If a User Node did not sign the approval, the system
+should not pretend that approval happened.
 
-The substrate is deliberately old and boring. Nostr for signed events, git
-for artifacts, a typed graph schema. The same primitives that already run
-the open web. Federated by construction, not by retrofit.
+That discipline is what makes the product interesting. It lets a compact
+developer profile and a real distributed deployment share the same semantics.
+The implementation can mature without changing the idea: keep identity,
+policy, artifacts, memory, and observation outside the LLM engine, then let
+strong engines do their work inside that boundary.
 
-Entangle is built for the question that matters once AI work becomes a team
-activity: how is the organization shaped, who is allowed to act, where does
-the work live, and can operators see it run?
+Entangle is pre-release, and real-provider validation still matters. But the
+reason for the product is already clear: AI coding work is becoming team work,
+and team work needs a runtime that can show how the team is shaped.

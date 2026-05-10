@@ -1,84 +1,117 @@
 ---
 title: Operator Workbench
-description: Studio and CLI as two surfaces over the same Host-owned runtime state.
+description: Studio, CLI, and User Client roles in the Entangle operating model.
 ---
 
-Entangle ships an operator workbench, not just a runtime process. The
-workbench has two surfaces:
+Entangle has three human-facing surfaces, each with a different authority
+boundary:
 
-- Studio for visual inspection and operation;
-- CLI for headless, repeatable, scriptable operation.
+- Studio is the operator control room.
+- CLI is the headless operator and participant automation surface.
+- User Client is the participant interface for a running User Node.
 
-Both consume the same Host-owned state. Neither owns truth.
+They should not collapse into one role. The distinction is important because
+operators configure and supervise the graph, while User Nodes participate in
+the graph and sign their own actions.
 
-## What Studio is for
+## Studio
 
-Use Studio when you need context across several runtime objects at once:
+Studio is for operators who need to see the system as a whole. It reads
+Host-owned projection state and exposes the current operating picture:
 
-- active graph topology and revisions;
-- node and edge state;
-- package-source inventory;
-- runtime state, reconciliation, and recovery;
-- session timelines and per-node session detail;
-- runner turns with engine outcomes and memory-synthesis status;
-- approval records and operator decisions;
-- artifact list, detail, preview, history, diff, restore, promotion;
-- memory pages and focused registers;
-- source-change candidate evidence with diff and file preview;
-- live host events and runtime trace.
+- graph topology, nodes, edges, and revisions;
+- package-source inventory and package admission state;
+- runner registry, trust, capability, heartbeat, and assignment state;
+- runtime desired/observed state and recovery information;
+- sessions, conversations, turns, and engine outcomes;
+- approval records and source-review evidence;
+- artifact list/detail, preview, history, diff, restore, and promotion;
+- memory pages, focused registers, and recent work;
+- source-change candidates with diff and file preview;
+- host events, runtime trace, integrity signal, and diagnostics.
 
-Studio shows User Node identity, runtime health, active conversations,
-pending approvals, and links into the participant surface. The user-facing
-conversation and approval workflow belongs to the User Client exposed by a
-human-interface runtime.
+Studio may prepare operator mutations through Host APIs. It should not directly
+command runners and should not sign user decisions.
 
-## What CLI is for
+## User Client
 
-Use CLI when the workflow should be repeatable, terminal-native, or
-suitable for automation:
+User Client is the interface for a human node while that node is running. A
+single deployment may have multiple human nodes, each with its own identity,
+inbox, conversations, approvals, and visible artifacts.
+
+A User Client is for:
+
+- reading the User Node inbox;
+- replying to connected agents;
+- approving or rejecting requests;
+- reviewing source-change candidates;
+- requesting visible artifact, wiki, or source-history actions;
+- seeing participant-scoped command receipts;
+- inspecting the workload of that User Node.
+
+This is not the admin console. It is the participant surface for an actor in
+the graph.
+
+## CLI
+
+CLI provides repeatable access to the same Host truth. It is useful for smoke
+tests, scripted operations, terminal-first review, diagnostics, and automation.
+
+Operator examples:
 
 ```sh
 pnpm --filter @entangle/cli dev host status --summary
 pnpm --filter @entangle/cli dev host graph get --summary
+pnpm --filter @entangle/cli dev host runners list --summary
 pnpm --filter @entangle/cli dev host sessions list --summary
-pnpm --filter @entangle/cli dev host runtimes list --summary
 pnpm --filter @entangle/cli dev host events list --runtime-trace-only --summary
 ```
 
-CLI is strongest for validation, import/export, dry runs, summaries, smoke
-checks, and scripted inspection.
+Participant examples:
 
-## Workbench objects
+```sh
+pnpm --filter @entangle/cli dev inbox list --user-node reviewer
+pnpm --filter @entangle/cli dev inbox show <conversation-id> --user-node reviewer
+pnpm --filter @entangle/cli dev inbox approvals --user-node reviewer
+pnpm --filter @entangle/cli dev user-nodes clients --node reviewer --health
+```
 
-The workbench is organized around runtime objects:
+The exact command surface will continue to evolve, but the rule should remain:
+CLI reads and mutates through Host-owned boundaries, not by poking runner-local
+state.
 
-- packages define portable agent assets;
-- graph revisions capture topology;
-- nodes bind packages into a graph;
-- edges define allowed relationships;
-- runtimes execute assigned nodes;
-- sessions organize work;
-- turns record runner execution;
-- approvals pause policy-sensitive actions;
-- artifacts carry durable work products;
-- memory keeps node context visible;
-- source-change candidates expose workspace changes before acceptance;
-- events and traces explain what happened.
+## Shared Model
 
-## Shared vocabulary
+Studio, CLI, and User Client should speak the same vocabulary:
 
-Studio and CLI share presentation helpers and host-client contracts. A
-session status, runtime health finding, artifact lifecycle, approval
-state, memory page, or source-change candidate means the same thing in
-both places. A visual investigation can move into a terminal one without
+- a runner means the same thing everywhere;
+- a runtime assignment has the same id and status everywhere;
+- a session and turn have the same identity everywhere;
+- an approval request has the same metadata everywhere;
+- an artifact reference points to the same durable work product everywhere;
+- a source-change candidate has the same evidence everywhere.
+
+That shared vocabulary matters more than visual polish. It lets a user start
+in Studio, investigate with CLI, and continue through a User Client without
 translating concepts by hand.
 
-## Operator discipline
+## Current Verification Boundary
 
-- Inspect through Host APIs.
-- Mutate graph and runtime state through Host-owned routes.
-- Keep runner-owned files behind Host read models — the projection store
-  is the truth.
-- Use dry runs for dangerous mutations where available.
-- Use status, trace, recovery, and smoke evidence before resetting state.
-- Use destructive volume reset only when the active profile should be wiped.
+The public automated proof uses deterministic fake provider paths. That is
+intentional: it validates Host, runner, User Node, relay, projection, artifact,
+and UI plumbing without relying on paid model APIs.
+
+Real OpenCode/provider credentials, real coding tasks, real commits, and real
+pull requests are manual validation until the provider hardening pass is
+complete.
+
+## Operator Discipline
+
+- Inspect state through Host APIs and Host projection.
+- Keep Studio as the admin surface and User Client as the graph participant
+  surface.
+- Treat signed User Node actions as separate from operator mutations.
+- Prefer deterministic smoke evidence before manual cleanup.
+- Do not interpret same-machine development as a local-only architecture.
+- Use destructive resets only when you intentionally want to wipe the active
+  developer profile.

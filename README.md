@@ -65,4 +65,4 @@ production-readiness claims as complete.
 
 ## License
 
-Entangle Website is open source under the [Apache License 2.0](LICENSE).
+Entangle Website is open source under the [MIT License](LICENSE).

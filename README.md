@@ -62,3 +62,7 @@ Every claim should fit one of these categories:
 
 Do not advertise unverified real-provider, physical multi-machine, security, or
 production-readiness claims as complete.
+
+## License
+
+Entangle Website is open source under the [Apache License 2.0](LICENSE).

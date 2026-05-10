@@ -1,9 +1,10 @@
 {
   "name": "entangle-website",
-  "description": "Public website and documentation for Entangle.",
+  "description": "Public website and documentation for Entangle, the self-hosted federated runtime for observable coding-agent organizations.",
   "private": true,
   "type": "module",
   "version": "0.0.1",
+  "license": "Apache-2.0",
   "packageManager": "pnpm@10.18.3",
   "engines": {
     "node": ">=22"

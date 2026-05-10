@@ -10,6 +10,7 @@ import {
 	Network,
 	Radio,
 	ShieldCheck,
+	Terminal,
 	Users,
 	Workflow,
 } from '@lucide/astro';
@@ -40,6 +41,12 @@ const layers = [
 	{ name: 'Runners', body: 'Runners advertise capability, accept assignments, run agent, human-interface, or service nodes, and sign runtime observations.' },
 	{ name: 'Nostr event fabric', body: 'The relay carries signed control, observation, and node-to-node messages without requiring runners to expose public IP addresses.' },
 	{ name: 'Git artifact layer', body: 'A git backend holds work products, source changes, wiki publications, and handoff artifacts with real lineage.' },
+];
+
+const deploymentShapes = [
+	{ Icon: Terminal, title: 'Developer workstation', body: 'Host, relay, git service, runners, Studio, CLI, and User Client can run together for fast deterministic testing.' },
+	{ Icon: Network, title: 'Federated deployment', body: 'Host, runners, User Nodes, relay, and git backend can live on different machines while keeping the same protocol boundaries.' },
+	{ Icon: ShieldCheck, title: 'Production hardening', body: 'The same model still needs hardened identity, secrets, audit retention, recovery, release, and real-provider validation before production claims.' },
 ];
 ---
 
@@ -139,6 +146,33 @@ const layers = [
 						</li>
 					))}
 				</ol>
+			</div>
+		</section>
+
+		<section class="section-pad bg-[#eef6f4]">
+			<div class="container-wide">
+				<div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+					<div>
+						<p class="eyebrow text-teal-800">Deployment shapes</p>
+						<h2 class="mt-3 text-balance text-3xl font-[850] leading-[1.06] text-slate-950 md:text-5xl">One architecture, different placement.</h2>
+					</div>
+					<p class="text-lg leading-8 text-slate-700">
+						The developer path can run everything on one workstation, but that must stay a deployment convenience. The product model remains Host authority, assigned runners, signed communication, User Node identity, and git-backed artifact handoff.
+					</p>
+				</div>
+				<div class="mt-12 grid gap-4 md:grid-cols-3">
+					{deploymentShapes.map(({ Icon, title, body }) => (
+						<article class="paper-panel bg-white p-6">
+							<Icon size={22} stroke-width={2.2} class="text-teal-700" />
+							<h3 class="mt-4 text-lg font-[820] leading-tight text-slate-950">{title}</h3>
+							<p class="mt-3 text-sm leading-6 text-slate-600">{body}</p>
+						</article>
+					))}
+				</div>
+				<div class="mt-8 flex flex-wrap gap-3">
+					<a href="/run/" class="button-dark">Run the proof</a>
+					<a href="/status/" class="button-dark">Current status</a>
+				</div>
 			</div>
 		</section>
 

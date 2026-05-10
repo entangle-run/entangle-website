@@ -64,7 +64,7 @@ Use the Studio-enabled user-node demo when you want a browser surface left
 running for inspection:
 
 ```sh
-pnpm ops:demo-user-node-runtime --with-studio
+pnpm ops:demo-user-node-runtime:studio
 ```
 
 The operator-facing Studio and the CLI both read Host-owned state. A human

@@ -36,6 +36,8 @@ const next = [
 	{ title: 'PR workflow', body: 'Exercise real git remotes, source-change review, branch publication, and pull request creation from agent output.' },
 	{ title: 'Production packaging', body: 'Harden identity lifecycle, install/update paths, monitoring, backup/restore, and security disclosure process.' },
 ];
+
+const releaseUrl = 'https://github.com/entangle-run/entangle/releases/tag/v0.1.0-alpha.1';
 ---
 
 <SiteLayout
@@ -51,6 +53,9 @@ const next = [
 				<h1 class="mt-5 text-balance text-5xl font-[880] leading-[0.98] md:text-7xl">Pre-release, but the runtime shape is real.</h1>
 				<p class="mt-6 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl md:leading-9">
 					Entangle has moved past static architecture notes into runnable Host, runner, user-node, artifact, Studio, CLI, and deterministic agent-execution paths. The remaining work is mostly validation and hardening against real providers, real repositories, and real distributed infrastructure.
+				</p>
+				<p class="mt-5 max-w-3xl text-sm font-semibold leading-6 text-cyan-100">
+					Current public release: <a href={releaseUrl} class="underline decoration-cyan-300/70 underline-offset-4 hover:text-white">v0.1.0-alpha.1</a>.
 				</p>
 			</div>
 		</section>

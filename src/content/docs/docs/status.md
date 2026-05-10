@@ -7,6 +7,8 @@ Entangle is pre-release. The runtime shape is implemented enough to run
 deterministic proofs, but real-provider and physical multi-machine validation
 remain explicit hardening work.
 
+Current public release: [v0.1.0-alpha.1](https://github.com/entangle-run/entangle/releases/tag/v0.1.0-alpha.1).
+
 ## Implemented
 
 - Host control plane with graph, package, principal, runner, assignment,

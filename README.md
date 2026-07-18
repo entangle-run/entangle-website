@@ -1,68 +1,42 @@
 # Entangle Website
 
-This repository contains the public website and docs for Entangle.
+The public website and documentation for **Entangle**, a self-hosted federated runtime for observable coding-agent organizations.
 
-The engineering source of truth is the runtime repository:
-
-- `/Users/vincenzo/Documents/GitHub/Entangle/entangle`
-- public target: `https://github.com/entangle-run/entangle`
-
-The website must present Entangle as a self-hosted federated runtime for
-observable coding-agent organizations. It must not present obsolete local-only
-framing as the product, and it must distinguish implemented runtime paths from
-manual provider validation and future production hardening.
+The site pairs product-facing marketing pages with a Starlight documentation section and a notes/blog stream, and builds to a static bundle ready to deploy on Vercel.
 
 ## Stack
 
-- Astro 6
-- Starlight docs under `/docs`
+- [Astro](https://astro.build/) 7
+- [Starlight](https://starlight.astro.build/) for the docs under `/docs`
 - Tailwind CSS 4
-- Astro content collections for notes
+- Astro content collections for docs and notes
 - RSS feed at `/rss.xml`
-- Vercel-ready build configuration
+- Open Graph image generation (`scripts/build-og.mjs`)
+
+Requires Node.js 22+ and pnpm.
 
 ## Commands
 
 ```sh
-pnpm install
-pnpm dev
-pnpm check
-pnpm build
-pnpm preview
+pnpm install    # install dependencies
+pnpm dev        # start the local dev server
+pnpm check      # run Astro type/content checks
+pnpm build      # build the production site into dist/
+pnpm preview    # preview the production build locally
 ```
 
-| Command | Action |
-| :-- | :-- |
-| `pnpm install` | Installs dependencies |
-| `pnpm dev` | Starts the local dev server |
-| `pnpm check` | Runs Astro checks |
-| `pnpm build` | Builds the production site into `dist/` |
-| `pnpm preview` | Previews the production build locally |
+## Structure
 
-## Content Structure
-
-- Marketing pages: `src/pages/`
-- Docs: `src/content/docs/docs/`
-- Notes: `src/content/blog/`
-- Shared site components: `src/components/`
-- Global styles: `src/styles/global.css`
-
-## Content Policy
-
-Public content should be concise, current, and product-facing. Use the runtime
-repo `README.md`, `docs/`, `wiki/`, and `references/` corpus as source
-material, then turn it into reader-oriented documentation.
-
-Every claim should fit one of these categories:
-
-- implemented and covered by automated checks;
-- implemented with deterministic/mock verification;
-- available for manual testing with real providers;
-- planned/future hardening.
-
-Do not advertise unverified real-provider, physical multi-machine, security, or
-production-readiness claims as complete.
+```text
+src/pages/              Marketing pages (home, architecture, run, security, status, blog)
+src/content/docs/docs/  Documentation (concepts, architecture, getting started, security boundary, status, workbench)
+src/content/blog/       Notes / blog posts
+src/components/         Shared site components
+src/layouts/            Page and blog layouts
+src/styles/global.css   Global styles
+scripts/build-og.mjs    Open Graph image builder
+```
 
 ## License
 
-Entangle Website is open source under the [MIT License](LICENSE).
+MIT — see [LICENSE](LICENSE).
